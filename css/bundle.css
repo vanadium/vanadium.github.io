@@ -1,0 +1,516 @@
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
+/* https://www.google.com/design/spec/style/color.html */
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
+pre,
+code {
+  font-family: "Source Code Pro", monospace;
+  font-size: 12px;
+}
+code {
+  background-color: #f5f5f5;
+  padding: 0 4px;
+}
+pre {
+  margin: 0 -16px;
+  width: 48em;
+  /* Include <pre> because clipboard buttons are in <pre>, not <code>. */
+}
+pre:not(.noclipboard),
+pre code:not(.noclipboard),
+pre .hljs:not(.noclipboard) {
+  background-color: #fff8e1;
+}
+pre code,
+pre .hljs {
+  display: block;
+  padding: 16px;
+  overflow-x: auto;
+}
+.clipboard {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+.clipboard .status {
+  color: #0097a7;
+  font-family: "Roboto", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.clipboard .icon {
+  color: #0097a7;
+}
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
+.icon {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 48px;
+  height: 48px;
+  overflow: hidden;
+  cursor: pointer;
+  color: #ffffff;
+}
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+html {
+  overflow-y: scroll;
+}
+html,
+body {
+  min-height: 100%;
+}
+body {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1.2em 0 0.4em;
+  line-height: 1.4;
+}
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+h1 {
+  font-size: 30px;
+}
+h2 {
+  font-size: 24px;
+}
+h3 {
+  font-size: 20px;
+}
+h4 {
+  font-size: 16px;
+}
+h5 {
+  font-size: 14px;
+}
+h6 {
+  font-size: 12px;
+}
+p {
+  margin: 1em 0;
+}
+a {
+  color: #0097a7;
+  text-decoration: none;
+}
+a:hover,
+a:active {
+  color: #00838f;
+}
+blockquote {
+  background-color: #f5f5f5;
+  margin: 0 -16px;
+  padding: 0 16px;
+  overflow: hidden;
+  font-style: normal;
+  /* Undo the effects of MDL. */
+}
+blockquote:before,
+blockquote:after {
+  position: static;
+  content: "";
+  margin: 0;
+}
+figure {
+  margin: 0;
+}
+figcaption {
+  margin: 8px 0;
+  color: #607d8b;
+  font-size: 12px;
+  font-weight: 500;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+th,
+td {
+  border: 1px solid #f5f5f5;
+  padding: 16px;
+}
+th {
+  font-weight: bold;
+}
+/* Page components ************************************************************/
+header {
+  /* Copyright 2015 The Vanadium Authors. All rights reserved. */
+  /* Use of this source code is governed by a BSD-style */
+  /* license that can be found in the LICENSE file. */
+  background-color: #00838f;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+}
+header a,
+header a:hover,
+header a:active {
+  color: #ffffff;
+  text-decoration: none;
+}
+header .row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 32px;
+  height: 64px;
+}
+header .row .icon {
+  display: none;
+}
+@media (max-width: 800px) {
+  header .row .icon {
+    display: block;
+    margin: 0 16px 0 calc(12px - 32px);
+    padding: 12px;
+  }
+}
+header .spacer {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+header nav a {
+  display: inline-block;
+  line-height: 64px;
+  padding: 0 16px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+@media (max-width: 800px) {
+  header nav {
+    display: none;
+  }
+}
+/* Adjust for sidebar. */
+main,
+.previous-next {
+  margin-left: 16em;
+}
+@media (max-width: 800px) {
+  main,
+  .previous-next {
+    margin-left: 0;
+  }
+}
+main {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-top: 64px;
+  padding: 0 calc(32px + 16px) 32px;
+  max-width: 40em;
+  /* Prevent headings from being obscured by the <header> for #heading urls. */
+}
+main h1.title {
+  color: #0097a7;
+  font-size: 40px;
+}
+main h1[id],
+main h2[id],
+main h3[id],
+main h4[id],
+main h5[id],
+main h6[id] {
+  /**
+     * Prevent the :before block from obscuring the element above. Note: The
+     * meaning of "obscuring" here is subtle. The "visibility: hidden" rule
+     * makes it so the :before block doesn't visually obscure anything, but it
+     * does still obscure certain UI behaviors. For example, if there's a code
+     * block with a horizontal scrollbar directly above a heading element,
+     * hovering over that scrollbar doesn't bring it into focus.
+     */
+  position: relative;
+  z-index: -1;
+}
+main h1[id]:before,
+main h2[id]:before,
+main h3[id]:before,
+main h4[id]:before,
+main h5[id]:before,
+main h6[id]:before {
+  display: block;
+  content: "";
+  margin-top: calc(-1 * (64px + 16px));
+  height: calc(64px + 16px);
+  visibility: hidden;
+}
+.previous-next {
+  /* Copyright 2015 The Vanadium Authors. All rights reserved. */
+  /* Use of this source code is governed by a BSD-style */
+  /* license that can be found in the LICENSE file. */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap-reverse;
+      -ms-flex-wrap: wrap-reverse;
+          flex-wrap: wrap-reverse;
+  margin-top: 32px;
+}
+.previous-next a {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
+  padding: 32px;
+  text-decoration: none;
+  overflow: hidden;
+}
+.previous-next .text-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.previous-next .previous {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  background-color: #00838f;
+}
+.previous-next .previous .text-wrapper {
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+              -ms-grid-row-align: flex-start;
+          align-items: flex-start;
+}
+.previous-next .next {
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  background-color: #0097a7;
+}
+.previous-next .next .text-wrapper {
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+      -ms-flex-align: end;
+              -ms-grid-row-align: flex-end;
+          align-items: flex-end;
+}
+.previous-next small {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+}
+.previous-next .text {
+  position: relative;
+  color: #ffffff;
+  font-size: 16px;
+  white-space: nowrap;
+}
+.sidebar {
+  /* Copyright 2015 The Vanadium Authors. All rights reserved. */
+  /* Use of this source code is governed by a BSD-style */
+  /* license that can be found in the LICENSE file. */
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 16em;
+  z-index: 2;
+  /* below header */
+}
+.sidebar .logo {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 64px;
+  padding-left: 32px;
+}
+.sidebar .items {
+  padding: 16px 0;
+}
+.sidebar a {
+  display: block;
+  padding: 8px 16px;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  font-weight: 400;
+}
+.sidebar a.active {
+  background-color: #cfd8dc;
+  font-weight: 500;
+}
+.sidebar nav {
+  overflow: hidden;
+}
+.sidebar nav a {
+  padding: 6px;
+  padding-left: 32px;
+  font-size: 13px;
+}
+.sidebar nav nav a {
+  padding-left: calc(32px + 16px);
+}
+@media (max-width: 800px) {
+  .sidebar {
+    top: 0;
+    z-index: 5;
+    /* above mdl-layout__obfuscator */
+    -webkit-transform: translateX(-16em);
+            transform: translateX(-16em);
+    -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar.is-visible {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+}
+.toc {
+  /* Copyright 2015 The Vanadium Authors. All rights reserved. */
+  /* Use of this source code is governed by a BSD-style */
+  /* license that can be found in the LICENSE file. */
+  border-left: 4px solid #f5f5f5;
+  padding: 16px;
+  overflow-y: auto;
+}
+.toc .title {
+  padding: 8px 0;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.toc .heading {
+  display: block;
+  margin: 6px 0;
+  color: rgba(0, 0, 0, 0.87);
+  font-weight: 400;
+}
+.toc .heading.active {
+  color: #0097a7;
+  font-weight: 500;
+}
+@media (min-width: 1100px) {
+  .toc {
+    position: fixed;
+    top: 64px;
+    right: 0;
+    bottom: 0;
+    width: 16em;
+  }
+}
+.sidebar-data {
+  display: none;
+}
+/* The logo element appears in the header and in the sidebar. */
+.logo {
+  font-size: 20px;
+}
+.note {
+  /* Copyright 2015 The Vanadium Authors. All rights reserved. */
+  /* Use of this source code is governed by a BSD-style */
+  /* license that can be found in the LICENSE file. */
+  margin: 32px -16px;
+  padding: 0 16px;
+  border: 1px solid #eceff1;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.note.warning {
+  border-color: #ff6e40;
+}
+.note h1,
+.note h2,
+.note h3,
+.note h4 {
+  margin: 16px 0;
+}
+.note p,
+.note ul,
+.note li {
+  font-size: 12px;
+}
+.note pre {
+  width: inherit;
+}

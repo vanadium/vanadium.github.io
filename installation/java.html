@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <title>Java Prerequisites - Vanadium</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
+  
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+    <script src="/js/react-0.14.3.min.js"></script>
+    <script src="/js/react-dom-0.14.3.min.js"></script>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/favicons/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+  
+    <link rel="stylesheet" href="/css/bundle.css">
+    <script src="/js/bundle.js"></script>
+  </head>
+  <body>
+    <header class="mdl-shadow--2dp">
+      <div class="row">
+        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="logo"><a href="/">Vanadium</a></div>
+        <div class="spacer"></div>
+        <nav>
+          <a href="/">Overview</a>
+          <a href="/installation/">Installation</a>
+          <a href="/tutorials/hello-world.html">Tutorials</a>
+        </nav>
+      </div>
+    </header>
+    <div class="sidebar"></div>
+    <!-- TODO(sadovsky): Transmit data as JSON, not HTML. -->
+    <div class="sidebar-data">
+      <a href="/">Overview</a>
+      <a href="/installation/">Installation</a>
+    
+      <a href="#" class="nav">Tutorials</a>
+      <nav>
+        <a href="/tutorials/hello-world.html">Hello World</a>
+        <a href="/tutorials/basics.html">Client/Server Basics</a>
+    
+        <a href="#" class="nav">Security</a>
+        <nav>
+          <a href="/tutorials/security/">Overview</a>
+          <a href="/tutorials/security/principals-and-blessings.html">Principals and Blessings</a>
+      <a href="/tutorials/security/permissions-authorizer.html">Permissions Authorizer</a>
+      <a href="/tutorials/security/first-party-caveats.html">Caveats</a>
+      <a href="/tutorials/security/third-party-caveats.html">Third-party Caveats</a>
+      <a href="/tutorials/security/agent.html">The Agent</a>
+      <a href="/tutorials/security/custom-authorizer.html">Custom Authorizer</a>
+    </nav>
+    
+        <a href="#" class="nav">Naming</a>
+        <nav>
+          <a href="/tutorials/naming/">Overview</a>
+          <a href="/tutorials/naming/mount-table.html">The Mount Table</a>
+      <a href="/tutorials/naming/namespace.html">Namespaces</a>
+      <a href="/tutorials/naming/suffix-part1.html">The Suffix - Part I</a>
+      <a href="/tutorials/naming/suffix-part2.html">The Suffix - Part II</a>
+      <a href="/tutorials/naming/globber.html">Globber</a>
+    </nav>
+    
+        <a href="#" class="nav">Java</a>
+        <nav>
+          <a href="/tutorials/java/">Overview</a>
+          <a href="/tutorials/java/fortune.html">Fortune in Java</a>
+      <a href="/tutorials/java/android.html">Location Service in Android</a>
+    </nav>
+    
+        <a href="#" class="nav">JavaScript</a>
+        <nav>
+          <a href="/tutorials/javascript/">Overview</a>
+          <a href="/tutorials/javascript/hellopeer.html">Hello Peer</a>
+      <a href="/tutorials/javascript/fortune.html">Fortune in JS</a>
+      <a href="/tutorials/javascript/security.html">Security in JS</a>
+    </nav>
+    
+        <a href="/tutorials/faq.html">Tutorial FAQ</a>
+      </nav>
+    
+      <a href="#" class="nav">Concepts</a>
+      <nav>
+        <a href="/concepts/rpc.html">RPC System</a>
+    <a href="/concepts/naming.html">Naming</a>
+    <a href="/concepts/security.html">Security</a>
+    <a href="/concepts/device-management.html">Device Management</a>
+    <a href="/concepts/syncbase-overview.html">Syncbase</a>
+  </nav>
+    
+      <a href="/example-apps.html">Example Apps</a>
+      <a href="/api-reference.html">API Reference</a>
+    
+      <a href="#" class="nav">Community</a>
+      <nav>
+        <a href="/community/coding-guidelines.html">Coding Guidelines</a>
+    <a href="/community/contributing.html">Contributing</a>
+  </nav>
+    
+      <a href="#" class="nav">Tools</a>
+      <nav>
+        <a href="/tools/identity-service-faq.html">Vanadium Identity Service</a>
+    <a href="/tools/jiri.html">Jiri</a>
+    <a href="/tools/services.html">Vanadium Cloud Services</a>
+    <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome Extension</a>
+  </nav>
+    
+      <a href="#" class="nav">Design Docs</a>
+      <nav>
+        <a href="/designdocs/authentication.html">Authentication Protocol</a>
+    <a href="/designdocs/identity-service.html">Identity Service</a>
+    <a href="/designdocs/vdl-spec.html">VDL Specification</a>
+    <a href="/designdocs/vom-spec.html">VOM Specification</a>
+  </nav>
+    
+      <a href="/glossary.html">Glossary</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/tos.html">Terms of Service</a>
+    </div>
+    <main>
+      <h1 class="title">
+        Java Prerequisites
+      </h1>
+
+      <div class="toc"></div>
+
+      <h1 id="basic-prerequisites">Basic prerequisites</h1>
+<p>To work with Vanadium in Java, we recommend that you have:</p>
+<ul>
+<li>Java 7 or above</li>
+<li><a href="http://gradle.org/">Gradle</a></li>
+</ul>
+<h1 id="getting-the-vanadium-libraries">Getting the Vanadium libraries</h1>
+<p>The Vanadium Java libraries are distributed using <a href="http://maven.apache.org/">Maven</a>.</p>
+
+    </main>
+  </body>
+</html>

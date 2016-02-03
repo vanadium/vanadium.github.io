@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <title>Glossary - Vanadium</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
+  
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+    <script src="/js/react-0.14.3.min.js"></script>
+    <script src="/js/react-dom-0.14.3.min.js"></script>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/favicons/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+  
+    <link rel="stylesheet" href="/css/bundle.css">
+    <script src="/js/bundle.js"></script>
+  </head>
+  <body>
+    <header class="mdl-shadow--2dp">
+      <div class="row">
+        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="logo"><a href="/">Vanadium</a></div>
+        <div class="spacer"></div>
+        <nav>
+          <a href="/">Overview</a>
+          <a href="/installation/">Installation</a>
+          <a href="/tutorials/hello-world.html">Tutorials</a>
+        </nav>
+      </div>
+    </header>
+    <div class="sidebar"></div>
+    <!-- TODO(sadovsky): Transmit data as JSON, not HTML. -->
+    <div class="sidebar-data">
+      <a href="/">Overview</a>
+      <a href="/installation/">Installation</a>
+    
+      <a href="#" class="nav">Tutorials</a>
+      <nav>
+        <a href="/tutorials/hello-world.html">Hello World</a>
+        <a href="/tutorials/basics.html">Client/Server Basics</a>
+    
+        <a href="#" class="nav">Security</a>
+        <nav>
+          <a href="/tutorials/security/">Overview</a>
+          <a href="/tutorials/security/principals-and-blessings.html">Principals and Blessings</a>
+      <a href="/tutorials/security/permissions-authorizer.html">Permissions Authorizer</a>
+      <a href="/tutorials/security/first-party-caveats.html">Caveats</a>
+      <a href="/tutorials/security/third-party-caveats.html">Third-party Caveats</a>
+      <a href="/tutorials/security/agent.html">The Agent</a>
+      <a href="/tutorials/security/custom-authorizer.html">Custom Authorizer</a>
+    </nav>
+    
+        <a href="#" class="nav">Naming</a>
+        <nav>
+          <a href="/tutorials/naming/">Overview</a>
+          <a href="/tutorials/naming/mount-table.html">The Mount Table</a>
+      <a href="/tutorials/naming/namespace.html">Namespaces</a>
+      <a href="/tutorials/naming/suffix-part1.html">The Suffix - Part I</a>
+      <a href="/tutorials/naming/suffix-part2.html">The Suffix - Part II</a>
+      <a href="/tutorials/naming/globber.html">Globber</a>
+    </nav>
+    
+        <a href="#" class="nav">Java</a>
+        <nav>
+          <a href="/tutorials/java/">Overview</a>
+          <a href="/tutorials/java/fortune.html">Fortune in Java</a>
+      <a href="/tutorials/java/android.html">Location Service in Android</a>
+    </nav>
+    
+        <a href="#" class="nav">JavaScript</a>
+        <nav>
+          <a href="/tutorials/javascript/">Overview</a>
+          <a href="/tutorials/javascript/hellopeer.html">Hello Peer</a>
+      <a href="/tutorials/javascript/fortune.html">Fortune in JS</a>
+      <a href="/tutorials/javascript/security.html">Security in JS</a>
+    </nav>
+    
+        <a href="/tutorials/faq.html">Tutorial FAQ</a>
+      </nav>
+    
+      <a href="#" class="nav">Concepts</a>
+      <nav>
+        <a href="/concepts/rpc.html">RPC System</a>
+    <a href="/concepts/naming.html">Naming</a>
+    <a href="/concepts/security.html">Security</a>
+    <a href="/concepts/device-management.html">Device Management</a>
+    <a href="/concepts/syncbase-overview.html">Syncbase</a>
+  </nav>
+    
+      <a href="/example-apps.html">Example Apps</a>
+      <a href="/api-reference.html">API Reference</a>
+    
+      <a href="#" class="nav">Community</a>
+      <nav>
+        <a href="/community/coding-guidelines.html">Coding Guidelines</a>
+    <a href="/community/contributing.html">Contributing</a>
+  </nav>
+    
+      <a href="#" class="nav">Tools</a>
+      <nav>
+        <a href="/tools/identity-service-faq.html">Vanadium Identity Service</a>
+    <a href="/tools/jiri.html">Jiri</a>
+    <a href="/tools/services.html">Vanadium Cloud Services</a>
+    <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome Extension</a>
+  </nav>
+    
+      <a href="#" class="nav">Design Docs</a>
+      <nav>
+        <a href="/designdocs/authentication.html">Authentication Protocol</a>
+    <a href="/designdocs/identity-service.html">Identity Service</a>
+    <a href="/designdocs/vdl-spec.html">VDL Specification</a>
+    <a href="/designdocs/vom-spec.html">VOM Specification</a>
+  </nav>
+    
+      <a href="/glossary.html">Glossary</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/tos.html">Terms of Service</a>
+    </div>
+    <main>
+      <h1 class="title">
+        Glossary
+      </h1>
+
+      <div class="toc"></div>
+
+      <h1 id="access-list">Access list</h1>
+<p>An access list describes which <a href="#blessing-name">blessing names</a> should be
+granted access to a particular object or method.</p>
+<p>An access list has an <em>In</em> list of <a href="#blessing-pattern">blessing patterns</a> that
+grants access to all blessing names that are matched by one of the patterns,
+and an optional <em>NotIn</em> list that specifies exclusions from the <em>In</em> list.</p>
+<p>For example, an access list with the <em>In</em> list {<code>alice:family</code>} and <em>NotIn</em>
+list {<code>alice:family:uncle</code>} is matched by principals with blessing names
+<code>alice:family</code>, <code>alice:family:friend</code>, but NOT <code>alice</code>, <code>alice:friend</code>,
+<code>alice:family:uncle</code>, <code>alice:family:uncle:spouse</code>, and so on.</p>
+<p>See also: <a href="#blessing-pattern">Blessing patterns</a> for the semantics of pattern
+matching, <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="agent">Agent</h1>
+<p>Agent is a utility for serving <a href="#credentials">credentials</a> to applications
+analogous to an <a href="http://en.wikipedia.org/wiki/Ssh-agent">ssh-agent</a>. The agent is used to protect private keys from
+vulnerabilities in the application.  The private key is kept encrypted on disk
+and unencrypted in the memory of the agent process.</p>
+<p>Application processes that are descendants of the agent process can use the
+credentials (e.g., sign a message using the private key) by making requests to
+the agent process over inter-process communication channels.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="blessing">Blessing</h1>
+<p>A blessing is a binding of a human-readable <a href="#blessing-name">name</a> to a <a href="#principal">principal</a>,
+valid under some <a href="#caveat">caveats</a>, given by another principal.</p>
+<p>Principals are authorized for operations based on these names.</p>
+<p>The binding between the name, the principal and the caveats is cryptographically
+secured via a chain of <a href="#certificate">certificates</a>. A blessing bound to one
+principal cannot be used by another. Thus, the theft of blessings does not
+present a security risk.</p>
+<p>For example, a principal <em>Alice</em> (with the key pair <code>(P<sub>alice</sub>,
+S<sub>alice</sub>)</code>) can bind the name <code>allie</code> (or any other name of her
+choosing) to herself with a self-signed certificate that binds the name <code>allie</code>
+to <code>P<sub>alice</sub></code>, with the caveat that this name can only be
+used for &quot;read&quot; operations. Since the blessing is based on a self-signed
+certificate, it is referred to as a <a href="#self-blessing"><em>self-blessing</em></a>.</p>
+<p>When one principal blesses another, they do so by chaining a new certificate
+to one of their existing blessings. For example, consider the following two
+certificates:</p>
+<ol>
+<li>One that binds the <strong>extension</strong> <code>friend</code> to the public key <code>P<sub>bob</sub></code>
+with the caveat &quot;use only between 9am and 5pm&quot; <em>chained to</em></li>
+<li>The <code>allie</code> certificate mentioned above.</li>
+</ol>
+<p>Both certificates chained together represent a blessing that binds the name
+<code>allie:friend</code> to <em>Bob</em>, but only for &quot;read operations, between 9am and 5pm&quot;
+(all the caveats in all the certificates in the chain).</p>
+<p><em>Bob</em> can then bless <em>Carol</em> with the name <code>allie:friend:colleague</code> by chaining
+a new certificate, signed by <code>S<sub>bob</sub></code> to his <code>allie:friend</code>
+blessing.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="blessing-name">Blessing name</h1>
+<p>A blessing name is the <em>human readable</em> name extracted from a
+<a href="#blessing">blessing</a>.  Principals are typically authorized based on the
+blessing names bound to them.</p>
+<p>For example, say a principal <em>Carol</em> wishes to invoke the <code>Read</code> method on a
+service run by a principal <em>Alice</em>. The authorization decision is made after a
+sequence of steps:</p>
+<ol>
+<li><em>Carol</em> presents a set of blessings (bound to her public key) to <em>Alice</em>.</li>
+<li><em>Alice</em> looks at each presented blessing and discards those which have
+<a href="#caveats">caveats</a> that are not met in context of the method being invoked (or those which are not <a href="#blessing-root">recognized</a>).</li>
+<li><em>Alice</em> then looks at the names of the remaining blessings and decides
+whether <em>Carol</em> is authorized to invoke the method or not based on the name.</li>
+</ol>
+<p>Two principals can have the same blessing name bound to them,
+allowing them to share authorization without sharing each other&#39;s secret
+private key.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="blessing-pattern">Blessing pattern</h1>
+<p>A blessing pattern is a &quot;pattern&quot; that is matched by either a specific
+<a href="#blessing-name">blessing name</a> or the blessing name and all its
+<a href="#blessing">extensions</a>.</p>
+<p>The pattern <code>&lt;b&gt;:$</code> is matched by the blessing name <code>&lt;b&gt;</code>, while the pattern <code>&lt;b&gt;</code>
+is matched by <code>&lt;b&gt;</code> and all its extensions.</p>
+<p>For example, the pattern <code>alice:houseguest</code> will be matched by the blessing
+name <code>alice:houseguest</code>, <code>alice:houseguest:bob</code>, <code>alice:houseguest:bob:friend</code>
+but not <code>alice:colleague</code>, <code>alice:houseguest2</code> or prefixes of the pattern like
+<code>alice</code> (for example <code>alicea</code> or <code>aliceb</code>). The pattern <code>alice:houseguest:$</code>
+would be matched only by the exact blessing name <code>alice:houseguest</code>.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="blessing-root">Blessing root</h1>
+<p>The root of a blessing is the public key of the first certificate in the
+certificate chain of the blessing.</p>
+<p>A blessing is <em>recognized</em> by an application if and only if the application
+considers the root of the blessing as being authoritative on the corresponding
+<a href="#blessing-name">blessing name</a>.</p>
+<p>For example, one application may recognize the root
+<code>P<sub>alice</sub></code> as an authority on blessings matching the
+pattern <code>allie</code>, such as <code>allie</code> and <code>allie:friend</code>.  Other applications may
+not do so.  Thus, when a blessing with the root <code>P<sub>alice</sub></code>
+is presented to them, they will discard this blessing when extracting <a href="#blessing-name">blessing
+names</a>.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="caveat">Caveat</h1>
+<p>Caveats are conditions placed on a <a href="#blessing">blessing</a> to restrict the
+validity of a <a href="#blessing-name">blessing name</a>. For example, caveats may restrict
+the time duration for which the blessing name can be used, or the set of peers
+that can be communicated with or the type of operations that can be performed.</p>
+<p>When two principals communicate via an <a href="#remote-procedure-call-rpc-">RPC</a>, they
+validate all the caveats in the blessings presented by the peer. In a
+client-server setting, the client validates caveats on the blessings presented
+by the server and vice-versa.</p>
+<p>Caveats are of two kinds -- first-party and third-party.  First-party caveats
+are validated entirely by the party making an authorization decision on the
+blessings presented by the remote end.</p>
+<p><a href="#third-party-caveat">Third-party caveats</a> are validated by the specific
+third party mentioned in the caveat. The party making the authorization
+decision expects a proof of validity (i.e., a <a href="#discharge">Discharge</a>) for the
+caveat from the third party.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="certificate">Certificate</h1>
+<p>A certificate is an object consisting of a human-readable string name,
+a public key, a list of <a href="#caveat">caveats</a>, and a digital signature over
+its contents.</p>
+<p>Certificates can be <em>chained</em> to form a <a href="#blessing">blessing</a>. The first
+certificate in the chain is <em>self-signed</em>, i.e., it is signed using the private
+counterpart of the public key mentioned in the certificate and is referred to
+as the <em>root certificate</em>.</p>
+<p>All other certificates in the chain are signed by the private counterpart of
+the public key mentioned in the previous certificate in the chain.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="client">Client</h1>
+<p>A client is the caller-side of an <a href="#remote-procedure-call-rpc-">RPC</a>.  Clients
+invoke methods on <a href="#server">servers</a>.</p>
+<h1 id="credentials">Credentials</h1>
+<p>Credentials encompass a <a href="#principal">principal</a> (i.e., a public-private key
+pair), the set of <a href="#blessing">blessings</a> bound to that principal, and the set
+of recognized <a href="#blessing-root">blessing roots</a>.</p>
+<p>An application process retrieves its credentials from a directory containing
+this data, or from an <a href="#agent">agent</a> that holds this data (including the
+private key of the principal) safely.</p>
+<h1 id="discharge">Discharge</h1>
+<p>A discharge is a proof of validity of a <a href="#third-party-caveat">third-party
+caveat</a> issued by the third party mentioned in the
+caveat. It is cryptographically tied to the particular caveat.</p>
+<p>A discharge may have <a href="#caveat">caveats</a> of its own that limit the
+validity of the discharge.</p>
+<p>A discharge can be cached and reused, so it&#39;s not necessarily true
+that every attempt to use a blessing will incur the cost of obtaining
+a discharge.</p>
+<p>Discharges may expire, but the expiration time is typically broad
+enough to allow for clock skew.</p>
+<h1 id="discharger">Discharger</h1>
+<p>A server that must be consulted to mint a <a href="#discharge">discharge</a> for
+a caveat. A blessing is valid only if <em>all</em> of its
+<a href="#third-party-caveat">third-party caveats</a> are discharged.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="endpoint">Endpoint</h1>
+<p>An Endpoint is an encoding of all the information required to securely contact
+a <a href="#server">server</a>.  Among other things, this includes the network address of
+the server, e.g.,<code>&lt;IP address&gt;:&lt;port&gt;</code> (tcp), or <code>&lt;MAC address&gt;</code> (bluetooth).</p>
+<h1 id="identity-provider">Identity provider</h1>
+<p>An identity provider is a <a href="#principal">principal</a> that signs <a href="#certificate">root
+certificates</a> of <a href="#blessing">blessings</a> with a fixed name.</p>
+<p>For an identity provider to be useful, an application must use
+<a href="#credentials">credentials</a> that <a href="#blessing-root">recognize</a> its public key as
+an authority on blessings extended from its name.</p>
+<p>For example, <em>Popular Corp</em> could be an identity provider with public key
+<code>P<sub>popularcorp</sub></code> and name <code>popularcorp</code>. It could bless
+other principals with the name <code>popularcorp:&lt;username&gt;</code>. However, this identity
+provider will only be useful to other applications that recognize
+<code>P<sub>popularcorp</sub></code> as an authoritative key on blessing names
+beginning with <code>popularcorp:</code>.</p>
+<p>Root certificates (and thus identity providers) are recognized only for
+blessings matching a specific <a href="#blessing-pattern">pattern</a>.  For example, an
+application might recognize the root <code>P<sub>popularcorp</sub></code> for
+blessings that match the pattern <code>popularcorp</code> and not for blessings that match
+<code>othercorp</code>. This prevents <a href="https://www.linshunghuang.com/papers/mitm.pdf">certificate forging</a> where one recognized identity
+provider can issue certificates for an entity that is normally managed by
+another identity provider.</p>
+<p>Companies, schools, or other public agencies could become <em>identity providers</em>
+and application <a href="#credentials">credentials</a> will be configured to recognize
+some subset of these. For example, services run for general consumption might
+trust a Google-run blessing service, while services run within a corporate
+setting would only recognize blessings whose root was a key owned by the
+corporation.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="mount-table">Mount table</h1>
+<p>A mount table is a <a href="#server">server</a> that associates <a href="#object-name">object
+names</a> with (<a href="#endpoint">endpoint</a>, <a href="#suffix">suffix</a>) pairs.
+The endpoint identifies the server that hosts the named object, and the suffix
+is used to locate the object within the server.</p>
+<p>The process of associating a name (aka &quot;mount point&quot;) with the (endpoint,
+suffix) pair of an object is called &quot;mounting&quot;.</p>
+<p>Since the mount point is itself an object (on which the <code>Mount</code>
+<a href="#remote-procedure-call-rpc-">RPC</a> can be invoked), it can be mounted on other
+mount points. This allows for the creation of a hierarchy of names, a
+<a href="#namespace">namespace</a> of objects.</p>
+<p>See also: <a href="concepts/naming.html">Naming Concepts</a>.</p>
+<h1 id="namespace">Namespace</h1>
+<p>A directed graph made up of <a href="#mount-table">mount tables</a> that create a
+hierarchy of <a href="#object-name">object names</a>.</p>
+<p>A namespace may contain loops (it is not a DAG).</p>
+<h1 id="object-name">Object name</h1>
+<h6 id="also-called-name">Also called: Name</h6>
+<p>An object name is a human-readable name of an object that exports methods on
+which <a href="#remote-procedure-call-rpc-">RPCs</a> can be made.</p>
+<p>Object names are <em>resolved</em> to a set of (<a href="#endpoint">endpoint</a>,
+<a href="#suffix">suffix</a>) pairs via <a href="#mount-table">mount tables</a>. Invoking an RPC on an
+object implies sending the RPC to one of the pairs obtained by <em>resolving</em> the
+object name.</p>
+<p>For example, the object name <code>alice/calendar/today</code> might <em>resolve</em> to the
+<a href="#endpoint">endpoint</a> of Alice&#39;s calendar server and the suffix <code>today</code>.  The
+object might export methods <code>AddAppointment</code> and <code>RemoveAppointment</code>, which are
+invoked to manage Alice&#39;s calendar.</p>
+<p>See also: <a href="concepts/naming.html">Naming Concepts</a>.</p>
+<h1 id="permissions">Permissions</h1>
+<p>Permissions are maps from string tags (like &quot;Read&quot; or &quot;Admin&quot;) to <a href="#access-list">Access
+Lists</a> specifying the blessings required to invoke methods with
+that tag.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="principal">Principal</h1>
+<p>A principal is a public and private <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">key pair</a>.</p>
+<p>Every <a href="#remote-procedure-call-rpc-">RPC</a> is executed on behalf of a principal.
+To encourage security, different processes and certainly processes on different
+devices run as different principals - each with their own private key. The
+private key should ideally be in secure storage such that it cannot be stolen
+from the device on which the application is being run.</p>
+<p>Applications should never share their private key or transmit it on the wire.
+Only public keys and <a href="#blessing">blessings</a> should be transmitted. Multiple
+<a href="#blessing">blessings</a> can be bound to a single principal.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="remote-procedure-call-rpc-">Remote Procedure Call (RPC)</h1>
+<p>Remote procedure calls enable communications between processes by presenting
+an API based on function calls. The caller of an RPC is known as the
+<a href="#client">client</a> and the receiver that implements the RPC is known as the
+<a href="#server">server</a>.  Clients invoke methods implemented on the server, which is
+identified by its <a href="#object-name">object name</a>.</p>
+<p>See also: <a href="concepts/rpc.html">RPC concepts</a>.</p>
+<h1 id="self-blessing">Self-blessing</h1>
+<p>A <a href="#blessing">blessing</a> who&#39;s certificate chain has only one certificate,
+necessarily self-signed, since if it had been signed by another
+principal it would not be a single entry chain.</p>
+<p>A self-blessing is the starting point to issuing blessings to other
+principals.</p>
+<h1 id="server">Server</h1>
+<p>A server is the receiver-side of an <a href="#remote-procedure-call-rpc-">RPC</a>.
+Servers implement methods that are invoked by <a href="#client">clients</a>.</p>
+<p>The term server is also used to refer to the process that hosts objects and
+dispatches RPC requests to the methods implemented by those objects.</p>
+<h1 id="suffix">Suffix</h1>
+<p>A suffix is the trailing portion of an <a href="#object-name">object name</a> used to
+identify the object within a server.</p>
+<p>For example, the object name <code>alice/calendar/today</code> may be hosted by a
+<a href="#server">server</a> that hosts all objects with the prefix <code>alice/calendar</code>.  In
+that case, the <a href="#remote-procedure-call-rpc-">RPC</a>
+<code>alice/calendar/today.AddAppointment()</code> will be directed to this server and the
+suffix <code>today</code> will be used by the server to identify the object.</p>
+<h1 id="third-party-caveat">Third-party caveat</h1>
+<p><em>Third-party caveats</em> are <a href="#caveat">caveats</a> wherein the burden of validation
+is pushed to a specific <em>third party</em> that is different from the request
+recipient.</p>
+<p>A blessing with a third-party caveat is considered valid only when accompanied
+by a <a href="#discharge">discharge</a> (proof of validity) issued by the specific third
+party mentioned in the caveat. The third party validates the caveat before
+granting or denying a discharge.</p>
+<p>Examples of third-party caveats include <em>revocation</em> caveats that are
+discharged by a specific revocation service if and only if the blessing has
+not been revoked, <em>proximity</em> caveats that are discharged by a proximity
+service if and only if the requester satisfies the proximity constraints
+mentioned in the caveat, and <em>audit</em> caveats  that are discharged by an
+auditing service only after updating the audit log.</p>
+<p>It is the responsibility of the wielder of a blessing to fetch discharges for
+all third-party caveats present on the blessing. The wielder may cache
+discharges for as long as they are valid.</p>
+<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<h1 id="v23">v23</h1>
+<p>The <a href="http://en.wikipedia.org/wiki/Vanadium">atomic number of Vanadium</a> is 23, which is the
+inspiration behind the <code>v23</code> shorthand for Vanadium.</p>
+<h1 id="vrpc">vrpc</h1>
+<p>The <code>vrpc</code> command line tool sends and receives
+<a href="#remote-procedure-call-rpc-">RPCs</a>.  It is used as a generic <a href="#client">client</a>
+to interact with any <a href="#server">server</a>.</p>
+<h1 id="vanadium-definition-language-vdl-">Vanadium Definition Language (VDL)</h1>
+<p>VDL describes the API for interfaces provided by objects. This includes the set
+of methods that can be invoked via an <a href="#remote-procedure-call-rpc-">RPC</a>, their
+arguments and return types.  These interfaces are described in <code>.vdl</code> files. The
+<code>vdl</code> command-line tool generates language-specific interfaces for these APIs.</p>
+<p>See also: <a href="designdocs/vdl-spec.html">VDL specification</a>.</p>
+<h1 id="vanadium-object-marshaling-vom-">Vanadium Object Marshaling (VOM)</h1>
+<p>VOM is the data serialization format used in Vanadium.  It enables the
+encoding and decoding of typed values across different programming languages,
+e.g. Go, Java, and JavaScript.</p>
+<p>See also: <a href="designdocs/vom-spec.html">VOM specification</a>.</p>
+<h1 id="websocket-proxy-wspr-">WebSocket Proxy (WSPR)</h1>
+<p>A server (usually called WSPR, pronounced <em>whisper</em>) allows JavaScript
+running in a web browser or Node.js to communicate with a Vanadium system.
+WSPR proxies the Vanadium world behind a WebSocket interface.</p>
+<p>A JavaScript app uses a Node.js module that implements a WebSocket front-end
+to WSPR. WSPR accepts requests from the app over the WebSocket, sends them on
+as conventional Vanadium RPCs, and returns the responses to the JavaScript app
+via WebSocket.</p>
+<p>WSPR as a concept will move from a freestanding server into a browser
+extension, and ultimately become native to browsers.</p>
+
+    </main>
+  </body>
+</html>

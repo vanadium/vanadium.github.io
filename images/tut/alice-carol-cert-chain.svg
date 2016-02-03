@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="531px" height="286px" viewBox="0 0 531 286" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.1 (8751) - http://www.bohemiancoding.com/sketch -->
+    <title>alice-carol-cert-chain 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="alice-carol-cert-chain" sketch:type="MSLayerGroup" transform="translate(10.000000, 10.000000)" font-weight="normal" font-family="Menlo" letter-spacing="-0.0187" font-size="6.7359672">
+            <text id="$-" sketch:type="MSTextLayer" fill="#EDEC15">
+                <tspan x="3e-06" y="5.82414258">$ </tspan>
+            </text>
+            <text id="$V_BIN/principal-dump-------v23.credentials-$V_TUT/cred/alice" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="7.8586314" y="5.82414258">$V_BIN/principal dump     --v23.credentials $V_TUT/cred/alice</tspan>
+            </text>
+            <text id="Public-key-:-8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="14.2441016">Public key : 8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b</tspan>
+            </text>
+            <text id="-----------------BlessingStore-----------------" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="22.6640606">---------------- BlessingStore ----------------</tspan>
+            </text>
+            <text id="Default-blessings:-alice" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="31.0840196">Default blessings: alice</tspan>
+            </text>
+            <text id="Peer-pattern-------------------:-Blessings" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="39.5039786">Peer pattern                   : Blessings</tspan>
+            </text>
+            <text id="...----------------------------:-alice" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="47.9239376">...                            : alice</tspan>
+            </text>
+            <text id="-----------------BlessingRoots-----------------" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="56.3438966">---------------- BlessingRoots ----------------</tspan>
+            </text>
+            <text id="Public-key--------------------------------------:-Pattern" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="64.7638556">Public key                                      : Pattern</tspan>
+            </text>
+            <text id="8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b-:-[alice/...]" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="73.1838146">8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b : [alice]</tspan>
+            </text>
+            <text id="$-" sketch:type="MSTextLayer" fill="#EDEC15">
+                <tspan x="3e-06" y="90.0237326">$ </tspan>
+            </text>
+            <text id="$V_BIN/principal-dump-------v23.credentials-$V_TUT/cred/carol" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="7.8586314" y="90.0237326">$V_BIN/principal dump     --v23.credentials $V_TUT/cred/carol</tspan>
+            </text>
+            <text id="Public-key-:-15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="98.4436916">Public key : 15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33</tspan>
+            </text>
+            <text id="-----------------BlessingStore-----------------" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="106.863651">---------------- BlessingStore ----------------</tspan>
+            </text>
+            <text id="Default-blessings:-carol" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="115.28361">Default blessings: carol</tspan>
+            </text>
+            <text id="Peer-pattern-------------------:-Blessings" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="123.703569">Peer pattern                   : Blessings</tspan>
+            </text>
+            <text id="...----------------------------:-carol" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="132.123528">...                            : carol</tspan>
+            </text>
+            <text id="alice--------------------------:-alice/family/sister" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="140.543487">alice                          : alice:family:sister</tspan>
+            </text>
+            <text id="-----------------BlessingRoots-----------------" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="148.963446">---------------- BlessingRoots ----------------</tspan>
+            </text>
+            <text id="Public-key--------------------------------------:-Pattern" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="157.383405">Public key                                      : Pattern</tspan>
+            </text>
+            <text id="8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b-:-[alice/...]" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="165.803364">8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b : [alice]</tspan>
+            </text>
+            <text id="15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33-:-[carol/...]" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="174.223323">15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33 : [carol]</tspan>
+            </text>
+            <text id="$-" sketch:type="MSTextLayer" fill="#EDEC15">
+                <tspan x="3e-06" y="191.063241">$ </tspan>
+            </text>
+            <text id="$V_BIN/principal-store-------v23.credentials-$V_TUT/cred/carol-----forpeer-alice-|---------$V_BIN/principal-dumpblessings--" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="7.8586314" y="191.063241">$V_BIN/principal store     --v23.credentials $V_TUT/cred/carol     forpeer alice |         $V_BIN/principal dumpblessings -</tspan>
+            </text>
+            <text id="Blessings----------:-carol#alice/family/sister" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="199.4832">Blessings          : carol#alice:family:sister</tspan>
+            </text>
+            <text id="PublicKey----------:-15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="207.903159">PublicKey          : 15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33</tspan>
+            </text>
+            <text id="Certificate-chains-:-2" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="216.323118">Certificate chains : 2</tspan>
+            </text>
+            <text id="Chain-#0-(1-certificates).-Root-certificate-public-key:-15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="224.743077">Chain #0 (1 certificates). Root certificate public key: 15:b1:77:e2:af:90:01:75:7c:ff:00:0a:84:8e:61:33</tspan>
+            </text>
+            <text id="--Certificate-#0:-carol-with-0-caveats" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="233.163036">  Certificate #0: carol with 0 caveats</tspan>
+            </text>
+            <text id="Chain-#1-(2-certificates).-Root-certificate-public-key:-8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="241.582995">Chain #1 (2 certificates). Root certificate public key: 8d:73:64:49:42:79:c7:e2:39:d1:76:1d:7e:53:d3:3b</tspan>
+            </text>
+            <text id="--Certificate-#0:-alice-with-0-caveats" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="250.002954">  Certificate #0: alice with 0 caveats</tspan>
+            </text>
+            <text id="--Certificate-#1:-family/sister-with-1-caveat" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="258.422913">  Certificate #1: family:sister with 1 caveat</tspan>
+            </text>
+            <text id="----(0)-security.unixTimeExpiryCaveat(1416955258-=-2014-11-25-14:40:58--0800-PST)" sketch:type="MSTextLayer" fill="#000000">
+                <tspan x="3e-06" y="266.842872">    (0) security.unixTimeExpiryCaveat(1416955258 = 2014-11-25 14:40:58 -0800 PST)</tspan>
+            </text>
+        </g>
+        <ellipse id="Oval-1" stroke="#D0011B" sketch:type="MSShapeGroup" cx="132.5" cy="21.5" rx="127.5" ry="10.5"></ellipse>
+        <ellipse id="Oval-2" stroke="#D0011B" sketch:type="MSShapeGroup" cx="310.5" cy="249.5" rx="127.5" ry="10.5"></ellipse>
+    </g>
+</svg>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fortune Teller - Client</title>
+  <script>
+    // Helpers to update and introspect the HTML page.
+    function getServiceName() {
+      return document.getElementById('service-name').value;
+    }
+    function setServiceName(serviceName) {
+      return document.getElementById('service-name').value = serviceName;
+    }
+    function getEnteredFortune() {
+      return document.getElementById('add-text').value;
+    }
+    function displayFortune(fortune) {
+      var fortuneNode = document.createElement('li');
+      fortuneNode.textContent = fortune;
+      document.getElementById('fortune-list').appendChild(fortuneNode);
+    }
+    function displayError(err) {
+      updateStatus(err.toString());
+    }
+    function updateStatus(status) {
+      document.getElementById('status').innerHTML = status;
+    }
+  </script>
+</head>
+<body>
+  <h1>Client</h1>
+  <p>Service to connect to: <input id="service-name" type="text" placeholder="Enter a service name" size="60" /></p>
+  <p>
+  Fortune to add: <input type="text" id="add-text" placeholder="write a custom fortune" size="60"/> <button id="add-button">Add Fortune</button>
+  </p>
+  <p><button id="get-button">Get Fortune</button></p>
+  <h2>Status: <span id="status">Ready</span></h2>
+  <p>Received fortunes: <ol id="fortune-list"></ol></p>
+  <script src="browser/fortune-client.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+package ifc
+
+type Fortune interface {
+  // Returns a random fortune.
+  Get() (wisdom string | error)
+  // Adds a fortune to the set used by Get().
+  Add(wisdom string) error
+}

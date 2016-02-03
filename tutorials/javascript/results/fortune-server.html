@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fortune Teller - Server</title>
+  <script>
+    // Helpers to display status information on the page.
+    function displayError(err) {
+      displayNumFortunesServed('Error: ' + err.toString());
+    }
+    function displayNumFortunesServed(count) {
+      document.getElementById('fortune-count').innerHTML = count;
+    }
+    function displayFortunes(fortunes) {
+      var fortuneList = document.getElementById('fortune-list');
+      // Assume that only new fortunes can be added to the end list.
+      for (var i = fortuneList.childNodes.length; i < fortunes.length; i++) {
+        var bullet = document.createElement('li');
+        bullet.textContent = fortunes[i];
+        fortuneList.appendChild(bullet);
+      }
+    }
+    function setServiceName(serviceName) {
+      return document.getElementById('service-name').textContent = serviceName;
+    }
+    function uiInit(service, serviceName) {
+      setServiceName(serviceName);
+      setInterval(function() {
+        displayNumFortunesServed(service.numFortunesServed);
+        displayFortunes(service.fortunes);
+      }, 250);
+    }
+  </script>
+</head>
+<body>
+  <h1>Server</h1>
+  <p>
+    <span>Name of service to provide to clients: </span>
+    <span id="service-name"></span>
+  </p>
+  <p>
+    List of fortunes:
+    <br><ol id="fortune-list"></ol></br>
+  </p>
+  <p>
+    Total Fortunes Sent: <span id="fortune-count">0</span>
+  </p>
+  <script src="browser/fortune-server.js"></script>
+</body>
+</html>
