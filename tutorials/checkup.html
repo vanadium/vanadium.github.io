@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -152,9 +153,9 @@ tests, tutorial preparation, etc.</p>
 <p><!-- @checkTutorialAssets @test @testui @completer --></p>
 <pre><code>function bad_vanadium() {
   echo &#39;
-  Per https://v.io/installation/, either
+  Per https://vanadium.github.io/installation/, either
 
-    export V23_RELEASE={your installation directory}
+    export JIRI_ROOT={your installation directory}
 
   or do a fresh install.&#39;;
   exit 1;

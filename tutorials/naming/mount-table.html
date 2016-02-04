@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -187,7 +188,7 @@ TUT_PID_MT=$!</code></pre>
 <p>A mount table happens to be a Vanadium service.  This means the <a href="/tutorials/basics.html#the-vrpc-client">vrpc</a>
 program can report its <a href="https://vanadium.googlesource.com/release.go.v23/+/master/services/mounttable/service.vdl">VDL interface</a>:</p>
 <p><!-- @queryMountTable @test --></p>
-<pre><code>$V_BIN/vrpc signature /:$PORT_MT</code></pre>
+<pre><code>$V_BIN/vrpc signature /localhost:$PORT_MT</code></pre>
 <p>It also means that the mount table has a <a href="/glossary.html#principal">principal</a> - it must run
 with credentials.  Since the <code>--v23.credentials</code> flag wasn&#39;t
 specified at startup, the Vanadium runtime consulted the environment
@@ -210,7 +211,7 @@ TUT_PID_S1=$!</code></pre>
 tables.  The following mounts the server at the name <code>fortuneAlpha</code>.</p>
 <p><!-- @mountFortune @test --></p>
 <pre><code>$V_BIN/namespace \
-    --v23.namespace.root /:$PORT_MT \
+    --v23.namespace.root /localhost:$PORT_MT \
     mount fortuneAlpha `cat $V_TUT/s1.txt` 100m</code></pre>
 <p>The flag <code>--v23.namespace.root</code> specifies which <strong>mount table</strong> to
 use.  The flag is available in all Vanadium programs.</p>
@@ -224,7 +225,7 @@ tables.</p>
 names:</p>
 <p><!-- @queryMountTable @test --></p>
 <pre><code>$V_BIN/namespace \
-    --v23.namespace.root /:$PORT_MT \
+    --v23.namespace.root /localhost:$PORT_MT \
     glob -l &#39;*&#39;</code></pre>
 <p>There&#39;s just one name: <code>fortuneAlpha</code>.  Use of the flag <code>-l</code>
 triggers additional output; you see the name&#39;s <a href="/glossary.html#endpoint">endpoint</a>,
@@ -236,7 +237,7 @@ about one hundred minutes.  That&#39;s what the <code>100m</code> meant in the
 <a href="/glossary.html#endpoint">endpoint</a>, use <code>namespace resolve {name}</code>:</p>
 <p><!-- @resolveFortune @test --></p>
 <pre><code>$V_BIN/namespace \
-    --v23.namespace.root /:$PORT_MT \
+    --v23.namespace.root /localhost:$PORT_MT \
     resolve fortuneAlpha</code></pre>
 <p>The output should match the endpoint recorded in <code>$V_TUT/s1.txt</code>:</p>
 <p><!-- @lookAtEndpoint @test --></p>
@@ -249,7 +250,7 @@ server using a full service endpoint name in the <a href="/tutorials/basics.html
 <p>Now you can use the name <code>fortuneAlpha</code> instead:</p>
 <p><!-- @fortuneWithTable @test --></p>
 <pre><code>$V_TUT/bin/client \
-    --v23.namespace.root /:$PORT_MT \
+    --v23.namespace.root /localhost:$PORT_MT \
     --server fortuneAlpha</code></pre>
 <p>The <code>client</code> program didn&#39;t need to be recompiled to allow this new
 usage because Vanadium code in the client interprets the value
@@ -270,7 +271,7 @@ constantly specify the <code>--v23.namespace.root</code> flag with the same
 value.</p>
 <p>Ommiting the flag will trigger use the following shell variable:</p>
 <p><!-- @setNamespace @test --></p>
-<pre><code>export V23_NAMESPACE=/:$PORT_MT</code></pre>
+<pre><code>export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
 <p>Now a fortune retrieval is as simple as:</p>
 <p><!-- @fortuneWithTableAgain @test --></p>
 <pre><code>$V_TUT/bin/client --server fortuneAlpha</code></pre>

@@ -115,18 +115,25 @@ h4,
 h5,
 h6 {
   margin: 1.2em 0 0.4em;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 h4,
 h5,
 h6 {
   font-weight: 500;
 }
+h1.title {
+  color: #0097a7;
+  font-size: 45px;
+  line-height: 48px;
+}
 h1 {
-  font-size: 30px;
+  font-size: 34px;
+  line-height: 40px;
 }
 h2 {
   font-size: 24px;
+  line-height: 32px;
 }
 h3 {
   font-size: 20px;
@@ -142,6 +149,7 @@ h6 {
 }
 p {
   margin: 1em 0;
+  line-height: 1.7;
 }
 a {
   color: #0097a7;
@@ -193,6 +201,7 @@ header {
   /* Use of this source code is governed by a BSD-style */
   /* license that can be found in the LICENSE file. */
   background-color: #00838f;
+  /* Similar to .logo-row in sidebar.less. */
   position: fixed;
   top: 0;
   width: 100%;
@@ -217,13 +226,24 @@ header .row {
   height: 64px;
 }
 header .row .icon {
+  margin: 0 8px 0 calc(12px - 32px);
+}
+header .row .menu {
   display: none;
 }
 @media (max-width: 800px) {
-  header .row .icon {
+  header .row .menu {
     display: block;
-    margin: 0 16px 0 calc(12px - 32px);
     padding: 12px;
+  }
+}
+header .row .v-icon {
+  padding: 6px;
+  cursor: auto;
+}
+@media (max-width: 800px) {
+  header .row .v-icon {
+    display: none;
   }
 }
 header .spacer {
@@ -265,10 +285,6 @@ main {
   padding: 0 calc(32px + 16px) 32px;
   max-width: 40em;
   /* Prevent headings from being obscured by the <header> for #heading urls. */
-}
-main h1.title {
-  color: #0097a7;
-  font-size: 40px;
 }
 main h1[id],
 main h2[id],
@@ -352,7 +368,6 @@ main h6[id]:before {
   -webkit-box-align: start;
   -webkit-align-items: flex-start;
       -ms-flex-align: start;
-              -ms-grid-row-align: flex-start;
           align-items: flex-start;
 }
 .previous-next .next {
@@ -366,7 +381,6 @@ main h6[id]:before {
   -webkit-box-align: end;
   -webkit-align-items: flex-end;
       -ms-flex-align: end;
-              -ms-grid-row-align: flex-end;
           align-items: flex-end;
 }
 .previous-next small {
@@ -385,6 +399,7 @@ main h6[id]:before {
   /* license that can be found in the LICENSE file. */
   overflow-y: auto;
   background-color: #f5f5f5;
+  /* Similar to .row in header.less. */
   position: fixed;
   top: 0;
   bottom: 0;
@@ -393,7 +408,7 @@ main h6[id]:before {
   z-index: 2;
   /* below header */
 }
-.sidebar .logo {
+.sidebar .logo-row {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -402,8 +417,16 @@ main h6[id]:before {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
+  padding: 0 32px;
   height: 64px;
-  padding-left: 32px;
+  color: #0097a7;
+}
+.sidebar .logo-row .icon {
+  margin: 0 8px 0 calc(12px - 32px);
+}
+.sidebar .logo-row .v-icon {
+  padding: 6px;
+  cursor: auto;
 }
 .sidebar .items {
   padding: 16px 0;
@@ -438,9 +461,7 @@ main h6[id]:before {
     -webkit-transform: translateX(-16em);
             transform: translateX(-16em);
     -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .sidebar.is-visible {
     -webkit-transform: translateX(0);

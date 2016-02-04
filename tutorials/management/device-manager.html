@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -189,9 +190,9 @@ PORT_MT=24000
 V23_CREDENTIALS=&quot;&quot; &quot;${V_BIN}/deviced&quot; install --suid_helper=&quot;${V_BIN}/suidhelper&quot; --agent=&quot;${V_BIN}/agentd&quot; -- --v23.tcp.address=&quot;:$PORT_MT&quot; --name=&quot;&quot;
 V23_CREDENTIALS=&quot;&quot; &quot;${V_BIN}/deviced&quot; start</code></pre>
 <p>Check that the device manager service is mounted in the mount table. This
-should print <code>/:24000/devmgr</code>:
+should print <code>/localhost:24000/devmgr</code>:
 <!-- @globMountTable @test --></p>
-<pre><code>&quot;${V_BIN}/namespace&quot; glob &quot;/:$PORT_MT/*&quot;</code></pre>
+<pre><code>&quot;${V_BIN}/namespace&quot; glob &quot;/localhost:$PORT_MT/*&quot;</code></pre>
 <h1 id="claim-the-device-manager">Claim the device manager</h1>
 <p>The device manager is currently <strong>unclaimed</strong>, meaning that it does not have a
 blessing (other than the one it generates for itself).  The user must <strong>claim</strong>
@@ -200,7 +201,7 @@ blessing, which then becomes the device manager&#39;s default blessing. We&#39;l
 our device manager as <code>hal</code>, and verify that the device manager presents itself
 as <code>tutorial/hal</code>:</p>
 <p><!-- @claimDeviceManager @test --></p>
-<pre><code>DEVICE_NAME=/:$PORT_MT/devmgr
+<pre><code>DEVICE_NAME=/localhost:$PORT_MT/devmgr
 &quot;${V_BIN}/device&quot; claim &quot;${DEVICE_NAME}/device&quot; hal
 &quot;${V_BIN}/vrpc&quot; identify &quot;${DEVICE_NAME}/device&quot;</code></pre>
 <h1 id="bring-up-a-server">Bring up a server</h1>
@@ -221,7 +222,7 @@ the instance with a blessing called <code>fortune</code>. Record the instance na
 echo &quot;Instantiated and started: ${INSTANCE_NAME}&quot;</code></pre>
 <p>Verify that the fortune server app runs with the expected blessing name, <code>tutorial/fortune</code>:
 <!-- @identifyFortune @test --></p>
-<pre><code>&quot;${V_BIN}/vrpc&quot; identify &quot;/:$PORT_MT/myFortunes&quot;</code></pre>
+<pre><code>&quot;${V_BIN}/vrpc&quot; identify &quot;/localhost:$PORT_MT/myFortunes&quot;</code></pre>
 <p>At this point, you can look at the log files from your server. To see what log files are available:
 <!-- @listLogFiles @test --></p>
 <pre><code> ${V_BIN}/namespace glob &quot;${INSTANCE_NAME}/logs/*&quot;</code></pre>
@@ -232,7 +233,7 @@ ${V_BIN}/debug logs read $LOGFILE</code></pre>
 <h1 id="run-the-client">Run the client</h1>
 <p>As in the <a href="/tutorials/basics.html">basics tutorial</a>, use the client to make a call to the server:</p>
 <p><!-- @fortuneClient @test --></p>
-<pre><code>&quot;${V_TUT}/bin/client&quot; --server &quot;/:$PORT_MT/myFortunes&quot;</code></pre>
+<pre><code>&quot;${V_TUT}/bin/client&quot; --server &quot;/localhost:$PORT_MT/myFortunes&quot;</code></pre>
 <h1 id="cleanup">Cleanup</h1>
 <p><!-- @deviceManagerCleanup @test --></p>
 <pre><code>&quot;${V_BIN}/device&quot; kill &quot;${INSTANCE_NAME}&quot;

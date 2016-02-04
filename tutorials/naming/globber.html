@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -346,7 +347,7 @@ $V_BIN/mounttabled \
     --v23.credentials $V_TUT/cred/basics \
     --v23.tcp.address :$PORT_MT &amp;
 TUT_PID_MT=$!
-export V23_NAMESPACE=/:$PORT_MT</code></pre>
+export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
 <p>Fire up the file server with its root directory set to &quot;$V_TUT&quot;:</p>
 <p><!-- @buildServer @test @completer --></p>
 <pre><code>go install fileserver</code></pre>

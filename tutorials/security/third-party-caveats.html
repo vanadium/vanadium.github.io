@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -476,7 +477,7 @@ the endpoint.</p>
 <p>Behind the URL is an <a href="/glossary.html#identity-provider">identity provider</a>, an instance of Vanadium&#39;s
 <a href="/designdocs/identity-service.html">identityd</a>, <a href="/glossary.html#self-blessing">self-blessed</a> with the name <code>dev.v.io</code>.</p>
 <p>A web server associated with that provider told the browser to send
-its user - <em>you</em> - to Google for login, then to an <a href="https://developers.google.com/accounts/docs/OAuth2InstalledApp">Oauth</a> grant
+its user - <em>you</em> - to Google for login, then to an <a href="https://developers.google.com/accounts/docs/OAuth2InstalledApp">OAuth</a> grant
 screen.  After completing that, it gave you a form for creating a
 blessing.  When you clicked <strong>Bless</strong>, the form was submitted, and the
 provider sent an RPC with the resulting blessing to the aforementioned

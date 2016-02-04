@@ -38,7 +38,8 @@
   <body>
     <header class="mdl-shadow--2dp">
       <div class="row">
-        <div class="icon"><i class="material-icons">menu</i></div>
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
         <div class="logo"><a href="/">Vanadium</a></div>
         <div class="spacer"></div>
         <nav>
@@ -311,7 +312,7 @@ TUT_PID_SERVER=$!</code></pre>
 <p><!-- @runClientAsPrincipal @test --></p>
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
-    --server /:$PORT_HELLO</code></pre>
+    --server /localhost:$PORT_HELLO</code></pre>
 <p>That&#39;s it - you&#39;ve built and run your first Vanadium apps.</p>
 <h1 id="clean-up">Clean up</h1>
 <p><!-- @killServer @test --></p>
