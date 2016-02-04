@@ -79,6 +79,12 @@ pre .hljs {
   cursor: pointer;
   color: #ffffff;
 }
+/**
+ * Note to contributors: The style rules below have been tuned and tested
+ * extensively across various device types and screen sizes. If you wish to make
+ * changes, please consult the primary authors to ensure that your changes will
+ * not break anything.
+ */
 *,
 :before,
 :after {
