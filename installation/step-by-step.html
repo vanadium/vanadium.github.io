@@ -199,7 +199,7 @@ not write to any files outside of the <code>JIRI_ROOT</code> directory.
 curl -f https://vanadium.github.io/bootstrap.sh | bash</code></pre>
 <p>Add <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>, for <code>jiri</code>:
 <!-- @addDevtoolsToPath @test --></p>
-<pre><code>export PATH=$PATH:$JIRI_ROOT/devtools/bin</code></pre>
+<pre><code>export PATH=$JIRI_ROOT/devtools/bin:$PATH</code></pre>
 <p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
 <h1 id="additional-prerequisites">Additional prerequisites</h1>
 <p>Some components of Vanadium (e.g. Syncbase) have additional prerequisites,

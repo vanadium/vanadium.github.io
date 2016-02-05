@@ -65,14 +65,6 @@ check_environment() {
     exit 1
   fi
 
-  # Check that the "jiri" command is not already in PATH.
-  local -r JIRI_CMD=$(which jiri)
-  if [[ -n "${JIRI_CMD}" ]]; then
-    echo "Your PATH already contains the 'jiri' command: ${JIRI_CMD}"
-    echo "Remove it from the PATH and re-run."
-    exit 1
-  fi
-
   # Check that the host OS and package manager is supported.
   case $(uname -s) in
     "Linux")
