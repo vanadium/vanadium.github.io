@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,
-      initial-scale=1,
-      minimum-scale=1,
-      maximum-scale=1,
-      user-scalable=no,
-      minimal-ui">
+                                   initial-scale=1,
+                                   minimum-scale=1,
+                                   maximum-scale=1,
+                                   user-scalable=no,
+                                   minimal-ui">
   
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -787,8 +787,8 @@ select k from Cust
 +--------------+----------+
 </code></pre><h3 id="comparison-expressions">Comparison Expressions</h3>
 <p>Comparison expressions are of the form:</p>
-<p>&lt;<em>left-operand</em>&gt; &lt;<em>operator</em>&gt; &lt;<em>right-operand</em>&gt;</p>
-<p>There&#39;s good news!  Everything (Note: OK, not everything.  Using &#39;As&#39; doesn&#39;t make sense and can&#39;t be used in the where clause.) you&#39;ve learned about what can be specified in the select clause can be specified as an operand in the where clause.</p>
+<pre><code>&lt;left-operand&gt; &lt;operator&gt; &lt;right-operand&gt;
+</code></pre><p>There&#39;s good news!  Everything (Note: OK, not everything.  Using &#39;As&#39; doesn&#39;t make sense and can&#39;t be used in the where clause.) you&#39;ve learned about what can be specified in the select clause can be specified as an operand in the where clause.</p>
 <p>Having said that, there is one important difference regarding fields that cannot be resolved.  In the select clause, unresolved fields return nil.  <strong><em>In the where clause, unresolved fields cause the comparison expression to be false.</em></strong></p>
 <p>To illustrate this point, let&#39;s do the following query:</p>
 <pre><code>? select v.InvoiceNum, v.Amount from Customers where v.Amount &lt;&gt; 787;
@@ -930,9 +930,9 @@ Since the like expression is now true for all customer rows, we see both of them
 +--------+
 </code></pre><h2 id="executing-delete-statements">Executing Delete Statements</h2>
 <p>In addition to select statements, syncql supports delete statements.  (Insert and Update statements are planned.)</p>
-<p>The delete statement takes the form:
-    delete from <table> [<where-clause>] [<limit-clause>]</p>
-<p>The where and limit clauses for delete are identical to the where and limit caluses for select.</p>
+<p>The delete statement takes the form:</p>
+<pre><code>delete from &lt;table&gt; [&lt;where-clause&gt;] [&lt;limit-clause&gt;]
+</code></pre><p>The where and limit clauses for delete are identical to the where and limit caluses for select.</p>
 <p>To delete all k/v pairs in a table, leave off the where and limit clauses:</p>
 <pre><code>? delete from Customers;
 +-------+
@@ -1003,7 +1003,7 @@ Demo tables created and populated.
 +--------+
 </code></pre><p>Congratulations!  You&#39;ve finished the syncQL tutorial.  Don&#39;t forget to proceed to the <a href="#teardown">teardown</a> steps to clean up!  Also, check out the brief introduction to executing syncQL queries from a Go program.</p>
 <h1 id="teardown">Teardown</h1>
-<p>Exit <code>sb</code> with <ctrl-d>, kill the syncbased and mounttabled background jobs and delete the principal directory:</p>
+<p>Exit <code>sb</code> with &lt;ctrl-d&gt;, kill the syncbased and mounttabled background jobs and delete the principal directory:</p>
 <pre><code>&lt;ctrl-d&gt;
 sudo kill $(jobs -p)
 rm -rf /tmp/me

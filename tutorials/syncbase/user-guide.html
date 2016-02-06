@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,
-      initial-scale=1,
-      minimum-scale=1,
-      maximum-scale=1,
-      user-scalable=no,
-      minimal-ui">
+                                   initial-scale=1,
+                                   minimum-scale=1,
+                                   maximum-scale=1,
+                                   user-scalable=no,
+                                   minimal-ui">
   
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -191,13 +191,13 @@ tight control over the data</li>
 adopters - it is suitable for prototyping, but not for production applications.</p>
 <p>This document covers installation and basic usage. It should be enough for
 developers to get started using Syncbase. For more details on the design, see
-the <a href="../concepts/syncbase-overview.md">Syncbase Overview</a> document.</p>
+the <a href="/concepts/syncbase-overview.html">Syncbase Overview</a> document.</p>
 <h1 id="installation">Installation</h1>
 <p>Syncbase is a Go program that depends on Vanadium and several other libraries.
 The following steps cover all of the prerequisites, and should work on both
 Linux and OS X.</p>
 <ol>
-<li><p>Follow the <a href="../installation.md">installation instructions</a> to install prerequisites and fetch the
+<li><p>Follow the <a href="/installation/">installation instructions</a> to install prerequisites and fetch the
 Vanadium repositories, which include Syncbase as well as the Todos demo app.</p>
 <p>The instructions below assume you&#39;ve set the <code>JIRI_ROOT</code> environment variable
 and have added <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>:</p>
@@ -228,7 +228,7 @@ then runs the standard <code>go</code> tool.</p>
 <!-- TODO: Add instructions about how to run a cloud instance of Syncbase. -->
 <h2 id="running-the-todos-demo-app">Running the Todos Demo App</h2>
 <p>The <a href="https://github.com/vanadium/todos">Todos demo app</a> is a web application that runs in Chrome. Before you can
-run it, you must install the <a href="../tools/vanadium-chrome-extension.md">Vanadium Chrome extension</a>.</p>
+run it, you must install the <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome extension</a>.</p>
 <p>To run the app, follow the demo setup instructions here:
 <a href="https://github.com/vanadium/todos/blob/master/demo.md">https://github.com/vanadium/todos/blob/master/demo.md</a></p>
 <p>To get a fresh copy of the Vanadium source code and rebuild everything for the
@@ -236,7 +236,7 @@ demo, run these commands from the todos root dir:</p>
 <pre><code>jiri update
 make clean
 </code></pre><p>If you get certificate signature verification errors when running the webapp,
-try uninstalling and reinstalling your <a href="../tools/vanadium-chrome-extension.md">Vanadium Chrome extension</a>.</p>
+try uninstalling and reinstalling your <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome extension</a>.</p>
 <h1 id="basic-usage">Basic Usage</h1>
 <p>In this section we demonstrate the basics of working with a local instance of
 Syncbase: setting up an initial <code>&lt;app&gt;/&lt;database&gt;/&lt;table&gt;</code> hierarchy, reading
@@ -286,7 +286,7 @@ predicate. For more information, see the <a href="#queries">Queries</a> section 
 guide.</p>
 <p>Finally, let&#39;s perform a set of operations in a batch. Batches follow ACID
 semantics on the local Syncbase instance, and relaxed ACID semantics when used
-with synchronization, as described in the <a href="../concepts/syncbase-overview.md">Syncbase Overview</a> document.</p>
+with synchronization, as described in the <a href="/concepts/syncbase-overview.html">Syncbase Overview</a> document.</p>
 <pre><code>// For a read-only batch (i.e. to read from a snapshot), we&#39;d set
 // BatchOptions.ReadOnly to true.
 nosql.RunInBatch(ctx, d, wire.BatchOptions{},
@@ -313,9 +313,9 @@ batches similar to many relational databases. We expect that most apps will have
 a single database. It exists primarily because we expect to provide other types
 of databases in the future (e.g. SQL, timeseries).</p>
 <p>A Table is a lexicographically ordered set of rows with each row key mapping to
-a single value. Values can be anything representable by <a href="../concepts/rpc.md#vom">VOM</a> such as simple
+a single value. Values can be anything representable by <a href="/concepts/rpc.html#vom">VOM</a> such as simple
 types like string and int32 or complex, application-defined structs. We expect
-that many developers will choose to use <a href="../concepts/rpc.md#vdl">VDL</a> to model their data, though they
+that many developers will choose to use <a href="/concepts/rpc.html#vdl">VDL</a> to model their data, though they
 are free to define structs in their native programming language. The values in a
 single table can be heterogeneous, allowing for better spatial locality than
 splitting the values into homogeneous tables.</p>
@@ -330,7 +330,7 @@ act of sharing and synchronizing this list with another user will cause this
 list to be spliced into that user&#39;s database. By using UUIDs, we ensure that
 this list will not collide with a list already in that database.</p>
 <h2 id="access-control">Access Control</h2>
-<p>Syncbase provides fine grained access control, using the <a href="../concepts/security.md">Vanadium security
+<p>Syncbase provides fine grained access control, using the <a href="/concepts/security.html">Vanadium security
 model</a> for identification and authentication. Developers provide a key prefix to
 control which rows are covered by a given access control list (ACL). If there
 are multiple ACL prefixes for a row, the one with the longest prefix wins. This
@@ -358,7 +358,7 @@ specific devices) to give each user the flexibility in selecting from which of
 their device(s) to join the syncgroup and participate in the data
 synchronization.</p>
 <h1 id="queries">Queries</h1>
-<p>The Syncbase query language, <a href="syncql-tutorial.md">syncQL</a>, is very similar to SQL. SyncQL uses the
+<p>The Syncbase query language, <a href="/tutorials/syncbase/syncql-tutorial.html">syncQL</a>, is very similar to SQL. SyncQL uses the
 general structure of SQL&#39;s SELECT statement. It efficiently evaluates predicates
 (the WHERE clause) inside the Syncbase process. It does not currently support
 JOINs or indexes.</p>
