@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Glossary - Vanadium</title>
   
@@ -154,7 +164,7 @@ list {<code>alice:family:uncle</code>} is matched by principals with blessing na
 <code>alice:family</code>, <code>alice:family:friend</code>, but NOT <code>alice</code>, <code>alice:friend</code>,
 <code>alice:family:uncle</code>, <code>alice:family:uncle:spouse</code>, and so on.</p>
 <p>See also: <a href="#blessing-pattern">Blessing patterns</a> for the semantics of pattern
-matching, <a href="concepts/security.html">Security Concepts</a>.</p>
+matching, <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="agent">Agent</h1>
 <p>Agent is a utility for serving <a href="#credentials">credentials</a> to applications
 analogous to an <a href="http://en.wikipedia.org/wiki/Ssh-agent">ssh-agent</a>. The agent is used to protect private keys from
@@ -163,7 +173,7 @@ and unencrypted in the memory of the agent process.</p>
 <p>Application processes that are descendants of the agent process can use the
 credentials (e.g., sign a message using the private key) by making requests to
 the agent process over inter-process communication channels.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="blessing">Blessing</h1>
 <p>A blessing is a binding of a human-readable <a href="#blessing-name">name</a> to a <a href="#principal">principal</a>,
 valid under some <a href="#caveat">caveats</a>, given by another principal.</p>
@@ -192,7 +202,7 @@ with the caveat &quot;use only between 9am and 5pm&quot; <em>chained to</em></li
 <p><em>Bob</em> can then bless <em>Carol</em> with the name <code>allie:friend:colleague</code> by chaining
 a new certificate, signed by <code>S<sub>bob</sub></code> to his <code>allie:friend</code>
 blessing.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="blessing-name">Blessing name</h1>
 <p>A blessing name is the <em>human readable</em> name extracted from a
 <a href="#blessing">blessing</a>.  Principals are typically authorized based on the
@@ -210,7 +220,7 @@ whether <em>Carol</em> is authorized to invoke the method or not based on the na
 <p>Two principals can have the same blessing name bound to them,
 allowing them to share authorization without sharing each other&#39;s secret
 private key.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="blessing-pattern">Blessing pattern</h1>
 <p>A blessing pattern is a &quot;pattern&quot; that is matched by either a specific
 <a href="#blessing-name">blessing name</a> or the blessing name and all its
@@ -222,7 +232,7 @@ name <code>alice:houseguest</code>, <code>alice:houseguest:bob</code>, <code>ali
 but not <code>alice:colleague</code>, <code>alice:houseguest2</code> or prefixes of the pattern like
 <code>alice</code> (for example <code>alicea</code> or <code>aliceb</code>). The pattern <code>alice:houseguest:$</code>
 would be matched only by the exact blessing name <code>alice:houseguest</code>.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="blessing-root">Blessing root</h1>
 <p>The root of a blessing is the public key of the first certificate in the
 certificate chain of the blessing.</p>
@@ -235,7 +245,7 @@ pattern <code>allie</code>, such as <code>allie</code> and <code>allie:friend</c
 not do so.  Thus, when a blessing with the root <code>P<sub>alice</sub></code>
 is presented to them, they will discard this blessing when extracting <a href="#blessing-name">blessing
 names</a>.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="caveat">Caveat</h1>
 <p>Caveats are conditions placed on a <a href="#blessing">blessing</a> to restrict the
 validity of a <a href="#blessing-name">blessing name</a>. For example, caveats may restrict
@@ -252,7 +262,7 @@ blessings presented by the remote end.</p>
 third party mentioned in the caveat. The party making the authorization
 decision expects a proof of validity (i.e., a <a href="#discharge">Discharge</a>) for the
 caveat from the third party.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="certificate">Certificate</h1>
 <p>A certificate is an object consisting of a human-readable string name,
 a public key, a list of <a href="#caveat">caveats</a>, and a digital signature over
@@ -263,7 +273,7 @@ counterpart of the public key mentioned in the certificate and is referred to
 as the <em>root certificate</em>.</p>
 <p>All other certificates in the chain are signed by the private counterpart of
 the public key mentioned in the previous certificate in the chain.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="client">Client</h1>
 <p>A client is the caller-side of an <a href="#remote-procedure-call-rpc-">RPC</a>.  Clients
 invoke methods on <a href="#server">servers</a>.</p>
@@ -289,7 +299,7 @@ enough to allow for clock skew.</p>
 <p>A server that must be consulted to mint a <a href="#discharge">discharge</a> for
 a caveat. A blessing is valid only if <em>all</em> of its
 <a href="#third-party-caveat">third-party caveats</a> are discharged.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="endpoint">Endpoint</h1>
 <p>An Endpoint is an encoding of all the information required to securely contact
 a <a href="#server">server</a>.  Among other things, this includes the network address of
@@ -319,7 +329,7 @@ some subset of these. For example, services run for general consumption might
 trust a Google-run blessing service, while services run within a corporate
 setting would only recognize blessings whose root was a key owned by the
 corporation.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="mount-table">Mount table</h1>
 <p>A mount table is a <a href="#server">server</a> that associates <a href="#object-name">object
 names</a> with (<a href="#endpoint">endpoint</a>, <a href="#suffix">suffix</a>) pairs.
@@ -331,7 +341,7 @@ suffix) pair of an object is called &quot;mounting&quot;.</p>
 <a href="#remote-procedure-call-rpc-">RPC</a> can be invoked), it can be mounted on other
 mount points. This allows for the creation of a hierarchy of names, a
 <a href="#namespace">namespace</a> of objects.</p>
-<p>See also: <a href="concepts/naming.html">Naming Concepts</a>.</p>
+<p>See also: <a href="/concepts/naming.html">Naming Concepts</a>.</p>
 <h1 id="namespace">Namespace</h1>
 <p>A directed graph made up of <a href="#mount-table">mount tables</a> that create a
 hierarchy of <a href="#object-name">object names</a>.</p>
@@ -348,12 +358,12 @@ object name.</p>
 <a href="#endpoint">endpoint</a> of Alice&#39;s calendar server and the suffix <code>today</code>.  The
 object might export methods <code>AddAppointment</code> and <code>RemoveAppointment</code>, which are
 invoked to manage Alice&#39;s calendar.</p>
-<p>See also: <a href="concepts/naming.html">Naming Concepts</a>.</p>
+<p>See also: <a href="/concepts/naming.html">Naming Concepts</a>.</p>
 <h1 id="permissions">Permissions</h1>
 <p>Permissions are maps from string tags (like &quot;Read&quot; or &quot;Admin&quot;) to <a href="#access-list">Access
 Lists</a> specifying the blessings required to invoke methods with
 that tag.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="principal">Principal</h1>
 <p>A principal is a public and private <a href="http://en.wikipedia.org/wiki/Public-key_cryptography">key pair</a>.</p>
 <p>Every <a href="#remote-procedure-call-rpc-">RPC</a> is executed on behalf of a principal.
@@ -364,14 +374,14 @@ from the device on which the application is being run.</p>
 <p>Applications should never share their private key or transmit it on the wire.
 Only public keys and <a href="#blessing">blessings</a> should be transmitted. Multiple
 <a href="#blessing">blessings</a> can be bound to a single principal.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="remote-procedure-call-rpc-">Remote Procedure Call (RPC)</h1>
 <p>Remote procedure calls enable communications between processes by presenting
 an API based on function calls. The caller of an RPC is known as the
 <a href="#client">client</a> and the receiver that implements the RPC is known as the
 <a href="#server">server</a>.  Clients invoke methods implemented on the server, which is
 identified by its <a href="#object-name">object name</a>.</p>
-<p>See also: <a href="concepts/rpc.html">RPC concepts</a>.</p>
+<p>See also: <a href="/concepts/rpc.html">RPC concepts</a>.</p>
 <h1 id="self-blessing">Self-blessing</h1>
 <p>A <a href="#blessing">blessing</a> who&#39;s certificate chain has only one certificate,
 necessarily self-signed, since if it had been signed by another
@@ -408,7 +418,7 @@ auditing service only after updating the audit log.</p>
 <p>It is the responsibility of the wielder of a blessing to fetch discharges for
 all third-party caveats present on the blessing. The wielder may cache
 discharges for as long as they are valid.</p>
-<p>See also: <a href="concepts/security.html">Security Concepts</a>.</p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>.</p>
 <h1 id="v23">v23</h1>
 <p>The <a href="http://en.wikipedia.org/wiki/Vanadium">atomic number of Vanadium</a> is 23, which is the
 inspiration behind the <code>v23</code> shorthand for Vanadium.</p>
@@ -421,12 +431,12 @@ to interact with any <a href="#server">server</a>.</p>
 of methods that can be invoked via an <a href="#remote-procedure-call-rpc-">RPC</a>, their
 arguments and return types.  These interfaces are described in <code>.vdl</code> files. The
 <code>vdl</code> command-line tool generates language-specific interfaces for these APIs.</p>
-<p>See also: <a href="designdocs/vdl-spec.html">VDL specification</a>.</p>
+<p>See also: <a href="/designdocs/vdl-spec.html">VDL specification</a>.</p>
 <h1 id="vanadium-object-marshaling-vom-">Vanadium Object Marshaling (VOM)</h1>
 <p>VOM is the data serialization format used in Vanadium.  It enables the
 encoding and decoding of typed values across different programming languages,
 e.g. Go, Java, and JavaScript.</p>
-<p>See also: <a href="designdocs/vom-spec.html">VOM specification</a>.</p>
+<p>See also: <a href="/designdocs/vom-spec.html">VOM specification</a>.</p>
 <h1 id="websocket-proxy-wspr-">WebSocket Proxy (WSPR)</h1>
 <p>A server (usually called WSPR, pronounced <em>whisper</em>) allows JavaScript
 running in a web browser or Node.js to communicate with a Vanadium system.

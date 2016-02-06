@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Raspberry Pi - Vanadium</title>
   
@@ -157,8 +167,8 @@ write code, compile it and run it all on the Pi. To do that you will:</p>
 the processor architecture of the Pis. You could compile it from source, but might prefer
 <a href="http://dave.cheney.net/unofficial-arm-tarballs">Dave Cheney&#39;s unofficial distribution</a>.</li>
 <li>Download the Vanadium sources:<pre><code>export GOPATH=$HOME/vanadium  # Or any other directory of your choosing
-go get v.io/x/ref/...</code></pre>
-</li>
+go get v.io/x/ref/...
+</code></pre></li>
 </ol>
 <p>At this point, you should be ready to develop your own Vanadium binaries and
 build them using <code>go build</code> or <code>go install</code>.</p>
@@ -180,10 +190,10 @@ compiler&#39;s support for cross-compilation.</p>
 </ol>
 <p>Let&#39;s say you&#39;re building a binary (such as the <code>principal</code> command-line tool)
 for the machine you&#39;re developing on, you&#39;d likely do something like:</p>
-<pre><code>jiri go install v.io/x/ref/cmd/principal</code></pre>
-<p>To build it for the Pi, use:</p>
-<pre><code>JIRI_PROFILE=arm jiri go install v.io/x/ref/cmd/principal</code></pre>
-<p>This will place the binary under
+<pre><code>jiri go install v.io/x/ref/cmd/principal
+</code></pre><p>To build it for the Pi, use:</p>
+<pre><code>JIRI_PROFILE=arm jiri go install v.io/x/ref/cmd/principal
+</code></pre><p>This will place the binary under
 <code>$JIRI_ROOT/release/go/bin/linux_arm/principal</code>.  You can then copy this binary
 using <code>scp</code> or some other mechanism to your Pi.</p>
 <h1 id="using-the-gpio-ports">Using the GPIO ports</h1>

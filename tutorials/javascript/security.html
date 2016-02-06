@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Security in JS - Vanadium</title>
   
@@ -223,8 +233,8 @@ type Fortune interface {
   // Adds a fortune to the set used by Get().
   Add(wisdom string) error {access.Write}
 }
-EOF</code></pre>
-<p>These security tags are used by the Permissions Authorizer, defined in the
+EOF
+</code></pre><p>These security tags are used by the Permissions Authorizer, defined in the
 <a href="/tutorials/security/permissions-authorizer.html">Permissions Authorizer tutorial</a>.</p>
 <h3 id="provideblessings-vdl">ProvideBlessings VDL</h3>
 <p>Alice also runs a ProvideBlessings service, which allows any client to make the
@@ -240,15 +250,15 @@ import &quot;v.io/v23/security&quot;
 type ProvideBlessings interface {
   GetBlessings() (security.WireBlessings | error)
 }
-EOF</code></pre>
-<h3 id="building-vdl">Building VDL</h3>
+EOF
+</code></pre><h3 id="building-vdl">Building VDL</h3>
 <p>Use the VDL tool to build these interfaces. The command will generate
 <code>src/security/ifc/index.js</code>.</p>
 <pre><code>VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V23_RELEASE/src:$V_TUT/src \
     $V_BIN/vdl generate -lang=javascript -js-out-dir=$V_TUT/src \
-    $V_TUT/src/security/ifc/...</code></pre>
-<h2 id="vanadium-security-in-javascript">Vanadium security in JavaScript</h2>
+    $V_TUT/src/security/ifc/...
+</code></pre><h2 id="vanadium-security-in-javascript">Vanadium security in JavaScript</h2>
 <h3 id="alice">Alice</h3>
 <p>Alice runs two services in this example, a Fortune-teller service and a service
 that provides blessings to callers.</p>
@@ -287,8 +297,8 @@ FortuneService.prototype.get = function(ctx, serverCall) {
     this.fortunes.length);
   return this.fortunes[fortuneIndex];
 };
-EOF</code></pre>
-<h4 id="blessings-service">Blessings service</h4>
+EOF
+</code></pre><h4 id="blessings-service">Blessings service</h4>
 <p>This command creates <code>src/security/service/provide-blessings.js</code></p>
 <pre><code>mkdir -p $V_TUT/src/security/service
 cat - &lt;&lt;EOF &gt;$V_TUT/src/security/service/provide-blessings.js
@@ -326,8 +336,8 @@ ProvideBlessingsService.prototype.getBlessings = function(ctx, serverCall) {
     return self._principal.bless(ctx, serverCall.securityCall.remoteBlessings.publicKey, peerBlessings, desiredSuffix, expiryCaveat);
   });
 };
-EOF</code></pre>
-<p>This service takes a principal and a callback function. When a client calls
+EOF
+</code></pre><p>This service takes a principal and a callback function. When a client calls
 getBlessings, Alice will use this callback to determine whether or not the
 client truly ought to be blessed. Alice can also decide what name to use when
 blessing the client.</p>
@@ -368,8 +378,8 @@ function showBlessingStore(runtime) {
     throw new Error(&#39;Error displaying peer blessings: &#39; + err);
   });
 }
-EOF</code></pre>
-<h4 id="alice-code">Alice code</h4>
+EOF
+</code></pre><h4 id="alice-code">Alice code</h4>
 <p>The following goes in <code>src/security/alice.js</code></p>
 <pre><code>mkdir -p $V_TUT/src/security
 cat - &lt;&lt;EOF &gt;$V_TUT/src/security/alice.js
@@ -484,8 +494,8 @@ function displayFortunes(fortunes) {
 function displayNumFortunesServed(count) {
   document.getElementById(&#39;fortune-count&#39;).innerHTML = count;
 }
-EOF</code></pre>
-<h4 id="alice-html">Alice HTML</h4>
+EOF
+</code></pre><h4 id="alice-html">Alice HTML</h4>
 <p>Alice&#39;s JavaScript is hosted in a corresponding HTML file:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/browser/alice.html
 &lt;!DOCTYPE html&gt;
@@ -508,8 +518,8 @@ EOF</code></pre>
   &lt;script src=&quot;security-alice.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h3 id="bob">Bob</h3>
+EOF
+</code></pre><h3 id="bob">Bob</h3>
 <p>Bob is a friend of Alice and will be given a <code>alice:friends:bob</code> blessing that
 enables read-only access to fortunes. In order to get this blessing, he needs
 to contact Alice&#39;s blessing granter service.</p>
@@ -564,8 +574,8 @@ function onAddFortune(cb) {
     cb(fortuneToAdd);
   });
 }
-EOF</code></pre>
-<h4 id="bob-code">Bob code</h4>
+EOF
+</code></pre><h4 id="bob-code">Bob code</h4>
 <p>Bob should exist in <code>src/security/bob.js</code>:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/src/security/bob.js
 var vanadium = require(&#39;vanadium&#39;);
@@ -616,8 +626,8 @@ vanadium.init(config, function(err, runtime) {
     clientLib.setStatus(&#39;Error: &#39; + err);
   });
 });
-EOF</code></pre>
-<h4 id="bob-html">Bob HTML</h4>
+EOF
+</code></pre><h4 id="bob-html">Bob HTML</h4>
 <p>Bob needs a corresponding HTML file:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/browser/bob.html
 &lt;!DOCTYPE html&gt;
@@ -638,8 +648,8 @@ EOF</code></pre>
   &lt;script src=&quot;security-bob.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h3 id="carol">Carol</h3>
+EOF
+</code></pre><h3 id="carol">Carol</h3>
 <p>Carol operates nearly identically to Bob, except that she uses <code>alice:family:sister</code>
 blessing that allows read / write access. In addition, Carol has functionality
 to grant Diane a blessing with caveats.</p>
@@ -745,8 +755,8 @@ function initGranteeField(runtime) {
     &#39;/tutorial/diane&#39;;
   document.getElementById(&#39;grantee&#39;).value = dianeName;
 }
-EOF</code></pre>
-<h4 id="carol-html">Carol HTML</h4>
+EOF
+</code></pre><h4 id="carol-html">Carol HTML</h4>
 <p>Carol needs a corresponding HTML file:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/browser/carol.html
 &lt;!DOCTYPE html&gt;
@@ -769,8 +779,8 @@ EOF</code></pre>
 &lt;/body&gt;
 &lt;/html&gt;
 
-EOF</code></pre>
-<h3 id="diane">Diane</h3>
+EOF
+</code></pre><h3 id="diane">Diane</h3>
 <p>Diane gets the blessing <code>family:sister:guest:diane</code> from Carol with an expiry
 caveat.</p>
 <h4 id="diane-code">Diane code</h4>
@@ -842,8 +852,8 @@ vanadium.init(config, function(err, runtime) {
     console.log(&#39;Diane served&#39;);
   });
 });
-EOF</code></pre>
-<h4 id="diane-html">Diane HTML</h4>
+EOF
+</code></pre><h4 id="diane-html">Diane HTML</h4>
 <p>Diane needs a corresponding HTML file:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/browser/diane.html
 &lt;!DOCTYPE html&gt;
@@ -864,8 +874,8 @@ EOF</code></pre>
   &lt;script src=&quot;security-diane.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h2 id="running-the-code">Running the code</h2>
+EOF
+</code></pre><h2 id="running-the-code">Running the code</h2>
 <h3 id="combined-html">Combined HTML</h3>
 <p><code>security.html</code> is an HTML page containing all of the above pages in iframes to
 make it easier to observe changes.</p>
@@ -917,8 +927,8 @@ toggled using the &quot;Show&quot; buttons in the center of the page.</p>
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h3 id="helper-script">Helper script</h3>
+EOF
+</code></pre><h3 id="helper-script">Helper script</h3>
 <p>To help run it, the following <code>run-security.sh</code> script will be used:</p>
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/run-security.sh
 echo &quot;Browserifying...&quot;
@@ -951,10 +961,10 @@ function killservers() {
 trap killservers EXIT
 
 sleep infinity
-EOF</code></pre>
-<p>Make the script runnable. Then, run the script.</p>
-<pre><code>bash $V_TUT/run-security.sh</code></pre>
-<p>The console will show &quot;Browserifying...&quot; and then &quot;Serving...&quot;.</p>
+EOF
+</code></pre><p>Make the script runnable. Then, run the script.</p>
+<pre><code>bash $V_TUT/run-security.sh
+</code></pre><p>The console will show &quot;Browserifying...&quot; and then &quot;Serving...&quot;.</p>
 <h3 id="loading-the-page">Loading the page</h3>
 <div class="note warning"><p><strong>On the first run, you will be asked to allow each domain to be blessed.</strong></p>
 <p>Recall that we are running this example across 4 origins. Since the extension

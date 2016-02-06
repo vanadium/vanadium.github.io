@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Vanadium Chrome Extension - Vanadium</title>
   
@@ -184,7 +194,7 @@ sent to the NaCl plugin.  The NaCl plugin handles incoming messages from
 JavaScript by calling Vanadium library code, written in Go.</p>
 <p>The NaCl plugin makes Vanadium RPCs to other Vanadium devices using WebSockets,
 which are a supported transport protocol of the Vanadium RPC protocol.  Within
-the NaCl plugin, each web app origin is associated with a unique <a href="../glossary.html#blessing">Vanadium
+the NaCl plugin, each web app origin is associated with a unique <a href="/glossary.html#blessing">Vanadium
 blessing</a>, and RPCs are performed with the blessing associated with
 the origin of the web app making the request.</p>
 <p>The plugin sends messages back to web apps using the same message-passing

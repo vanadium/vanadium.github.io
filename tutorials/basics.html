@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Client/Server Basics - Vanadium</title>
   
@@ -209,7 +219,7 @@ The service you&#39;ll build here stores and offers up fortunes.</p>
 <a href="/glossary.html#vanadium-definition-language-vdl-">Vanadium Definition Language</a> (VDL).</p>
 <p>The following command (read more about <code>cat</code> usage
 <a href="/tutorials/faq.html#where-is-the-source-code-">here</a>) will put the VDL in the right spot:</p>
-<p><!-- @defineService @buildjs @test @testui @completer --></p>
+<!-- @defineService @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/ifc
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/ifc/fortune.vdl
 package ifc
@@ -220,8 +230,8 @@ type Fortune interface {
   // Adds a fortune to the set used by Get().
   Add(wisdom string) error
 }
-EOF</code></pre>
-<p>This file defines the <a href="/tutorials/faq.html#do-i-need-to-know-go-">Go</a> package <code>ifc</code> (an abbreviation of
+EOF
+</code></pre><p>This file defines the <a href="/tutorials/faq.html#do-i-need-to-know-go-">Go</a> package <code>ifc</code> (an abbreviation of
 <em>interface</em>).  You&#39;ll soon define the packages <code>service</code>, <code>util</code> and
 <code>main</code>.  Package symbols will be isolated from each other, per Go
 namespace rules, making it easier to reason about code dependencies.</p>
@@ -229,12 +239,12 @@ namespace rules, making it easier to reason about code dependencies.</p>
 <p>Use the <code>fortune.vdl</code> you just made to create the file
 <code>fortune.vdl.go</code>.  This Go code provides stubbed attachment points
 that will soon be linked into a client and server.</p>
-<p><!-- @compileInterface @buildjs @test @testui @completer --></p>
+<!-- @compileInterface @buildjs @test @testui @completer -->
 <pre><code>VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
     $V_BIN/vdl generate --lang go $V_TUT/src/fortune/ifc
-go build fortune/ifc</code></pre>
-<p>The <code>go build</code> command here is just a check for errors. In this
+go build fortune/ifc
+</code></pre><p>The <code>go build</code> command here is just a check for errors. In this
 case, the command doesn&#39;t create object or executable
 files.  In these tutorials, <code>cat</code> commands that <em>create code files</em>
 are immediately followed by commands that attempt compilation as a
@@ -245,7 +255,7 @@ quick check for errors.  When the code file created is a main program,
 <p>The following implementation stores fortune strings in memory,
 choosing one randomly when <code>Get</code> is called.  A client can add more
 fortunes via <code>Add</code>.</p>
-<p><!-- @serviceImpl @test @testui @completer --></p>
+<!-- @serviceImpl @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/service
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/service/service.go
 package service
@@ -292,8 +302,8 @@ func (f *impl) Add(_ *context.T, _ rpc.ServerCall, blah string) error {
   return nil
 }
 EOF
-go build fortune/service</code></pre>
-<h1 id="build-a-server">Build a server</h1>
+go build fortune/service
+</code></pre><h1 id="build-a-server">Build a server</h1>
 <p>Service in hand, we need a place to put it.</p>
 <p><a href="#terminology">Recall</a> that a server associates an endpoint with a
 dispatcher, and a dispatcher contains one or more services.  This
@@ -311,7 +321,7 @@ changes, etc.), switching to a new implementation means replacing the
 file and recompiling.</p>
 <p>The first version of <code>authorizer.go</code> invokes the default Vanadium
 authorization policy (to be discussed <a href="/tutorials/security/principals-and-blessings.html#default-authorization-policy">later</a>):</p>
-<p><!-- @authorizer @test @testui @completer --></p>
+<!-- @authorizer @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/server/util
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/authorizer.go
 package util
@@ -325,8 +335,8 @@ func MakeAuthorizer() security.Authorizer {
   return security.DefaultAuthorizer()
 }
 EOF
-go build fortune/server/util</code></pre>
-<h2 id="dispatcher">Dispatcher</h2>
+go build fortune/server/util
+</code></pre><h2 id="dispatcher">Dispatcher</h2>
 <p>Dispatcher implementations will be provided by a factory function
 called <code>util.MakeDispatcher</code> in a file called <code>dispatcher.go</code>, an
 arrangement allowing for low tech implementation swaps as described
@@ -334,7 +344,7 @@ above for the authorizer.</p>
 <p>The version of <code>dispatcher.go</code> defined here results in the use of a
 dispatcher built into Vanadium.  It&#39;s initialized with only <em>one</em>
 service and uses reflection to invoke server methods.</p>
-<p><!-- @dispatcher @test @testui @completer --></p>
+<!-- @dispatcher @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/server/util
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/dispatcher.go
 package util
@@ -348,8 +358,8 @@ func MakeDispatcher() (d rpc.Dispatcher) {
   return nil
 }
 EOF
-go build fortune/server/util</code></pre>
-<h2 id="initializer">Initializer</h2>
+go build fortune/server/util
+</code></pre><h2 id="initializer">Initializer</h2>
 <p>The following utility package allows endpoints to be written to a flag
 controlled file.</p>
 <p>In this tutorial, rather than specify a port as was done in the
@@ -361,7 +371,7 @@ this address in order to connect to the server, so it reads it from
 the file.</p>
 <p>The <a href="/tutorials/naming/mount-table.html">mount table tutorial</a> describes how a <em>mount table</em> replaces this
 file-based exchange with a service.</p>
-<p><!-- @intializer @test @testui @completer --></p>
+<!-- @intializer @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/server/util
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/initializer.go
 package util
@@ -394,12 +404,12 @@ func SaveEndpointToFile(e naming.Endpoint) {
 }
 
 EOF
-go build fortune/server/util</code></pre>
-<h2 id="installation">Installation</h2>
+go build fortune/server/util
+</code></pre><h2 id="installation">Installation</h2>
 <p>Construct a server executable by defining a <code>main</code> function.</p>
 <p>The server&#39;s custom behavior will be encapsulated by the authorizer
 and dispatcher defined above.</p>
-<p><!-- @server @test @testui @completer --></p>
+<!-- @server @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/server
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/main.go
 package main
@@ -459,14 +469,14 @@ func main() {
   &lt;-signals.ShutdownOnSignals(ctx)
 }
 EOF
-go install fortune/server</code></pre>
-<p>Successful installation places a new executable in the bin directory.</p>
-<pre><code>ls $V_TUT/bin</code></pre>
-<p>The server is now ready to go.  Next, make a client to work with it.</p>
+go install fortune/server
+</code></pre><p>Successful installation places a new executable in the bin directory.</p>
+<pre><code>ls $V_TUT/bin
+</code></pre><p>The server is now ready to go.  Next, make a client to work with it.</p>
 <h1 id="build-a-client">Build a client</h1>
 <p>This client is short-lived; it starts, makes one call (<code>Get</code> or <code>Add</code>)
 depending on a flag value, then exits.</p>
-<p><!-- @client @test @testui @completer --></p>
+<!-- @client @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/client
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/client/main.go
 package main
@@ -518,18 +528,18 @@ func main() {
   }
 }
 EOF
-go install fortune/client</code></pre>
-<p>If that succeeds, a second binary will appear at</p>
-<pre><code>ls $V_TUT/bin</code></pre>
-<h1 id="run-the-binaries">Run the binaries</h1>
+go install fortune/client
+</code></pre><p>If that succeeds, a second binary will appear at</p>
+<pre><code>ls $V_TUT/bin
+</code></pre><h1 id="run-the-binaries">Run the binaries</h1>
 <h2 id="first-run">First run</h2>
 <p>This first run will demonstrate that we don&#39;t yet have enough
 things defined to make a successful request.</p>
 <p>Start the server in the background:</p>
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Before entering its event loop, the server writes the endpoint address
+TUT_PID_SERVER=$!
+</code></pre><p>Before entering its event loop, the server writes the endpoint address
 to <code>$V_TUT/server.txt</code>.  The client will read it shortly.</p>
 <div class="note warning"><h2 id="warning-the-next-command-demonstrates-failure-">Warning: The next command demonstrates failure!</h2>
 <p>The correct pieces are in place to attempt a request - but the next command
@@ -539,8 +549,8 @@ shows that you&#39;ve not yet established the conditions for authorization.</p>
 
 <p>Now run the client, feeding it the server&#39;s endpoint, and attempt to
 get a fortune:</p>
-<pre><code>$V_TUT/bin/client --server `cat $V_TUT/server.txt`</code></pre>
-<p>The client will report an authorization error.</p>
+<pre><code>$V_TUT/bin/client --server `cat $V_TUT/server.txt`
+</code></pre><p>The client will report an authorization error.</p>
 <p>Let&#39;s change things to allow the call to succeed, then compare the two
 situations.</p>
 <h2 id="second-run">Second run</h2>
@@ -552,32 +562,32 @@ of view.</p>
 <p>To do this, create a principal called <code>tutorial</code>.  The next command
 writes credentials associated with the name <code>tutorial</code> into the
 <code>$V_TUT/cred/basics</code> directory:</p>
-<p><!-- @principalTutorial @test @testui @completer --></p>
+<!-- @principalTutorial @test @testui @completer -->
 <pre><code>$V_BIN/principal create \
-    --overwrite $V_TUT/cred/basics tutorial</code></pre>
-<p>The <code>--overwrite</code> flag is optional. Omit it if you want a warning if
+    --overwrite $V_TUT/cred/basics tutorial
+</code></pre><p>The <code>--overwrite</code> flag is optional. Omit it if you want a warning if
 you attempt to overwrite an existing principal.</p>
 <p>Now kill the server and restart it, telling it to run with those
 credentials:</p>
-<p><!-- @runServerAsPrincipal @test @testui @sleep --></p>
+<!-- @runServerAsPrincipal @test @testui @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/basics \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Run the client with the same credentials:</p>
-<p><!-- @runClientAsPrincipal @test @testui --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Run the client with the same credentials:</p>
+<!-- @runClientAsPrincipal @test @testui -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>This time, the <code>Get</code> RPC will succeed and a fortune will be displayed.</p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>This time, the <code>Get</code> RPC will succeed and a fortune will be displayed.</p>
 <p>Likewise, <code>Add</code> works:</p>
-<p><!-- @clientGet @test @testui --></p>
+<!-- @clientGet @test @testui -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Fortune favors the bold.&#39;</code></pre>
-<p>Feel free to rerun this without the <code>--add</code> flag until you
+    --add &#39;Fortune favors the bold.&#39;
+</code></pre><p>Feel free to rerun this without the <code>--add</code> flag until you
 randomly recover the new fortune.</p>
 <h2 id="authorization">Authorization</h2>
 <p>Vanadium is secure by default. All communication channels are
@@ -606,27 +616,27 @@ the concept of <em>private</em>.</p>
 <p>Before continuing with more advanced tutorials, let&#39;s first introduce
 a generally useful generic client called <a href="/glossary.html#vrpc">vrpc</a>.</p>
 <p>It can talk to any Vanadium service.  Try it with yours:</p>
-<p><!-- @checkMethods @test @testui --></p>
+<!-- @checkMethods @test @testui -->
 <pre><code>$V_BIN/vrpc --v23.credentials $V_TUT/cred/basics \
     call `cat $V_TUT/server.txt` Get
 $V_BIN/vrpc --v23.credentials $V_TUT/cred/basics \
-    call `cat $V_TUT/server.txt` Add \&quot;More cowbell.\&quot;</code></pre>
-<p>It is also possible to inspect the services offered by your server:</p>
-<p><!-- @checkTheSignature @test @testui --></p>
+    call `cat $V_TUT/server.txt` Add \&quot;More cowbell.\&quot;
+</code></pre><p>It is also possible to inspect the services offered by your server:</p>
+<!-- @checkTheSignature @test @testui -->
 <pre><code>$V_BIN/vrpc --v23.credentials $V_TUT/cred/basics \
-  signature `cat $V_TUT/server.txt`</code></pre>
-<p>That output includes methods you wrote, plus built-in methods that
+  signature `cat $V_TUT/server.txt`
+</code></pre><p>That output includes methods you wrote, plus built-in methods that
 support Vanadium security and service discovery.</p>
 <p>Report single methods like this:</p>
-<p><!-- @checkMethods @test @testui --></p>
+<!-- @checkMethods @test @testui -->
 <pre><code>$V_BIN/vrpc --v23.credentials $V_TUT/cred/basics \
   signature `cat $V_TUT/server.txt` Add
 $V_BIN/vrpc --v23.credentials $V_TUT/cred/basics \
-  signature `cat $V_TUT/server.txt` Get</code></pre>
-<h2 id="clean-up">Clean up</h2>
-<p><!-- @killServer @test @testui --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="summary">Summary</h1>
+  signature `cat $V_TUT/server.txt` Get
+</code></pre><h2 id="clean-up">Clean up</h2>
+<!-- @killServer @test @testui -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>You created a server that hosted a Fortune service defined using VDL
 and made RPCs to it with a simple command line client.</p>

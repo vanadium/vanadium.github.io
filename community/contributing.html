@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Contributing - Vanadium</title>
   
@@ -148,14 +158,14 @@
 <a href="https://github.com/vanadium/issues/issues">https://github.com/vanadium/issues/issues</a></p>
 <h1 id="contributor-setup">Contributor setup</h1>
 <h2 id="vanadium-installation">Vanadium installation</h2>
-<p>Follow the <a href="../installation/">installation instructions</a> to set up a <code>JIRI_ROOT</code> directory and
+<p>Follow the <a href="/installation/">installation instructions</a> to set up a <code>JIRI_ROOT</code> directory and
 fetch all Vanadium repositories.</p>
 <p>The instructions below assume you&#39;ve set the <code>JIRI_ROOT</code> environment variable
 and have added <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>:</p>
 <pre><code># Edit to taste.
 export JIRI_ROOT=${HOME}/vanadium
-export PATH=$PATH:$JIRI_ROOT/devtools/bin</code></pre>
-<p>Recommended: Add the lines above to your <code>~/.bashrc</code> or similar.</p>
+export PATH=$PATH:$JIRI_ROOT/devtools/bin
+</code></pre><p>Recommended: Add the lines above to your <code>~/.bashrc</code> or similar.</p>
 <h2 id="contributor-license-agreement-cla-">Contributor license agreement (CLA)</h2>
 <p>Before patches can be accepted, contributors must sign the Google Individual
 <a href="https://cla.developers.google.com/about/google-individual?csw=1">Contributor License Agreement (CLA)</a>, which can be done online. The CLA is
@@ -190,38 +200,38 @@ and approved, it will be merged into the remote master via our code review
 system and brought to your local instance via <code>jiri update</code>.</p>
 <p><strong>The only way to contribute to master is via the Gerrit code review process.</strong></p>
 <p>To submit a change for review you will need to squash your feature branch into a
-single commit and send the patch to <a href="https://vanadium-review.googlesource.com">Gerrit</a> for code review. The <a href="../tools/jiri.html">jiri</a> tool,
+single commit and send the patch to <a href="https://vanadium-review.googlesource.com">Gerrit</a> for code review. The <a href="/tools/jiri.html">jiri</a> tool,
 in particular the <code>jiri cl</code> command, simplifies this process.</p>
 <h3 id="creating-a-change">Creating a change</h3>
 <ol>
 <li><p>Sync the master branch to the latest version of the project.</p>
-<pre><code> jiri update</code></pre>
-</li>
+<pre><code> jiri update
+</code></pre></li>
 <li><p>Create a new branch for your change.</p>
 <pre><code> # Replace `&lt;branch&gt;` with your branch name.
- jiri cl new &lt;branch&gt;</code></pre>
-</li>
+ jiri cl new &lt;branch&gt;
+</code></pre></li>
 <li><p>Make modifications to the project source code.</p>
 </li>
 <li><p>Stage any changed files for a commit.</p>
-<pre><code> git add &lt;file1&gt; &lt;file2&gt; ... &lt;fileN&gt;</code></pre>
-</li>
+<pre><code> git add &lt;file1&gt; &lt;file2&gt; ... &lt;fileN&gt;
+</code></pre></li>
 <li><p>Commit your modifications.</p>
-<pre><code> git commit</code></pre>
-</li>
+<pre><code> git commit
+</code></pre></li>
 <li><p>Repeat steps 3-5 as necessary.</p>
 </li>
 </ol>
 <h3 id="syncing-a-change-to-the-latest-version-of-the-project">Syncing a change to the latest version of the project</h3>
 <ol>
 <li><p>Update all of the local master branches using the <code>jiri</code> command.</p>
-<pre><code> jiri update</code></pre>
-</li>
+<pre><code> jiri update
+</code></pre></li>
 <li><p>If you are not already on it, switch to the feature branch that corresponds
 to the change you are trying to bring up to date with the upstream.</p>
 <pre><code> git checkout &lt;branch&gt;
- git merge master</code></pre>
-</li>
+ git merge master
+</code></pre></li>
 <li><p>If there are no conflicts, you are done.</p>
 </li>
 <li><p>If there are conflicts:</p>
@@ -235,13 +245,13 @@ to the change you are trying to bring up to date with the upstream.</p>
 <h3 id="requesting-a-review">Requesting a review</h3>
 <ol>
 <li><p>Switch to the branch that corresponds to the change in question.</p>
-<pre><code> git checkout &lt;branch&gt;</code></pre>
-</li>
+<pre><code> git checkout &lt;branch&gt;
+</code></pre></li>
 <li><p>Submit your change to Gerrit with the <code>jiri cl</code> command.</p>
 <pre><code> # &lt;reviewers&gt; is a comma-seperated list of emails or LDAPs
  # Alternatively reviewers can be added via the Gerrit UI
- jiri cl mail -r=&lt;reviewers&gt;</code></pre>
-</li>
+ jiri cl mail -r=&lt;reviewers&gt;
+</code></pre></li>
 </ol>
 <p>If you are not sure who to add as a reviewer, you can leave off the <code>-r</code> flag.
 Our team periodically scans for unassigned CLs and a reviewer will be added to
@@ -258,8 +268,8 @@ selecting the appropriate score.</li>
 <h3 id="addressing-review-comments">Addressing review comments</h3>
 <ol>
 <li><p>Switch to the branch that corresponds to the change in question</p>
-<pre><code> git checkout &lt;branch&gt;</code></pre>
-</li>
+<pre><code> git checkout &lt;branch&gt;
+</code></pre></li>
 <li><p>Modify and commit code as as described <a href="#creating-a-change">above</a>.</p>
 </li>
 <li>Be sure to address each review comment on Gerrit.</li>
@@ -267,8 +277,8 @@ selecting the appropriate score.</li>
 the Gerrit UI for the specific patch.</li>
 <li><p>Once you have addressed all review comments, you can update the change with a
 new patch using:</p>
-<pre><code> jiri cl mail</code></pre>
-</li>
+<pre><code> jiri cl mail
+</code></pre></li>
 </ol>
 <h3 id="submitting-a-change">Submitting a change</h3>
 <ol>
@@ -282,8 +292,8 @@ run <code>jiri cl mail</code> again.</li>
 branch.</li>
 <li><p>Optional: Delete the feature branch once it has been submitted:</p>
 <pre><code> git checkout master
- jiri cl cleanup &lt;branch&gt;</code></pre>
-</li>
+ jiri cl cleanup &lt;branch&gt;
+</code></pre></li>
 </ol>
 <h3 id="useful-shortcuts">Useful shortcuts</h3>
 <p>There are several useful shortcuts you can use for quick access to changes and

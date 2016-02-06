@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Identity Service - Vanadium</title>
   
@@ -143,7 +153,7 @@
 
       <div class="toc"></div>
 
-      <p>The <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd">Vanadium Identity Service</a> generates <a href="../glossary.html#blessing">blessings</a>.
+      <p>The <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd">Vanadium Identity Service</a> generates <a href="/glossary.html#blessing">blessings</a>.
 It uses an <a href="http://oauth.net/2/">OAuth2</a> identity provider to get the email address of a user and
 then issues a blessing with that email address. For example, after determining
 that the user is <code>alice@university.edu</code> (using OAuth2), this service will issue
@@ -167,8 +177,8 @@ is blessed with a name and caveats extracted from the presented macaroon.</li>
 blessing service:</p>
 <ul>
 <li><strong>Vanadium Discharge Service</strong>: This is a Vanadium RPC service that enables
-revocation. The service issues <a href="../glossary.html#discharge">discharges</a> for a revocation
-<a href="../glossary.html#caveat">caveat</a> if the blessing has not been revoked by the user. The discharges are
+revocation. The service issues <a href="/glossary.html#discharge">discharges</a> for a revocation
+<a href="/glossary.html#caveat">caveat</a> if the blessing has not been revoked by the user. The discharges are
 valid for 15 minutes.</li>
 </ul>
 <p>All three services are exposed by a single binary - <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd"><code>identityd</code></a>.  In order to
@@ -179,11 +189,11 @@ the principal that the tool is running as.</p>
 <h1 id="preliminaries">Preliminaries</h1>
 <p>Before diving into the details of <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd"><code>identityd</code></a>&#39;s design, some prerequisites:</p>
 <ul>
-<li><a href="../concepts/security.html">Principals, Blessings and Caveats</a>.</li>
+<li><a href="/concepts/security.html">Principals, Blessings and Caveats</a>.</li>
 <li>Third-party caveats: In a nutshell, a third-party caveat is a restriction on
 the use of a blessing that must be validated by a party other than the two
-communicating with and authorizing each other. The <a href="../glossary.html#blessing">blessing</a> with a
-third-party caveat is considered valid only if accompanied by a <a href="../glossary.html#discharge">discharge</a>
+communicating with and authorizing each other. The <a href="/glossary.html#blessing">blessing</a> with a
+third-party caveat is considered valid only if accompanied by a <a href="/glossary.html#discharge">discharge</a>
 issued by the third party that validated the restrictions. Discharges are
 unforgeable and cryptographically bound to the correpsonding third-party
 caveat.</li>
@@ -239,8 +249,8 @@ supports the following routes:</p>
   // Bless uses the provided macaroon (which contains email and caveats)
   // to return a blessing for the client.
   Bless(macaroon string) (blessing security.WireBlessings | error)
-}</code></pre>
-<h1 id="blessing-flow">Blessing flow</h1>
+}
+</code></pre><h1 id="blessing-flow">Blessing flow</h1>
 <p>The <a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> command-line tool is used to orchestrate the process of
 obtaining a macaroon from the HTTPS Authentication Service and exchanging it
 for a blessing from the Vanadium Blessing Service. The following sequence
@@ -302,16 +312,16 @@ in the macaroon.</li>
 <li>Computes <code>M = Macaroon<sub>k</sub>(email, toolPublicKey, caveats)</code>.</li>
 <li>Redirects the browser to:
 <code>https://&lt;toolURI&gt;/macaroon?state=&lt;toolState&gt;&amp;macaroon=M&amp;root_key=publicKey</code>
-where <code>publicKey</code> is the <a href="../glossary.html#blessing-root">blessing root</a> of the identity service.</li>
+where <code>publicKey</code> is the <a href="/glossary.html#blessing-root">blessing root</a> of the identity service.</li>
 </ul>
 </li>
 <li><p>The <code>principal</code> tool receives the macaroon <code>M</code>, <code>toolState</code> and the
-<a href="../glossary.html#blessing-root">blessing root</a> via the HTTP redirect in step 4. It then:</p>
+<a href="/glossary.html#blessing-root">blessing root</a> via the HTTP redirect in step 4. It then:</p>
 <ul>
 <li>Verifies that <code>toolState</code> obtained here matches the one created in step 1.</li>
 <li>Invokes the <code>Bless</code> RPC on the blessing service passing it <code>M</code> as an argument.
 It only sends this request if the the RPC server proves that it&#39;s public key
-is <code>publicKey</code> via the <a href="authentication.html">authentication protocol</a> used in RPCs.</li>
+is <code>publicKey</code> via the <a href="/designdocs/authentication.html">authentication protocol</a> used in RPCs.</li>
 </ul>
 </li>
 <li><p>The Vanadium Blessing Service that receives this RPC performs the following steps:</p>
@@ -324,7 +334,7 @@ the principal tool that requested it in the first place. It protects against
 impersonation attacks wherein an attacker steals the macaroon handed out in
 step 5 and then tries to obtain a blessing for the email address encapsulated
 in the macaroon.</li>
-<li>Generates a <a href="../glossary.html#blessing">blessing</a> with the name <code>dev.v.io:u:&lt;email&gt;</code> and the
+<li>Generates a <a href="/glossary.html#blessing">blessing</a> with the name <code>dev.v.io:u:&lt;email&gt;</code> and the
 caveats extracted from the macaroon. This blessing is bound to the public
 key of the principal making the RPC request (i.e., <code>toolPublicKey</code>).</li>
 <li>Records the creation of this blessing in a database which can be queried via

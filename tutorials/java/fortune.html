@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Fortune in Java - Vanadium</title>
   
@@ -170,9 +180,9 @@ assume that you have the <code>gradle</code> program in your PATH.</p>
 in the project root directory.</p>
 <p>First, create a new project directory.</p>
 <pre><code>mkdir fortuneJava
-cd fortuneJava</code></pre>
-<p>Now, create a <code>build.gradle</code> file:</p>
-<p><!-- @createBuildFile @test --></p>
+cd fortuneJava
+</code></pre><p>Now, create a <code>build.gradle</code> file:</p>
+<!-- @createBuildFile @test -->
 <pre><code>cat &lt;&lt;EOF &gt; build.gradle
 
 buildscript {
@@ -212,14 +222,14 @@ vdl {
     inputPaths += &#39;src/main/java&#39;
 }
 
-EOF</code></pre>
-<h2 id="defining-the-fortune-service">Defining the Fortune service</h2>
+EOF
+</code></pre><h2 id="defining-the-fortune-service">Defining the Fortune service</h2>
 <p>In Java, we must use <a href="/glossary.html#vanadium-definition-language-vdl-">VDL</a> (Vanadium Definition Language) to define our server
 interface. We will reuse the same interface definition from the
 <a href="/tutorials/basics.html">Client/Server Basics tutorial</a>.
 For this tutorial, the fortune teller server definition lives in <code>src/main/java/io/v/tutorial/fortune.vdl</code>.
 Let&#39;s create this file now:</p>
-<p><!-- @createVdlInterface @test --></p>
+<!-- @createVdlInterface @test -->
 <pre><code>mkdir -p src/main/java/io/v/tutorial
 cat &lt;&lt;EOF &gt; src/main/java/io/v/tutorial/fortune.vdl
 package fortune
@@ -230,13 +240,13 @@ type Fortune interface {
   // Adds a fortune to the set used by Get().
   Add(wisdom string) error
 }
-EOF</code></pre>
-<p>As you can see, we provide &#39;Get&#39; and &#39;Add&#39; methods to get and add fortunes. We
+EOF
+</code></pre><p>As you can see, we provide &#39;Get&#39; and &#39;Add&#39; methods to get and add fortunes. We
 can now test our VDL file by asking Gradle to generate the corresponding Java
 files. Do this by running</p>
-<p><!-- @generateVdlSource @test --></p>
-<pre><code>gradle vdl</code></pre>
-<p>You should see output like the following:</p>
+<!-- @generateVdlSource @test -->
+<pre><code>gradle vdl
+</code></pre><p>You should see output like the following:</p>
 <pre><code class="noclipboard">:prepareVdl
 :extractVdl
 :generateVdl
@@ -261,7 +271,7 @@ generated-src/vdl/io/v/tutorial/FortuneClientFactory.java</code></pre>
 <h3 id="implementation">Implementation</h3>
 <p>Now we must provide an implementation for the FortuneServer.</p>
 <p>Create <code>src/main/java/io/v/tutorial/InMemoryFortuneServer.java</code>:</p>
-<p><!-- @generateInMemoryFortuneServerImpl @test --></p>
+<!-- @generateInMemoryFortuneServerImpl @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/tutorial/InMemoryFortuneServer.java
 package io.v.tutorial;
 
@@ -313,10 +323,10 @@ public class InMemoryFortuneServer implements FortuneServer {
         return fortuneServer.getStatus().getEndpoints();
     }
 }
-EOF</code></pre>
-<p>And now let&#39;s create our entry point at
+EOF
+</code></pre><p>And now let&#39;s create our entry point at
 <code>src/main/java/io/v/tutorial/FortuneTutorial.java</code>:</p>
-<p><!-- @defineMainMethod @test --></p>
+<!-- @defineMainMethod @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/tutorial/FortuneTutorial.java
 package io.v.tutorial;
 
@@ -336,12 +346,12 @@ public class FortuneTutorial {
         System.out.println(&quot;Exiting...&quot;);
     }
 }
-EOF</code></pre>
-<h2 id="running-the-server">Running the server</h2>
+EOF
+</code></pre><h2 id="running-the-server">Running the server</h2>
 <p>Now you are ready to build and run the server.</p>
-<p><!-- @buildWrapper @test --></p>
-<pre><code>gradle installDist</code></pre>
-<p>This will leave an executable script in
+<!-- @buildWrapper @test -->
+<pre><code>gradle installDist
+</code></pre><p>This will leave an executable script in
 <code>build/install/fortuneJava/bin/fortuneJava</code>. When we run it:</p>
 <pre><code class="noclipboard">FortuneServer available at the following endpoints: [@5@wsh@127.0.0.1:54221@50704f409f1fc0bf20f01020b02f2030@s@sjr@example.com-15180@@, @5@wsh@192.168.2.4:54221@50704f409f1fc0bf20f01020b02f2030@s@sjr@example.com-15180@@]
 Listening for connections, press enter to quit.</code></pre>
@@ -353,7 +363,7 @@ server. We obtain stub instances from the generated <code>FortuneClientFactory</
 class. The only other piece of information we need is the name of the <a href="/glossary.html#endpoint">endpoint</a>
 to which to talk.</p>
 <p>Let&#39;s create <code>src/main/java/io/v/tutorial/FancyFortuneClient.java</code>:</p>
-<p><!-- @createClientDefinition @test --></p>
+<!-- @createClientDefinition @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/tutorial/FancyFortuneClient.java
 package io.v.tutorial;
 
@@ -388,8 +398,8 @@ public class FancyFortuneClient {
         client.add(context, wisdom, options);
     }
 }
-EOF</code></pre>
-<p>Let&#39;s modify the main FortuneTutorial class a little. It will now have three
+EOF
+</code></pre><p>Let&#39;s modify the main FortuneTutorial class a little. It will now have three
 modes depending on how many arguments we pass in:</p>
 <ul>
 <li><p>no arguments: start a Fortune server just as we did in the first part of the
@@ -407,7 +417,7 @@ build/install/fortuneJava/bin/fortuneJava @5@...@@  # fetch a fortune
 build/install/fortuneJava/bin/fortuneJava @5@...@@ "Hello world!"  # add a fortune</code></pre>
 
 <p>Here is the new FortuneTutorial:</p>
-<p><!-- @refineMainMethod @test --></p>
+<!-- @refineMainMethod @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/tutorial/FortuneTutorial.java
 package io.v.tutorial;
 
@@ -439,11 +449,11 @@ public class FortuneTutorial {
         }
     }
 }
-EOF</code></pre>
-<p>Build the tutorial again:</p>
-<p><!-- @buildWrapper @test --></p>
-<pre><code>gradle installDist</code></pre>
-<p>Here&#39;s an example session:</p>
+EOF
+</code></pre><p>Build the tutorial again:</p>
+<!-- @buildWrapper @test -->
+<pre><code>gradle installDist
+</code></pre><p>Here&#39;s an example session:</p>
 <pre><code class="noclipboard">$ FortuneServer available at the following endpoints: [@5@wsh@127.0.0.1:36191@c00090af3ff050d020ef3f4f4f40ffff@s@sjr@example.com-28934@@, @5@wsh@192.168.2.4:36191@c00090af3ff050d020ef3f4f4f40ffff@s@sjr@example.com-28934@@]
 Listening for connections, press enter to quit.</code></pre>
 

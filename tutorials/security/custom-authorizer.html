@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Custom Authorizer - Vanadium</title>
   
@@ -164,8 +174,8 @@ If you would like to generate files from this tutorial without the copy/paste st
 <p>The goal of this tutorial is to make a custom authorizer
 and test it using some existing principals.</p>
 <p>This command</p>
-<pre><code>ls $V_TUT/cred</code></pre>
-<p>should list (at least) <code>alice</code> and <code>bob</code> and <code>carol</code>.</p>
+<pre><code>ls $V_TUT/cred
+</code></pre><p>should list (at least) <code>alice</code> and <code>bob</code> and <code>carol</code>.</p>
 <p>The prerequisite script should have arranged for Bob to have the
 blessing <code>alice:friend:bob</code> and Carol to have the blessing
 <code>alice:family:sister</code>.</p>
@@ -180,7 +190,7 @@ implementing the <a href="https://vanadium.googlesource.com/release.go.v23/+/mas
 but friends can access only during a particular time window.</em></p>
 </blockquote>
 <p>is implemented by this code:</p>
-<p><!-- @authorizerWithFriendWindow @test @completer --></p>
+<!-- @authorizerWithFriendWindow @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/authorizer.go
 package util
 
@@ -235,53 +245,53 @@ func MakeAuthorizer() security.Authorizer {
   return policy{}
 }
 EOF
-go install fortune/server</code></pre>
-<p>Kill the running server (if any) and restart it so that it picks up this
+go install fortune/server
+</code></pre><p>Kill the running server (if any) and restart it so that it picks up this
 new authorization policy:</p>
-<p><!-- @serverAsAliceWithFriendWindow @test @sleep --></p>
+<!-- @serverAsAliceWithFriendWindow @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
     --endpoint-file-name $V_TUT/server.txt \
     --start `date +%k` &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Bob has the blessing <code>alice:friend:bob</code>, so RPCs will succeed - but
+TUT_PID_SERVER=$!
+</code></pre><p>Bob has the blessing <code>alice:friend:bob</code>, so RPCs will succeed - but
 only in the given time window.</p>
 <p>The following should work since <code>--start</code> is set
 to the current hour:</p>
-<p><!-- @clientAsBob @test --></p>
+<!-- @clientAsBob @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p><img src="/images/tut/security10-bob-succeeds-biz-hours.svg" alt="Bob&#39;s request to the server succeeds because it is during business hours"></p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p><img src="/images/tut/security10-bob-succeeds-biz-hours.svg" alt="Bob&#39;s request to the server succeeds because it is during business hours"></p>
 <p>Restart the server with a value of <code>--start</code> a few hours
 in the future so that Bob&#39;s requests are rejected:</p>
-<p><!-- @serverRejectingBob --></p>
+<!-- @serverRejectingBob -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
     --endpoint-file-name $V_TUT/server.txt \
     --start `expr \`date +%k\` + 3` &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Bob is now rejected:</p>
-<p><!-- @bobIsRejected --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Bob is now rejected:</p>
+<!-- @bobIsRejected -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p><img src="/images/tut/security11-bob-fails-biz-hours.svg" alt="Bob&#39;s request to the server fails because it is outside of business hours"></p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p><img src="/images/tut/security11-bob-fails-biz-hours.svg" alt="Bob&#39;s request to the server fails because it is outside of business hours"></p>
 <p>Carol, on the other hand, has the blessing <code>alice:family:sister</code>.</p>
 <p>Bob may be locked out, but Carol&#39;s requests work regardless of
 the time:</p>
-<p><!-- @clientAsCarol @test --></p>
+<!-- @clientAsCarol @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/carol \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>Feel free to review Carol&#39;s status with the <a href="/tutorials/security/principals-and-blessings.html#principal-dump"><code>principal dump</code></a> command.</p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>Feel free to review Carol&#39;s status with the <a href="/tutorials/security/principals-and-blessings.html#principal-dump"><code>principal dump</code></a> command.</p>
 <p><img src="/images/tut/security12-alice-carol-succeed.svg" alt="Carol&#39;s request to the server succeeds"></p>
 <p>We&#39;re done with the server for now.</p>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="summary">Summary</h1>
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>A custom authorization policy allowed Alice to provide different
 access to friends and family.</p>

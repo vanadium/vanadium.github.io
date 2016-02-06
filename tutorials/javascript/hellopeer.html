@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Hello Peer - Vanadium</title>
   
@@ -164,7 +174,7 @@ Vanadium app and run it in your browser.</p>
 <p>Vanadium has two core dependencies when building browser apps:</p>
 <ul>
 <li><a href="https://nodejs.org/download">Node.js</a> for running a JavaScript-based build system.
-Download and install node from <a href="https://nodejs.org/download"><a href="https://nodejs.org/download">https://nodejs.org/download</a></a> and add it to your <code>PATH</code>.</li>
+Download and install node from <a href="https://nodejs.org/download">https://nodejs.org/download</a> and add it to your <code>PATH</code>.</li>
 <li><a href="http://golang.org">Go</a> for core Vanadium tools. This is technically optional for this tutorial, but
 will be used in later tutorials. Download and install it from <a href="https://golang.org/dl/">https://golang.org/dl/</a> or
 through your package manager and make sure it is in your <code>PATH</code>.</li>
@@ -174,17 +184,17 @@ involves only local changes to the project directory.</p>
 <h3 id="project-directory">Project directory</h3>
 <p>First, create a directory for the tutorial. The environment variable
 <code>$V_TUT</code> will be used throughout the tutorials to represent this directory.</p>
-<p><!-- @createProjectDir @buildjs @test @testui @completer --></p>
+<!-- @createProjectDir @buildjs @test @testui @completer -->
 <pre><code>export V_TUT=${V_TUT-$HOME/v23_tutorial}
-mkdir -p $V_TUT</code></pre>
-<h3 id="install-node-modules-with-npm">Install Node modules with NPM</h3>
+mkdir -p $V_TUT
+</code></pre><h3 id="install-node-modules-with-npm">Install Node modules with NPM</h3>
 <p>The Node Package Manager <code>npm</code> (which was installed with Node.js)
 is used to install the modules
 needed for the tutorial to <code>$V_TUT/node_modules</code>:</p>
 <pre><code>cd $V_TUT
 echo &quot;{}&quot; &gt; $V_TUT/package.json
-npm install vanadium browserify node-static</code></pre>
-<div class="note warning"><p><strong>Pre-release only: Run this command block instead.</strong></p>
+npm install vanadium browserify node-static
+</code></pre><div class="note warning"><p><strong>Pre-release only: Run this command block instead.</strong></p>
 <!-- @removeThisBlockBeforeRelease @buildjs @test @testui @completer -->
 <pre><code>cd $V_TUT
 echo &quot;{}&quot; &gt; $V_TUT/package.json
@@ -262,7 +272,7 @@ client.bindTo(ctx, serviceName, function(err, helloService) {
 <p>This example combines the service, server, and client into a single file.
 Typically, the client is a separate program from the server and service.</p>
 <p>The following command creates the peer implementation <code>$V_TUT/src/hello/peer.js</code>.</p>
-<p><!-- @helloPeerJS @buildjs @test @testui @completer --></p>
+<!-- @helloPeerJS @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/hello
 cat - &lt;&lt;EOF &gt;$V_TUT/src/hello/peer.js
 var vanadium = require(&#39;vanadium&#39;);
@@ -371,20 +381,20 @@ function showStatus(text) {
   showClientStatus(text);
   showServerStatus(text);
 }
-EOF</code></pre>
-<h3 id="building-for-the-browser">Building for the browser</h3>
+EOF
+</code></pre><h3 id="building-for-the-browser">Building for the browser</h3>
 <p>Use <code>browserify</code> to build the browser-targeted JavaScript file, which
 combines <code>peer.js</code> above with its dependencies, such as the Vanadium library:</p>
-<p><!-- @browserifyServer @buildjs @test @testui @completer --></p>
+<!-- @browserifyServer @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/browser
 NODE_PATH=$V_TUT $V_TUT/node_modules/.bin/browserify \
-  $V_TUT/src/hello/peer.js -o $V_TUT/browser/hello-peer.js</code></pre>
-<p>This command generates <code>$V_TUT/browser/hello-peer.js</code>.</p>
+  $V_TUT/src/hello/peer.js -o $V_TUT/browser/hello-peer.js
+</code></pre><p>This command generates <code>$V_TUT/browser/hello-peer.js</code>.</p>
 <h3 id="adding-the-script-to-an-html-page">Adding the script to an HTML page</h3>
 <p>Finally, a web page is needed to host <code>peer.js</code>.</p>
 <p>Create another HTML file in <code>$V_TUT/browser/peer.html</code> that includes the server
 JavaScript code and links to the client.</p>
-<p><!-- @helloPeerHTML @buildjs @test @testui @completer --></p>
+<!-- @helloPeerHTML @buildjs @test @testui @completer -->
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/browser/peer.html
  &lt;!DOCTYPE html&gt;
  &lt;html&gt;
@@ -406,10 +416,10 @@ JavaScript code and links to the client.</p>
    &lt;script src=&quot;hello-peer.js&quot;&gt;&lt;/script&gt;
  &lt;/body&gt;
  &lt;/html&gt;
-EOF</code></pre>
-<p>Create an HTML file in <code>$V_TUT/hello.html</code> that contains two copies of <code>peer.js</code>
+EOF
+</code></pre><p>Create an HTML file in <code>$V_TUT/hello.html</code> that contains two copies of <code>peer.js</code>
 in iframes for simplified viewing.</p>
-<p><!-- @helloMainHTML @buildjs @test @testui @completer --></p>
+<!-- @helloMainHTML @buildjs @test @testui @completer -->
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/hello.html
  &lt;!DOCTYPE html&gt;
  &lt;html&gt;
@@ -426,14 +436,14 @@ in iframes for simplified viewing.</p>
  &lt;/body&gt;
  &lt;/html&gt;
 
-EOF</code></pre>
-<p><strong>You are now ready to view the peers in a browser!</strong></p>
+EOF
+</code></pre><p><strong>You are now ready to view the peers in a browser!</strong></p>
 <h2 id="viewing-in-a-browser">Viewing in a browser</h2>
 <h3 id="starting-a-local-server">Starting a local server</h3>
 <p>You are ready to serve the web pages on a local server. Run the web server on port 8989.</p>
 <p>Using node-static, the command is:</p>
-<pre><code>$V_TUT/node_modules/.bin/static $V_TUT -p 8989 &gt; /dev/null</code></pre>
-<h3 id="viewing-the-pages">Viewing the pages</h3>
+<pre><code>$V_TUT/node_modules/.bin/static $V_TUT -p 8989 &gt; /dev/null
+</code></pre><h3 id="viewing-the-pages">Viewing the pages</h3>
 <p>The page shows two peers. Enter a greeting (or use the default &#39;Hello World&#39;) and
 press Send for one peer. The other peer will receive the greeting.</p>
 <div class="note warning"><p>On your first visit to a Vanadium web app, the Chrome Vanadium extension

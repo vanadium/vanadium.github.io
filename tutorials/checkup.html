@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Internal Tutorial Checkup - Vanadium</title>
   
@@ -149,7 +159,7 @@
 Vanadium file assets.</p>
 <p>This isn&#39;t meant to be an exhaustive test, just a quick check. It&#39;s used in
 tests, tutorial preparation, etc.</p>
-<p><!-- @checkTutorialAssets @test @testui @completer --></p>
+<!-- @checkTutorialAssets @test @testui @completer -->
 <pre><code>function bad_vanadium() {
   echo &#39;
   Per https://vanadium.github.io/installation/, either
@@ -162,8 +172,8 @@ tests, tutorial preparation, etc.</p>
 
 [ -z &quot;$V23_RELEASE&quot; ] &amp;&amp; { echo &#39;The environment variable V23_RELEASE is not defined.&#39;; bad_vanadium; }
 
-[ -x &quot;$V23_RELEASE/bin/principal&quot; ] || { echo &#39;The file $V23_RELEASE/bin/principal does not exist or is not executable.&#39;; bad_vanadium; }</code></pre>
-
+[ -x &quot;$V23_RELEASE/bin/principal&quot; ] || { echo &#39;The file $V23_RELEASE/bin/principal does not exist or is not executable.&#39;; bad_vanadium; }
+</code></pre>
     </main>
     <nav class="previous-next">
       <a href="/tutorials/hello-world.html" class="next">

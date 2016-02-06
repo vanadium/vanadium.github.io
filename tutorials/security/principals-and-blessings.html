@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Principals and Blessings - Vanadium</title>
   
@@ -173,26 +183,26 @@ a client and server can talk to each other if they run with the <em>same
 credentials</em>.</p>
 <p>To reiterate this, create two principals Alice and Bob with blessings
 <code>alice</code> and <code>bob</code> bound to them respectively:</p>
-<p><!-- @makeAliceAndBob @test @completer --></p>
+<!-- @makeAliceAndBob @test @completer -->
 <pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite $V_TUT/cred/bob bob</code></pre>
-<p>Run the server with Alice&#39;s credentials (i.e, authenticate as <code>alice</code>):</p>
-<p><!-- @runServerAsAlice @test @sleep --></p>
+$V_BIN/principal create --overwrite $V_TUT/cred/bob bob
+</code></pre><p>Run the server with Alice&#39;s credentials (i.e, authenticate as <code>alice</code>):</p>
+<!-- @runServerAsAlice @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>then make a request as Alice:</p>
-<p><!-- @runClientAsAlice @test --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>then make a request as Alice:</p>
+<!-- @runClientAsAlice @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>then make a request as Bob (it should fail):</p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>then make a request as Bob (it should fail):</p>
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>The reason the request from Alice succeeds and that from Bob
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>The reason the request from Alice succeeds and that from Bob
 fails is because of the Default Authorization Policy used by
 the server.</p>
 <p><img src="/images/tut/security01-alice-succeeds-bob-fails.svg" alt="Alice&#39;s request to the server succeeds, but Bob&#39;s request fails"></p>
@@ -218,14 +228,14 @@ can be created by Alice by <em>blessing</em> Bob.</p>
 <p>A principal can <em>bless</em> another principal by extending a subset
 of its own blessings and create a blessing for the other principal.
 This operation can be carried out by the <code>principal</code> command:</p>
-<p><!-- @aliceBlessBobAsFriend @test @completer --></p>
+<!-- @aliceBlessBobAsFriend @test @completer -->
 <pre><code>$V_BIN/principal bless \
     --v23.credentials $V_TUT/cred/alice \
     --for=24h $V_TUT/cred/bob friend:bob | \
         $V_BIN/principal \
             --v23.credentials $V_TUT/cred/bob \
-            set forpeer - alice</code></pre>
-<p>In the first invocation of <code>principal</code>, Alice creates a blessing for Bob
+            set forpeer - alice
+</code></pre><p>In the first invocation of <code>principal</code>, Alice creates a blessing for Bob
 named <code>alice:friend:bob</code>. A blessing can carry an expiry time (along with
 other restrictions, explained in subsequent tutorials) after which it is
 no longer valid.</p>
@@ -242,15 +252,15 @@ accompany the request that the blessing authorizes.</p>
 <p><img src="/images/tut/security02-alice-blesses-bob.svg" alt="Alice blesses Bob as a friend"></p>
 <p>Because Bob has stored the new blessing with his credentials,
 the same request from Bob that previously failed now succeeds:</p>
-<p><!-- @clientAsBob @test --></p>
+<!-- @clientAsBob @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p><img src="/images/tut/security03-alice-bob-succeed.svg" alt="Bob&#39;s request to the server succeeds"></p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p><img src="/images/tut/security03-alice-bob-succeed.svg" alt="Bob&#39;s request to the server succeeds"></p>
 <p>We&#39;re done with the server now.</p>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="steps-to-authentication">Steps to authentication</h1>
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="steps-to-authentication">Steps to authentication</h1>
 <p>In Vanadium, a remote procedure call is a multi-step process
 authentication based on blessings:</p>
 <ul>
@@ -306,11 +316,11 @@ credentials.  The <code>principal</code> subcommands shown here are handy to use
 in all subsequent tutorials.</p>
 <h2 id="alice">Alice</h2>
 <p>The <code>dump</code> command summarizes a principal&#39;s credentials:</p>
-<p><!-- @principalAliceDump @test --></p>
+<!-- @principalAliceDump @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
-    dump</code></pre>
-<p>This results in something like:</p>
+    dump
+</code></pre><p>This results in something like:</p>
 <pre><code class="noclipboard nohighlight">Public key : 0a:e3:61:0e:3e:ec:9c:ce:ed:04:c1:c6:58:78:28:a8
 ---------------- BlessingStore ----------------
 Default blessings: alice
@@ -324,11 +334,11 @@ Public key                                      : Pattern
 <h3 id="public-key">Public key</h3>
 <p>The <code>Public key</code> line shows the public half of Alice&#39;s public/private
 key pair.  Isolate it as follows:</p>
-<p><!-- @principalAliceGetPublicKey @test --></p>
+<!-- @principalAliceGetPublicKey @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
-    get publickey --pretty</code></pre>
-<h3 id="blessings-presented-as-server">Blessings presented as server</h3>
+    get publickey --pretty
+</code></pre><h3 id="blessings-presented-as-server">Blessings presented as server</h3>
 <p>The <code>Default blessings</code> line shows the blessings that the principal
 will use when it <em>acts as a server</em> responding to a client.</p>
 <p>These blessings will be revealed to all clients of the server,
@@ -336,11 +346,11 @@ regardless of the blessings presented by the client.</p>
 <p>There can be more than one blessing; a principal can play multiple
 roles - phone, music player, email client, etc.</p>
 <p>Examine them as follows:</p>
-<p><!-- @principalAliceGetDefault @test --></p>
+<!-- @principalAliceGetDefault @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
-    get default -names</code></pre>
-<h3 id="blessings-presented-as-a-client">Blessings presented as a client</h3>
+    get default -names
+</code></pre><h3 id="blessings-presented-as-a-client">Blessings presented as a client</h3>
 <p>Below the headings <code>Peer pattern | Blessings</code> are the blessings used
 when the principal <em>acts as a client</em>, sending its credentials to a
 server.</p>
@@ -351,8 +361,8 @@ server using the blessings on the right.</p>
 <!-- @principalAliceGetPeerMap @test --></p>
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
-    get peermap</code></pre>
-<p>The pattern <code>...</code> matches on all servers, so the name <code>alice</code> (the
+    get peermap
+</code></pre><p>The pattern <code>...</code> matches on all servers, so the name <code>alice</code> (the
 name associated with her <a href="/glossary.html#self-blessing">self-blessing</a>) is provided to all servers.</p>
 <h3 id="recognized-roots">Recognized roots</h3>
 <p>The <code>BlessingRoots</code> section displays all
@@ -363,16 +373,16 @@ they are presented by a principal with the given key.</p>
 <!-- @principalAliceGetRoots @test --></p>
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
-    get recognizedroots</code></pre>
-<p>There&#39;s only one key here because currently <code>alice</code> only recognizes
+    get recognizedroots
+</code></pre><p>There&#39;s only one key here because currently <code>alice</code> only recognizes
 herself.</p>
 <h2 id="bob">Bob</h2>
 <p>The situation for Bob is slightly different:</p>
-<p><!-- @principalBobDump @test --></p>
+<!-- @principalBobDump @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    dump</code></pre>
-<p>Example output:</p>
+    dump
+</code></pre><p>Example output:</p>
 <pre><code class="noclipboard nohighlight">Public key : 8e:03:13:7b:f1:57:28:11:87:f0:e8:90:3b:5c:5f:fe
 ---------------- BlessingStore ----------------
 Default blessings: bob
@@ -386,49 +396,49 @@ Public key                                      : Pattern
 
 <h3 id="public-key">Public key</h3>
 <p>Critically, Bob has a different public key from Alice:</p>
-<p><!-- @comparePublicKeys @test --></p>
+<!-- @comparePublicKeys @test -->
 <pre><code>keyAlice=`$V_BIN/principal \
     --v23.credentials $V_TUT/cred/alice \
     get publickey --pretty`
 keyBob=`$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
     get publickey --pretty`
-echo -e &quot;alice   $keyAlice\n  bob   $keyBob&quot;</code></pre>
-<h3 id="blessings-presented-as-server">Blessings presented as server</h3>
+echo -e &quot;alice   $keyAlice\n  bob   $keyBob&quot;
+</code></pre><h3 id="blessings-presented-as-server">Blessings presented as server</h3>
 <p>Bob will report himself to clients as <code>bob</code>:</p>
-<p><!-- @principalBobGetDefault @test --></p>
+<!-- @principalBobGetDefault @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get default -names</code></pre>
-<h3 id="blessings-presented-as-a-client">Blessings presented as a client</h3>
+    get default -names
+</code></pre><h3 id="blessings-presented-as-a-client">Blessings presented as a client</h3>
 <p>Bob&#39;s peer map shows that he has stored a blessing <code>alice:friend:bob</code>
 that is sent only to servers that have identified themselves as
 <code>alice</code>.</p>
-<p><!-- @principalBobGetPeerMap @test --></p>
+<!-- @principalBobGetPeerMap @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get peermap</code></pre>
-<p>Bob also sends his <a href="/glossary.html#self-blessing">self-blessing</a> <code>bob</code> to everyone.</p>
+    get peermap
+</code></pre><p>Bob also sends his <a href="/glossary.html#self-blessing">self-blessing</a> <code>bob</code> to everyone.</p>
 <h3 id="recognized-roots">Recognized roots</h3>
 <p>Bob, as a side effect of accepting a blessing from Alice, <em>remembers</em>
 Alice&#39;s public key and will trust a principal claiming to be
 <code>alice</code> only if it presents that public key.</p>
-<p><!-- @principalBobGetRoots @test --></p>
+<!-- @principalBobGetRoots @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get recognizedroots</code></pre>
-<p>On the other hand, Alice&#39;s principal at this point has no record of
+    get recognizedroots
+</code></pre><p>On the other hand, Alice&#39;s principal at this point has no record of
 Bob&#39;s public key.  Her server honors Bob&#39;s request because Bob
 presents a blessing rooted at her own public key.</p>
 <h2 id="blessing-details">Blessing details</h2>
 <p>The following command extracts the blessings Bob should use with Alice
 and prints them in detail:</p>
-<p><!-- @principalBobDumpBlessings @test --></p>
+<!-- @principalBobDumpBlessings @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
     get forpeer alice | \
-         $V_BIN/principal dumpblessings -</code></pre>
-<p>Example output:</p>
+         $V_BIN/principal dumpblessings -
+</code></pre><p>Example output:</p>
 <pre><code class="noclipboard nohighlight">Blessings          : bob#alice:friend:bob
 PublicKey          : 8e:03:13:7b:f1:57:28:11:87:f0:e8:90:3b:5c:5f:fe
 Certificate chains : 2
@@ -445,33 +455,33 @@ Chain #1 (2 certificates). Root certificate public key: 0a:e3:61:0e:3e:ec:9c:ce:
 <h3 id="names">Names</h3>
 <p>From the <code>dumpblessings</code> output, isolate
 <a href="/glossary.html#blessing-name">blessing names</a> (the names presented to a server) with</p>
-<p><!-- @principalBobGetForPeerName @test --></p>
+<!-- @principalBobGetForPeerName @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get forpeer -names alice</code></pre>
-<p>This shows that Bob will present <code>bob</code> and <code>alice:friend:bob</code>.</p>
+    get forpeer -names alice
+</code></pre><p>This shows that Bob will present <code>bob</code> and <code>alice:friend:bob</code>.</p>
 <h3 id="root-keys">Root keys</h3>
 <p>Examine <a href="/glossary.html#blessing-root">root keys</a> with
 <!-- @principalBobGetForPeerRoots @test --></p>
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get forpeer -rootkey=alice:friend:bob alice</code></pre>
-<p>That command answers the question</p>
+    get forpeer -rootkey=alice:friend:bob alice
+</code></pre><p>That command answers the question</p>
 <blockquote>
 <p><em>Find the blessings <code>bob</code> will present to <code>alice</code>, and among them find
 the blessing named <code>alice:friend:bob</code> and report the public key of
 the principal it came from.</em></p>
 </blockquote>
 <p>In this case, the output should match Alice&#39;s public key:</p>
-<p><!-- @echoAlicesKey @test --></p>
-<pre><code>echo $keyAlice</code></pre>
-<h3 id="caveats">Caveats</h3>
+<!-- @echoAlicesKey @test -->
+<pre><code>echo $keyAlice
+</code></pre><h3 id="caveats">Caveats</h3>
 <p>Examine <a href="/glossary.html#caveat"><em>caveats</em></a> with
 <!-- @principalBobGetForPeerCaveats @test --></p>
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/bob \
-    get forpeer -caveats=alice:friend:bob alice</code></pre>
-<p>That command answers the question</p>
+    get forpeer -caveats=alice:friend:bob alice
+</code></pre><p>That command answers the question</p>
 <blockquote>
 <p><em>Find the blessings <code>bob</code> will present to <code>alice</code>, and among them find
 the blessing named <code>alice:friend:bob</code> and report its caveats.</em></p>

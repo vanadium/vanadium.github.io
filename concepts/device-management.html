@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Device Management - Vanadium</title>
   
@@ -205,7 +215,7 @@ for operations such as cleanly shutting down the app.</p>
 <h1 id="security-and-identities">Security and identities</h1>
 <p>The <strong>security model</strong> revolves around which principals are allowed to perform
 which management operations, and around what capabilities an app is given on a
-device (see <a href="security.html">Security Concepts</a> for an overview of
+device (see <a href="/concepts/security.html">Security Concepts</a> for an overview of
 security primitives).</p>
 <h2 id="device-and-application-identities">Device and application identities</h2>
 <p>Each device is owned by the identity of the principal who claims it. All

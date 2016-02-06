@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Tutorial FAQ - Vanadium</title>
   
@@ -180,8 +190,9 @@ in a bash subshell.</p>
 subshell</em> (e.g. piping to <code>source</code>, entering <code>bash foo.sh</code>, etc.)
 defeats this goal.</p>
 <h1 id="where-is-the-source-code-">Where is the source code?</h1>
-<p>The command blocks presented on tutorial pages are the <strong>canonical
-source</strong> of those blocks. The source for the pages lives in the <a href="https://github.com/vanadium/www">vanadium/www</a> repository&#39;s content directory.</p>
+<p>The command blocks presented on tutorial pages are the <strong>canonical source</strong> of
+those blocks. The source for the pages lives in the <a href="https://github.com/vanadium/website">vanadium/website</a>
+repository&#39;s content directory.</p>
 <p>All code files (Go, <a href="/glossary.html#vanadium-definition-language-vdl-">VDL</a>, js, etc.), are defined using bash command
 blocks that also <em>display</em> those code files embedded in their
 commentary.</p>
@@ -209,7 +220,7 @@ that keep things up to date.</p>
 <p>The JavaScript tutorials describe Vanadium concepts from a JavaScript
 perspective. Familiarity with the language is helpful but is not required.</p>
 <h1 id="where-are-the-api-docs-">Where are the API docs?</h1>
-<p>Please refer to our in-depth <a href="/docs.html">API references</a>.</p>
+<p>Please refer to our in-depth <a href="/api-reference.html">API references</a>.</p>
 <h1 id="what-is-the-vanadium-chrome-extension-">What is the Vanadium Chrome extension?</h1>
 <p>Please refer to the
 <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome extension</a> page.</p>
@@ -225,16 +236,16 @@ so that running <code>npm install</code> is the only step needed to use Vanadium
 <pre><code>$V_BIN/wsprd \
   -v23.namespace.root /\(dev.v.io/role/vprod/service/mounttabled\)@ns.dev.v.io:8101 \
   -v23.proxy proxy \
-  -identd identity/dev.v.io/u/google</code></pre>
-<p>The above flags give the <code>node</code> program the same blessings and namespace root as
+  -identd identity/dev.v.io/u/google
+</code></pre><p>The above flags give the <code>node</code> program the same blessings and namespace root as
 the tutorial examples running in the browser.</p>
 <p>The Vanadium program will also need to know where <code>wsprd</code> is running. By default,
 this is at <code>http://127.0.0.1:8124</code>. (It can be customized with the
 <code>v23.tcp.address</code> flag.) Add the <code>wspr</code> field to your Vanadium configuration:</p>
 <pre><code>var config = {
   wspr: http://127.0.0.1:8124,
-};</code></pre>
-
+};
+</code></pre>
     </main>
     <nav class="previous-next">
       <a href="/tutorials/hello-world.html" class="next">

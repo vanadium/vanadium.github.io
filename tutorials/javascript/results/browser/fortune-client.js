@@ -7829,8 +7829,8 @@ module.exports.ctor = ExtensionEventProxy;
 
 var extensionId = 'jcaelnibllfoobpedofhlaobfcoknpap';
 module.exports = {
-  extensionDocsUrl: ('https://github.com/vanadium/docs/blob/master/tools/' +
-                     'vanadium-chrome-extension.md'),
+  extensionDocsUrl: ('https://vanadium.github.io/tools/' +
+                     'vanadium-chrome-extension.html'),
   extensionId: extensionId,
   extensionUrl: 'https://chrome.google.com/webstore/detail/' + extensionId
 };
@@ -9830,19 +9830,7 @@ module.exports.wireUnion = (vdl.registry.lookupOrCreateConstructor(_typewireUnio
 
   module.exports.WireCtrlEnd = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(225, true), vdl.types.BYTE);
 
-  module.exports.WireCtrlValueFirstChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(226, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlValueChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(227, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlValueLastChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(228, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlTypeFirstChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(229, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlTypeChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(230, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlTypeLastChunk = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(231, true), vdl.types.BYTE);
-
-  module.exports.WireCtrlTypeIncomplete = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(232, true), vdl.types.BYTE);
+  module.exports.WireCtrlTypeIncomplete = canonicalize.reduce(new (vdl.registry.lookupOrCreateConstructor(vdl.types.BYTE))(226, true), vdl.types.BYTE);
 
 
 
@@ -17861,11 +17849,11 @@ function defaultAuthorizer(ctx, call, cb) {
 /**
  * @summary Namespace security provides an API for the Vanadium security
  * concepts defined in
- * {@link https://github.com/vanadium/docs/blob/master/concepts/security.md}.
+ * {@link https://vanadium.github.io/concepts/security.html}.
  * @description
  * <p>Namespace security provides an API for the Vanadium security concepts
  * defined in
- * {@link https://github.com/vanadium/docs/blob/master/concepts/security.md}.
+ * {@link https://vanadium.github.io/concepts/security.html}.
  * </p>
  *
  * <p>The primitives and APIs defined in this package enable bi-directional,
@@ -24871,7 +24859,7 @@ Encoder.prototype._nextAnyLenIndex = function() {
  * <p> Namespace vom implements Vanadium Object Marshaling, a serialization
  * protocol.</p>
  * <p>For the concept doc see
- * {@link https://github.com/vanadium/docs/blob/master/concepts/rpc.md#vom}
+ * {@link https://vanadium.github.io/concepts/rpc.html#vom}
  * </p>
  * <p>Vom is used in Vanadium to enable interchange of user-defined data
  * structures across networks, languages and storage systems.</p>

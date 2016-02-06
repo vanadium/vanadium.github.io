@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>The Suffix - Part I - Vanadium</title>
   
@@ -206,7 +216,7 @@ service, and the authorizer that guards it.</p>
 <p>The examples will also show that <code>cassandra</code> and all other service
 names under <code>prophInc</code> are discoverable in the namespace.</p>
 <p>Here&#39;s an implementation satisfying the <em>service</em> requirements:</p>
-<p><!-- @newDispatcher @test @completer --></p>
+<!-- @newDispatcher @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/dispatcher.go
 package util
 
@@ -255,8 +265,8 @@ func MakeDispatcher() rpc.Dispatcher {
     registry: make(map[string]interface{}),
   }
 }
-EOF</code></pre>
-<p><strong>Code walk</strong></p>
+EOF
+</code></pre><p><strong>Code walk</strong></p>
 <p>The server&#39;s <code>root</code> object is accessed with an empty suffix (<em>&quot;&quot;</em>). In
 this example, the <code>root</code> object is a <a href="/tutorials/naming/globber.html#introduction">ChildrenGlobber</a> service that makes
 the fortune service names discoverable in the server&#39;s namespace.</p>
@@ -276,105 +286,105 @@ be protected my a mutex.</p>
 We can re-use the <code>tutorial</code> principal from the basics tutorial.</p>
 <h2 id="start-the-server">Start the server</h2>
 <p>Fire up the server with the new dispatcher code:</p>
-<p><!-- @buildServer @test @completer --></p>
-<pre><code>go install fortune/server</code></pre>
-<p><!-- @runServer @test @sleep --></p>
+<!-- @buildServer @test @completer -->
+<pre><code>go install fortune/server
+</code></pre><!-- @runServer @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/basics \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<h2 id="hire-cassandra">Hire Cassandra</h2>
+TUT_PID_SERVER=$!
+</code></pre><h2 id="hire-cassandra">Hire Cassandra</h2>
 <p>Try to run a client as Cassandra:</p>
 <div class="note warning"><p>Expect it to fail.</p>
 </div>
 
-<p><!-- @firstTry --></p>
+<!-- @firstTry -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>The error is <em>Method does not exist: Get</em>. This is because the root
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>The error is <em>Method does not exist: Get</em>. This is because the root
 object, i.e. the one associated with an empty <em>suffix</em>, does not implement
 the Fortune interface.</p>
 <p>To get past this, specify a <em>suffix</em>:</p>
-<p><!-- @secondTry --></p>
+<!-- @secondTry -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
-    --server `cat $V_TUT/server.txt`/cassandra</code></pre>
-<p>That works.  This time the server was specified with the suffix
+    --server `cat $V_TUT/server.txt`/cassandra
+</code></pre><p>That works.  This time the server was specified with the suffix
 <code>cassandra</code>.</p>
 <p>Likewise, the client should be able to write to that service:</p>
-<p><!-- @writingWorksToo --></p>
+<!-- @writingWorksToo -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
     --server `cat $V_TUT/server.txt`/cassandra \
-    --add &#39;Do not visit Sparta!&#39;</code></pre>
-<p>But how would customers know that the <code>cassandra</code> service exists? The
+    --add &#39;Do not visit Sparta!&#39;
+</code></pre><p>But how would customers know that the <code>cassandra</code> service exists? The
 answer is in the server&#39;s namespace.</p>
 <p>The server&#39;s namespace is just like the mount table namespace. It allows
 the server to publish the name of the services that it hosts. In this
 example, this is accomplished by the <a href="/tutorials/naming/globber.html#introduction">ChildrenGlobber</a> service at the
 server&#39;s <code>root</code>.</p>
 <p><a href="/tutorials/naming/globber.html#introduction">ChildrenGlobber</a> is covered in more details in the <a href="/tutorials/naming/globber.html">Globber</a> tutorial.</p>
-<p><!-- @globServer --></p>
+<!-- @globServer -->
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/basics \
     --v23.namespace.root `cat $V_TUT/server.txt` \
-    glob &quot;*&quot;</code></pre>
-<p>Let&#39;s insert a table to make service specifications easier to read.</p>
+    glob &quot;*&quot;
+</code></pre><p>Let&#39;s insert a table to make service specifications easier to read.</p>
 <h1 id="mount-it">Mount it</h1>
 <p>Start a mount table and save it in
 <a href="/tutorials/naming/mount-table.html#the-namespace-variable"><code>$V23_NAMESPACE</code></a>:</p>
-<p><!-- @startMountTable @test @sleep --></p>
+<!-- @startMountTable @test @sleep -->
 <pre><code>PORT_MT=23000  # Pick an unused port.
 kill_tut_process TUT_PID_MT
 $V_BIN/mounttabled \
     --v23.credentials $V_TUT/cred/basics \
     --v23.tcp.address :$PORT_MT &amp;
 TUT_PID_MT=$!
-export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
-<p>Restart the fortune server to publish itself in the mount table at the
+export V23_NAMESPACE=/localhost:$PORT_MT
+</code></pre><p>Restart the fortune server to publish itself in the mount table at the
 name <code>prophInc</code>:</p>
-<p><!-- @runServer2 @test @sleep --></p>
+<!-- @runServer2 @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/basics \
     --service-name prophInc \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Now add a new fortune via a mount table lookup:</p>
-<p><!-- @writeViaTable @test --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Now add a new fortune via a mount table lookup:</p>
+<!-- @writeViaTable @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
     --server prophInc/cassandra \
-    --add &#39;Troy is doomed!&#39;</code></pre>
-<p>It&#39;s this last usage that makes the term <strong>suffix</strong> clear.</p>
+    --add &#39;Troy is doomed!&#39;
+</code></pre><p>It&#39;s this last usage that makes the term <strong>suffix</strong> clear.</p>
 <p>The mount name <code>prophInc</code> is followed by the suffix <code>cassandra</code> to
 specify which service to access in the server.</p>
 <p>Customers can discover the service names via the mount table:</p>
-<p><!-- @globMounttable --></p>
+<!-- @globMounttable -->
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/basics \
-    glob &quot;prophInc/*&quot;</code></pre>
-<p>The server&#39;s namespace transparently extends the mount table&#39;s namespace.</p>
+    glob &quot;prophInc/*&quot;
+</code></pre><p>The server&#39;s namespace transparently extends the mount table&#39;s namespace.</p>
 <h1 id="exercises">Exercises</h1>
 <h2 id="add-other-services">Add other services</h2>
 <p>Create another service for nostradamus and watch it appear in the
 namespace next to cassandra.</p>
-<p><!-- @createNostradamusService @test --></p>
+<!-- @createNostradamusService @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
     --server prophInc/nostradamus
 
 $V_BIN/namespace \
     --v23.credentials $V_TUT/cred/basics \
-    glob &quot;prophInc/*&quot;</code></pre>
-<h1 id="cleanup">Cleanup</h1>
-<p><!-- @cleanup @test --></p>
+    glob &quot;prophInc/*&quot;
+</code></pre><h1 id="cleanup">Cleanup</h1>
+<!-- @cleanup @test -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 kill_tut_process TUT_PID_MT
-unset V23_NAMESPACE</code></pre>
-<h1 id="summary">Summary</h1>
+unset V23_NAMESPACE
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>Servers can contain multiple services, identified by a <strong>suffix</strong>.</p>
 </li>

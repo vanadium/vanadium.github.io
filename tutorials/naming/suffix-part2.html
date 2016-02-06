@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>The Suffix - Part II - Vanadium</title>
   
@@ -201,7 +211,7 @@ services that the server will be running, so it falls short as well.</p>
 make a naming policy (both for services and blessings) that makes the
 authorization scheme easy to understand.  One look at a blessing
 name should make the access of the blessing obvious.</p>
-<p><!-- @newAuthorizer @test @completer --></p>
+<!-- @newAuthorizer @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/authorizer.go
 package util
 
@@ -258,8 +268,8 @@ func (my myAuthorizer) Authorize(ctx *context.T, call security.Call) error {
 func MakeAuthorizer() security.Authorizer {
   return &amp;myAuthorizer {}
 }
-EOF</code></pre>
-<p><strong>Code walk</strong></p>
+EOF
+</code></pre><p><strong>Code walk</strong></p>
 <p>In the body of <code>Authorize</code>, the first <em>if</em> grants full access
 to the <code>root</code> service to everyone. Remember that the <code>root</code> service
 in our dispatcher is the ChildrenGlobber that publishes the name
@@ -283,105 +293,105 @@ $V_BIN/principal create --overwrite \
 $V_BIN/principal create --overwrite \
     $V_TUT/cred/alice alice
 $V_BIN/principal create --overwrite \
-    $V_TUT/cred/bob bob</code></pre>
-<h2 id="start-the-server">Start the server</h2>
+    $V_TUT/cred/bob bob
+</code></pre><h2 id="start-the-server">Start the server</h2>
 <p>Fire up the server with the new authorizer code, and mount it in a
 mount table:</p>
-<p><!-- @buildServer @test @completer --></p>
-<pre><code>go install fortune/server</code></pre>
-<p>Start the fortune server.</p>
-<p><!-- @runServer @test @sleep --></p>
+<!-- @buildServer @test @completer -->
+<pre><code>go install fortune/server
+</code></pre><p>Start the fortune server.</p>
+<!-- @runServer @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/prophInc \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Start a mount table.</p>
-<p><!-- @startMountTable @test @sleep --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Start a mount table.</p>
+<!-- @startMountTable @test @sleep -->
 <pre><code>PORT_MT=23000  # Pick an unused port.
 kill_tut_process TUT_PID_MT
 $V_BIN/mounttabled \
     --v23.credentials $V_TUT/cred/prophInc \
     --v23.tcp.address :$PORT_MT &amp;
 TUT_PID_MT=$!
-export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
-<p>Add the fortune server to the mount table at the name <code>prophInc</code>:</p>
-<p><!-- @mountFortune @test --></p>
+export V23_NAMESPACE=/localhost:$PORT_MT
+</code></pre><p>Add the fortune server to the mount table at the name <code>prophInc</code>:</p>
+<!-- @mountFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/prophInc \
-    mount prophInc `cat $V_TUT/server.txt` 2h</code></pre>
-<h2 id="hire-cassandra">Hire Cassandra</h2>
+    mount prophInc `cat $V_TUT/server.txt` 2h
+</code></pre><h2 id="hire-cassandra">Hire Cassandra</h2>
 <p>Try to run a client as Cassandra:</p>
 <div class="note warning"><p>Expect it to fail.</p>
 </div>
 
-<p><!-- @firstTryAsCassandra --></p>
+<!-- @firstTryAsCassandra -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/cassandra \
-    --server prophInc/cassandra</code></pre>
-<p>The error message will be something like: <em>Client doesn&#39;t trust the
+    --server prophInc/cassandra
+</code></pre><p>The error message will be something like: <em>Client doesn&#39;t trust the
 server.</em> That&#39;s a runtime error - the code you wrote above hasn&#39;t even
 been run yet.  Cassandra has no knowledege of Prophecies Inc.</p>
 <p>You&#39;ve <a href="/tutorials/security/principals-and-blessings.html#blessings">learned how to fix this</a>; Cassandra needs
 a blessing from the server&#39;s principal:</p>
-<p><!-- @blessCassandra @test --></p>
+<!-- @blessCassandra @test -->
 <pre><code>$V_BIN/principal bless \
     --v23.credentials $V_TUT/cred/prophInc \
     --for=24h $V_TUT/cred/cassandra consultant:cassandra | \
         $V_BIN/principal set \
             --v23.credentials $V_TUT/cred/cassandra \
-            forpeer - prophInc</code></pre>
-<p>Try again.</p>
-<p><!-- @secondTryAsCassandra --></p>
+            forpeer - prophInc
+</code></pre><p>Try again.</p>
+<!-- @secondTryAsCassandra -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/cassandra \
-    --server prophInc/cassandra</code></pre>
-<p>That works.</p>
+    --server prophInc/cassandra
+</code></pre><p>That works.</p>
 <p>Likewise, the client should be able to write to that service:</p>
-<p><!-- @writingFails --></p>
+<!-- @writingFails -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/cassandra \
     --server prophInc/cassandra \
-    --add &#39;Do not visit Sparta!&#39;</code></pre>
-<h1 id="more-use-cases">More use cases</h1>
+    --add &#39;Do not visit Sparta!&#39;
+</code></pre><h1 id="more-use-cases">More use cases</h1>
 <p><img src="/images/tut/suffix-scenario.svg" alt=""></p>
 <h2 id="hire-nostradamus">Hire Nostradamus</h2>
 <p>What can Nostradamus do at this point?
 Nothing, since the company hasn&#39;t blessed him.
 Let&#39;s do that:</p>
-<p><!-- @blessNostradamus @test --></p>
+<!-- @blessNostradamus @test -->
 <pre><code>$V_BIN/principal bless \
   --v23.credentials $V_TUT/cred/prophInc \
   --for=24h $V_TUT/cred/nostradamus consultant:nostradamus |\
         $V_BIN/principal set \
             --v23.credentials $V_TUT/cred/nostradamus \
-            forpeer - prophInc</code></pre>
-<p>Now verify that Nostradamus can read/write his own service:</p>
-<p><!-- @firstTryAsNostradamus @test --></p>
+            forpeer - prophInc
+</code></pre><p>Now verify that Nostradamus can read/write his own service:</p>
+<!-- @firstTryAsNostradamus @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/nostradamus \
-    --server prophInc/nostradamus</code></pre>
-<p>But Nostradamus <em>should not be able to read his colleague Cassandra&#39;s service</em>:</p>
+    --server prophInc/nostradamus
+</code></pre><p>But Nostradamus <em>should not be able to read his colleague Cassandra&#39;s service</em>:</p>
 <div class="note warning"><p>This should fail.</p>
 </div>
 
-<p><!-- @secondTryAsNostradamus  --></p>
+<!-- @secondTryAsNostradamus  -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/nostradamus \
-    --server prophInc/cassandra</code></pre>
-<p>Also, notice that Nostradadus doesn&#39;t see cassandra in the namespace.</p>
-<p><!-- @globServer @test --></p>
+    --server prophInc/cassandra
+</code></pre><p>Also, notice that Nostradadus doesn&#39;t see cassandra in the namespace.</p>
+<!-- @globServer @test -->
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/nostradamus \
-    glob &quot;prophInc/*&quot;</code></pre>
-<h2 id="interns">Interns</h2>
+    glob &quot;prophInc/*&quot;
+</code></pre><h2 id="interns">Interns</h2>
 <p>Suppose Cassandra needs some vacation, and wants Alice to take over.
 Alice currently has no blessings relevant to the running service, so
 can do nothing.</p>
 <p>Cassandra can change this by hiring Alice as an intern.  Cassandra can
 do so without access to the credentials belonging to Prophesies
 Inc.</p>
-<p><!-- @cassandraDelegatesToAlice @test --></p>
+<!-- @cassandraDelegatesToAlice @test -->
 <pre><code>$V_BIN/principal get \
    --v23.credentials $V_TUT/cred/cassandra \
    forpeer prophInc | \
@@ -390,29 +400,29 @@ Inc.</p>
          --with=- --for=24h $V_TUT/cred/alice intern:alice |\
                $V_BIN/principal set \
                   --v23.credentials $V_TUT/cred/alice \
-                  forpeer - prophInc</code></pre>
-<p>Now, like Cassandra, Alice can read and write Cassandra&#39;s service:</p>
-<p><!-- @firstTryAsAlice @test --></p>
+                  forpeer - prophInc
+</code></pre><p>Now, like Cassandra, Alice can read and write Cassandra&#39;s service:</p>
+<!-- @firstTryAsAlice @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server prophInc/cassandra</code></pre>
-<p>But Alice cannot access Nostradamus&#39; service:</p>
+    --server prophInc/cassandra
+</code></pre><p>But Alice cannot access Nostradamus&#39; service:</p>
 <div class="note warning"><p>This should fail.</p>
 </div>
 
-<p><!-- @secondTryAsAlice  --></p>
+<!-- @secondTryAsAlice  -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server prophInc/nostradamus</code></pre>
-<p>And Alice can only see cassandra in the namespace:
+    --server prophInc/nostradamus
+</code></pre><p>And Alice can only see cassandra in the namespace:
 <!-- @globServer @test --></p>
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/alice \
-    glob &quot;prophInc/*&quot;</code></pre>
-<h2 id="customers">Customers</h2>
+    glob &quot;prophInc/*&quot;
+</code></pre><h2 id="customers">Customers</h2>
 <p>Of the principals created for this tutorial, only Bob is untouched.</p>
 <p>Make him a customer to Nostradamus:</p>
-<p><!-- @bobIsCustomerOfNostradamus @test --></p>
+<!-- @bobIsCustomerOfNostradamus @test -->
 <pre><code>$V_BIN/principal get \
    --v23.credentials $V_TUT/cred/nostradamus \
    forpeer prophInc | \
@@ -421,56 +431,56 @@ Inc.</p>
          --with=- --for=24h $V_TUT/cred/bob cust:bob | \
                $V_BIN/principal set \
                   --v23.credentials $V_TUT/cred/bob \
-                  forpeer - prophInc</code></pre>
-<p>Verify that Bob can get fortunes from Nostradamus:</p>
-<p><!-- @bobCanRead @test --></p>
+                  forpeer - prophInc
+</code></pre><p>Verify that Bob can get fortunes from Nostradamus:</p>
+<!-- @bobCanRead @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server prophInc/nostradamus</code></pre>
-<p>But that he cannot write to Nostradamus&#39; service:</p>
+    --server prophInc/nostradamus
+</code></pre><p>But that he cannot write to Nostradamus&#39; service:</p>
 <div class="note warning"><p>This should fail.</p>
 </div>
 
 
-<p><!-- @bobCannotWrite  --></p>
+<!-- @bobCannotWrite  -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
     --server prophInc/nostradamus \
-    --add &#39;Bob is so Cool!&#39;</code></pre>
-<p>Verify on your own that Bob is unable to access Cassandra&#39;s service.</p>
+    --add &#39;Bob is so Cool!&#39;
+</code></pre><p>Verify on your own that Bob is unable to access Cassandra&#39;s service.</p>
 <div class="note warning"><p>This should fail.</p>
 </div>
 
-<p><!-- @bobCannotReadCassandra --></p>
+<!-- @bobCannotReadCassandra -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server prophInc/cassandra</code></pre>
-<p>As a customer, Bob can only see nostradamus:
+    --server prophInc/cassandra
+</code></pre><p>As a customer, Bob can only see nostradamus:
 <!-- @bobOnlySeesNostradamus @test --></p>
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/bob \
-    glob &quot;prophInc/*&quot;</code></pre>
-<h1 id="exercises">Exercises</h1>
+    glob &quot;prophInc/*&quot;
+</code></pre><h1 id="exercises">Exercises</h1>
 <h2 id="cassandra-peeks-at-nostradamus">Cassandra peeks at Nostradamus</h2>
 <p>Alice is Cassandra&#39;s intern.</p>
 <p>What would it take to make her <em>also</em> a customer of Nostradamus?
 That is, what needs to happen to make the following command work?</p>
-<p><!-- @aliceReadsNostradamus  --></p>
+<!-- @aliceReadsNostradamus  -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server prophInc/nostradamus</code></pre>
-<h2 id="nostradamus-cheats">Nostradamus cheats</h2>
+    --server prophInc/nostradamus
+</code></pre><h2 id="nostradamus-cheats">Nostradamus cheats</h2>
 <p>Can Nostradamus bless himself to gain access to Cassandra&#39;s data?</p>
 <p>What if he got &#39;hired&#39; with the name <code>consultant:cassandra2</code>?</p>
 <h2 id="internship">Internship</h2>
 <p>Can an intern have an intern?  If so, can you prevent it?</p>
 <p>Can an intern accept a new customer?</p>
 <h1 id="cleanup">Cleanup</h1>
-<p><!-- @cleanup @test --></p>
+<!-- @cleanup @test -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 kill_tut_process TUT_PID_MT
-unset V23_NAMESPACE</code></pre>
-<h1 id="summary">Summary</h1>
+unset V23_NAMESPACE
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li>In Vanadium, authorization boils down to simple string comparisons.
 Supporting infrastructure assures the strings cannot be forged.</li>

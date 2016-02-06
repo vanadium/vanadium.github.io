@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Location Service in Android - Vanadium</title>
   
@@ -182,9 +192,9 @@ use it for this tutorial.</p>
 in the project root directory.</p>
 <p>First, create a new project directory.</p>
 <pre><code>mkdir location
-cd location</code></pre>
-<p>Now, create a <code>build.gradle</code> file:</p>
-<p><!-- @createBuildFile @test --></p>
+cd location
+</code></pre><p>Now, create a <code>build.gradle</code> file:</p>
+<!-- @createBuildFile @test -->
 <pre><code>cat &lt;&lt;EOF &gt; build.gradle
 
 buildscript {
@@ -242,11 +252,11 @@ vdl {
     inputPaths += &#39;src/main/java&#39;
 }
 
-EOF</code></pre>
-<h1 id="defining-the-location-server">Defining the Location Server</h1>
+EOF
+</code></pre><h1 id="defining-the-location-server">Defining the Location Server</h1>
 <p>We&#39;re going to create a Vanadium server on the Android phone. The easiest way to
 do this is to define it in <a href="/glossary.html#vanadium-definition-language-vdl-">VDL</a>.</p>
-<p><!-- @createVdlInterface @test --></p>
+<!-- @createVdlInterface @test -->
 <pre><code>mkdir -p src/main/java/io/v/location
 cat &lt;&lt;EOF &gt; src/main/java/io/v/location/location.vdl
 package location
@@ -266,12 +276,12 @@ type Location interface {
         Get() (LatLng | error)
 }
 
-EOF</code></pre>
-<p>As you can see, we provide a single &#39;Get&#39; method to get the location of the
+EOF
+</code></pre><p>As you can see, we provide a single &#39;Get&#39; method to get the location of the
 phone. Let&#39;s generate the VDL source just to make sure everything worked.</p>
-<p><!-- @generateVdlSource @test --></p>
-<pre><code>gradle vdl</code></pre>
-<p>You should see output like the following:</p>
+<!-- @generateVdlSource @test -->
+<pre><code>gradle vdl
+</code></pre><p>You should see output like the following:</p>
 <pre><code class="noclipboard">:prepareVdl
 :extractVdl
 :generateVdl
@@ -298,7 +308,7 @@ generated-src/vdl/io/v/location/LocationServerWrapper.java</code></pre>
 <p>Now we must provide an implementation for the LocationServer. We&#39;d like this
 server to be long-lived, so we&#39;re going to use an <a href="http://developer.android.com/guide/components/services.html">Android Service</a>.</p>
 <p>Create <code>src/main/java/io/v/location/LocationService.java</code>:</p>
-<p><!-- @generateLocationServerImpl @test --></p>
+<!-- @generateLocationServerImpl @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/location/LocationServerImpl.java
 package io.v.location;
 
@@ -338,8 +348,8 @@ public class LocationServerImpl implements LocationServer {
        return new LatLng(location.getLatitude(), location.getLongitude());
    }
 }
-EOF</code></pre>
-<h1 id="android-service">Android service</h1>
+EOF
+</code></pre><h1 id="android-service">Android service</h1>
 <p>Long-running tasks, like a Vanadium server, belong in Android services. In this
 section we implement an Android service that starts our <code>LocationServer</code> and
 mounts it into the Vanadium namespace. Please see the <a href="http://developer.android.com/guide/components/services.html">Android
@@ -353,7 +363,7 @@ responsible for mounting objects into the Vanadium namespace, we need to:</p>
 <p>This service implementation will assume that this information is passed into the
 <code>onCreate</code> method.</p>
 <h2 id="implementation">Implementation</h2>
-<p><!-- @generateLocationService @test --></p>
+<!-- @generateLocationService @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/location/LocationService.java
 package io.v.location;
 
@@ -493,8 +503,8 @@ public class LocationService extends Service {
         return &quot;&quot;;
     }
 }
-EOF</code></pre>
-<h1 id="android-activity">Android activity</h1>
+EOF
+</code></pre><h1 id="android-activity">Android activity</h1>
 <p>We have defined a service, now we need an <a href="http://developer.android.com/guide/components/activities.html">activity</a> to run it. This activity
 has only two UI elements: a button to choose a Vanadium blessing and a button to
 start the location service.</p>
@@ -507,14 +517,14 @@ tutorial. To make a long story short: we&#39;re going to delegate all of this to
 special Android application called the Account Manager.</p>
 <p>You should download and install the account manager using the following
 commands:</p>
-<pre><code>wget https://v.io/account_manager-release.apk</code></pre>
-<pre><code>$HOME/.android-sdk/platform-tools/adb install -r account_manager-release.apk</code></pre>
-<h2 id="implementation">Implementation</h2>
+<pre><code>wget https://v.io/account_manager-release.apk
+</code></pre><pre><code>$HOME/.android-sdk/platform-tools/adb install -r account_manager-release.apk
+</code></pre><h2 id="implementation">Implementation</h2>
 <p>Assuming that you&#39;ve installed the account manager, you&#39;re ready to implement
 the location activity. Typically, Android applications will use declarative XML
 layouts, but to keep this tutorial as short as possible, we&#39;re going to create
 and lay out the UI components manually in Java.</p>
-<p><!-- @defineLocationActivity @test --></p>
+<!-- @defineLocationActivity @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/java/io/v/location/LocationActivity.java
 
 package io.v.location;
@@ -642,11 +652,11 @@ public class LocationActivity extends Activity {
         }
     }
 }
-EOF</code></pre>
-<h1 id="android-manifest-file">Android manifest file</h1>
+EOF
+</code></pre><h1 id="android-manifest-file">Android manifest file</h1>
 <p>Android applications require a manifest file. In our case, it&#39;s pretty
 straightforward:</p>
-<p><!-- @defineManifest @test --></p>
+<!-- @defineManifest @test -->
 <pre><code>cat &lt;&lt;EOF &gt; src/main/AndroidManifest.xml
 &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;manifest xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
@@ -681,25 +691,25 @@ straightforward:</p>
         &lt;/service&gt;
     &lt;/application&gt;
 &lt;/manifest&gt;
-EOF</code></pre>
-<p>We&#39;ll create a resource file to hold some values. The Android Gradle plugin
+EOF
+</code></pre><p>We&#39;ll create a resource file to hold some values. The Android Gradle plugin
 will fail if no resources are defined.</p>
-<p><!-- @addResources @test --></p>
+<!-- @addResources @test -->
 <pre><code>mkdir -p src/main/res/values
 cat &lt;&lt;EOF &gt; src/main/res/values/strings.xml
 &lt;resources&gt;
     &lt;string name=&quot;app_name&quot;&gt;Location&lt;/string&gt;
 &lt;/resources&gt;
-EOF</code></pre>
-<h1 id="deploying-and-running-the-application">Deploying and running the application</h1>
+EOF
+</code></pre><h1 id="deploying-and-running-the-application">Deploying and running the application</h1>
 <p>Finally, you&#39;re ready to build and deploy your Android application. To do this:</p>
-<p><!-- @assembleRelease @test --></p>
-<pre><code>gradle assembleRelease</code></pre>
-<p>This will produce file named <code>build/outputs/location-release-unsigned.apk</code>. You
+<!-- @assembleRelease @test -->
+<pre><code>gradle assembleRelease
+</code></pre><p>This will produce file named <code>build/outputs/location-release-unsigned.apk</code>. You
 can install this on your phone:</p>
 <pre><code>$HOME/.android-sdk/platform-tools/adb \
-    install -r build/outputs/location-release-unsigned.apk</code></pre>
-<p>You will now find your application in your phone&#39;s application list. When you
+    install -r build/outputs/location-release-unsigned.apk
+</code></pre><p>You will now find your application in your phone&#39;s application list. When you
 run it, you will need to pick some blessings. Choose your email address from the
 account list.</p>
 <h1 id="calling-the-server">Calling the server</h1>
@@ -714,12 +724,12 @@ provides blessings that share a common name with the server.</p>
     --v23.credentials=/tmp/creds seekblessings
 
 # This command will open a browser. In it, you should sign in to Google using
-# the same email address that you used on your phone.</code></pre>
-<p>Now let&#39;s make the call:</p>
+# the same email address that you used on your phone.
+</code></pre><p>Now let&#39;s make the call:</p>
 <pre><code>$HOME/v23_release/bin/vrpc \
     --v23.credentials=/tmp/creds \
-    call /users/you@gmail.com/android/io.v.location/location</code></pre>
-<p>Try making some changes to the phone&#39;s network configuration. For example,
+    call /users/you@gmail.com/android/io.v.location/location
+</code></pre><p>Try making some changes to the phone&#39;s network configuration. For example,
 disconnect from the Wi-Fi network so that your phone is using a mobile data
 connection. Your location requests should still be successful.</p>
 <h1 id="summary">Summary</h1>

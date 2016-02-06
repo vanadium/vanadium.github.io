@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>VOM Specification - Vanadium</title>
   
@@ -144,8 +154,8 @@
       <div class="toc"></div>
 
       <p>Vanadium Object Marshalling (VOM) is a data format capable of serializing all
-values representable in <a href="vdl-spec.html">VDL</a>.  It is the underlying serialization format used
-by the Vanadium <a href="../concepts/rpc.html">RPC</a> system.</p>
+values representable in <a href="/designdocs/vdl-spec.html">VDL</a>.  It is the underlying serialization format used
+by the Vanadium <a href="/concepts/rpc.html">RPC</a> system.</p>
 <p>VOM is a binary format that represents a stream of typed values.  The sending
 side sequentially encodes values into a stream of bytes, and the receiving side
 decodes the stream of bytes back into the original sequence of values.</p>
@@ -210,8 +220,8 @@ ElemV:       index Value
 OptV:        NIL | Value
 // Any is encoded as either a NIL control byte representing
 // non-existence, or the unsigned type ID followed by the value.
-AnyV:        NIL | typeid Value</code></pre>
-<p>All rules in the above grammar terminate in primitive values; the entire VOM
+AnyV:        NIL | typeid Value
+</code></pre><p>All rules in the above grammar terminate in primitive values; the entire VOM
 encoding comprises combinations of primitives.  The encoding of primitive values
 is in turn based on a single concept called var128.</p>
 <h2 id="var128">Var128</h2>
@@ -279,7 +289,7 @@ raw bytes.</li>
 <p>A fixed set of built-in types are used to bootstrap the encoding format, and are
 assumed to be known by both the encoder and decoder.  Each built-in type has a
 fixed type ID.  The semantics of the built-in types are defined by the
-<a href="vdl-spec.html#types">VDL type system</a>.</p>
+<a href="/designdocs/vdl-spec.html#types">VDL type system</a>.</p>
 <p><style>
 .z {
   padding-top: 1px;
@@ -407,8 +417,8 @@ type WireUnion struct {
 type WireOptional struct {
   Name string // INDEX = 0
   Elem TypeID // INDEX = 1
-}</code></pre>
-
+}
+</code></pre>
     </main>
   </body>
 </html>

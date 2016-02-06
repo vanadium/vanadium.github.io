@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Caveats - Vanadium</title>
   
@@ -161,7 +171,7 @@ All tutorials require Vanadium <a href="/installation/">installation</a>, and mu
       <h1 id="start-server-with-permissions">Start server with permissions</h1>
 <p>This tutorial uses the server with the Permissions authorizer
 (described in the <a href="/tutorials/security/permissions-authorizer.html">permissions-authorizer</a> tutorial):</p>
-<p><!-- @startServerWithPerms @test @sleep --></p>
+<!-- @startServerWithPerms @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
@@ -169,8 +179,8 @@ $V_TUT/bin/server \
     --perms &#39;{&quot;R&quot;: {&quot;In&quot;: [&quot;alice:family&quot;,
                            &quot;alice:friend&quot;]},
               &quot;W&quot;: {&quot;In&quot;: [&quot;alice:family&quot;]}}&#39; &amp;
-TUT_PID_SERVER=$!</code></pre>
-<h1 id="blessings-as-delegation">Blessings as delegation</h1>
+TUT_PID_SERVER=$!
+</code></pre><h1 id="blessings-as-delegation">Blessings as delegation</h1>
 <p><a href="/glossary.html#blessing">Blessings</a> bind human-readable names (e.g.,
 <code>alice:friend:bob</code>) to a principal (identified by its public
 key). Principals are authorized based on these names.  For instance,
@@ -186,15 +196,15 @@ another principal.</p>
 server (via <code>--perms</code>), this means Carol can invoke both <code>Add</code> and <code>Get</code>, but Bob can
 only invoke <code>Get</code>.</p>
 <p>Introduce Diane:</p>
-<p><!-- @createDiane @test --></p>
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/diane diane</code></pre>
-<p>As a new principal, Diane has no blessings (other than the default
+<!-- @createDiane @test -->
+<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/diane diane
+</code></pre><p>As a new principal, Diane has no blessings (other than the default
 &#39;self&#39; blessings), so she cannot read from (or write to) Alice&#39;s server:</p>
-<p><!-- @dianeCannotRead --></p>
+<!-- @dianeCannotRead -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/diane \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>Carol can extend her own blessing from Alice to provide Diane with
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>Carol can extend her own blessing from Alice to provide Diane with
 <code>alice:family:sister:guest</code>, thereby providing Diane with a blessing
 that satisfies the permissions on Alice&#39;s server.</p>
 <p>This allows Carol to share her access with Diane without involving
@@ -208,7 +218,7 @@ extend.</li>
 <li>The third stores the new blessing, setting Diane up so that this
 blessing is presented to <code>alice</code>.</li>
 </ul>
-<p><!-- @carolDelegatesToDiane @test --></p>
+<!-- @carolDelegatesToDiane @test -->
 <pre><code>$V_BIN/principal get \
     --v23.credentials $V_TUT/cred/carol \
     forpeer alice | \
@@ -219,10 +229,10 @@ blessing is presented to <code>alice</code>.</li>
             $V_TUT/cred/diane guest | \
                 $V_BIN/principal set \
                    --v23.credentials $V_TUT/cred/diane \
-                   forpeer - alice</code></pre>
-<p><img src="/images/tut/security05-carol-blesses-diane.svg" alt="Carol blesses Diane as a guest"></p>
+                   forpeer - alice
+</code></pre><p><img src="/images/tut/security05-carol-blesses-diane.svg" alt="Carol blesses Diane as a guest"></p>
 <p>With this blessing, Diane can invoke both <code>Get</code> and <code>Add</code> method:</p>
-<p><!-- @dianeCanNowAdd @test --></p>
+<!-- @dianeCanNowAdd @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/diane \
     --server `cat $V_TUT/server.txt`
@@ -230,8 +240,8 @@ blessing is presented to <code>alice</code>.</li>
 $V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/diane \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Diane says hello!&#39;</code></pre>
-<p><img src="/images/tut/security06-carol-diane-succeed.svg" alt="Diane can Get and Add to the server"></p>
+    --add &#39;Diane says hello!&#39;
+</code></pre><p><img src="/images/tut/security06-carol-diane-succeed.svg" alt="Diane can Get and Add to the server"></p>
 <h1 id="caveats">Caveats</h1>
 <p>Delegation via blessing allows Carol to grant Diane access to any
 resources that Carol could access by virtue of her
@@ -251,7 +261,7 @@ to a blessing using the <code>--for {duration}</code> flag.</p>
 <code>alice:family:sister:guest</code> for only five seconds. The request to
 <code>Add</code> will succeed if invoked immediately after the blessing is
 generated but fail five seconds later:</p>
-<p><!-- @carolBlessesDianeAsGuest @test --></p>
+<!-- @carolBlessesDianeAsGuest @test -->
 <pre><code>$V_BIN/principal get \
     --v23.credentials $V_TUT/cred/carol \
     forpeer alice | \
@@ -267,23 +277,23 @@ generated but fail five seconds later:</p>
 $V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/diane \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Diane says hello again!&#39;</code></pre>
-<p><img src="/images/tut/security07-carol-blesses-diane-5sec.svg" alt="Carol blesses Diane with a 5-second caveat"></p>
+    --add &#39;Diane says hello again!&#39;
+</code></pre><p><img src="/images/tut/security07-carol-blesses-diane-5sec.svg" alt="Carol blesses Diane with a 5-second caveat"></p>
 <p><img src="/images/tut/security08-diane-succeeds-5sec.svg" alt="Diane can get in temporarily"></p>
 <p>Wait a few more seconds and this will fail:</p>
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/diane \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Diane tries again.&#39;</code></pre>
-<p>The second invocation of the <code>Add</code> method will fail with the error <code>does not
+    --add &#39;Diane tries again.&#39;
+</code></pre><p>The second invocation of the <code>Add</code> method will fail with the error <code>does not
 match permissions</code> since the <code>alice:family:sister:guest</code> blessing is no longer
 valid and Diane did not present any other blessings that match the permissions
 at the server.</p>
 <p><img src="/images/tut/security09-diane-fails-5sec.svg" alt="After 5 seconds, Diane cannot access the server"></p>
 <p>We&#39;re done with the server for now.</p>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="summary">Summary</h1>
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>Carol is able to delegate her access to Alice&#39;s servers via blessings.</p>
 </li>

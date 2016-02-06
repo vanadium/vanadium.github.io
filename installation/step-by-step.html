@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Step-by-step Installation - Vanadium</title>
   
@@ -147,8 +157,8 @@
 <h1 id="system-requirements">System requirements</h1>
 <p>The instructions below assume you are using the <a href="/tutorials/faq.html#why-bash-">Bash</a> shell.
 <!-- @checkForBash @test --></p>
-<pre><code>set | grep BASH &gt; /dev/null || echo &quot;Vanadium installation requires Bash.&quot;</code></pre>
-<p>In addition, they assume the following software packages are installed and
+<pre><code>set | grep BASH &gt; /dev/null || echo &quot;Vanadium installation requires Bash.&quot;
+</code></pre><p>In addition, they assume the following software packages are installed and
 available in your <code>PATH</code>:</p>
 <ul>
 <li>curl</li>
@@ -179,16 +189,27 @@ Use an absolute path to a non-existent directory on the local filesystem. The
 NFS are discouraged for performance reasons and to avoid git ENOKEY errors.)
 <!-- @define_JIRI_ROOT @test --></p>
 <pre><code># Edit to taste.
-export JIRI_ROOT=${HOME}/v23_root</code></pre>
-<p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
+export JIRI_ROOT=${HOME}/v23_root
+</code></pre><p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
 <h1 id="v23_release-environment-variable">V23_RELEASE environment variable</h1>
 <p>The tutorials on this website use Go code from a particular subdirectory of
 <code>JIRI_ROOT</code>. Tutorial users should set the <code>V23_RELEASE</code> environment variable to
 this directory, as follows:
 <!-- @define_V23_RELEASE @test --></p>
 <pre><code># Needed for tutorials only.
-export V23_RELEASE=${JIRI_ROOT}/release/go</code></pre>
-<h1 id="fetch-vanadium-repositories">Fetch Vanadium repositories</h1>
+export V23_RELEASE=${JIRI_ROOT}/release/go
+</code></pre><h1 id="start-from-a-clean-slate">Start from a clean slate</h1>
+<p>The <code>bootstrap.sh</code> script checks that the <code>JIRI_ROOT</code> directory does not yet
+exist, then creates it. So, let&#39;s blow away <code>JIRI_ROOT</code> if it exists.</p>
+<p><div class="note warning"><h2 id="danger-">Danger!</h2></p>
+<p><p>This will blow away your <code>JIRI_ROOT</code> directory, including any pending changes to
+repositories in that directory. Make sure you&#39;re not deleting something
+important.</p>
+</div>
+<!-- @define_rmrf_JIRI_ROOT @test --></p>
+<pre><code># WARNING: Make sure you&#39;re not deleting something important.
+rm -rf $JIRI_ROOT
+</code></pre><h1 id="fetch-vanadium-repositories">Fetch Vanadium repositories</h1>
 <p>Run the <code>bootstrap.sh</code> script. This script will (1) install the <code>jiri</code> tool in
 your <code>JIRI_ROOT</code> directory, (2) <code>git clone</code> a Vanadium-specific manifest
 repository that configures <code>jiri</code> for the Vanadium project, and (3) use the
@@ -196,11 +217,11 @@ repository that configures <code>jiri</code> for the Vanadium project, and (3) u
 not write to any files outside of the <code>JIRI_ROOT</code> directory.
 <!-- @runBootstrapScript @test --></p>
 <pre><code># This can take several minutes.
-curl -f https://vanadium.github.io/bootstrap.sh | bash</code></pre>
-<p>Add <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>, for <code>jiri</code>:
+curl -f https://vanadium.github.io/bootstrap.sh | bash
+</code></pre><p>Add <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>, for <code>jiri</code>:
 <!-- @addDevtoolsToPath @test --></p>
-<pre><code>export PATH=$JIRI_ROOT/devtools/bin:$PATH</code></pre>
-<p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
+<pre><code>export PATH=$JIRI_ROOT/devtools/bin:$PATH
+</code></pre><p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
 <h1 id="additional-prerequisites">Additional prerequisites</h1>
 <p>Some components of Vanadium (e.g. Syncbase) have additional prerequisites,
 including Snappy, LevelDB, and Node.js.</p>
@@ -209,8 +230,8 @@ prerequisites. This command uses <code>apt-get</code> on Linux and <code>brew</c
 the <code>jiri</code> tool and its various plugins are located in
 <code>$JIRI_ROOT/devtools/bin</code>.
 <!-- @installBaseProfile @test --></p>
-<pre><code>jiri v23-profile install base</code></pre>
-<p>The <code>jiri v23-profile install</code> command only writes to files under <code>JIRI_ROOT</code>,
+<pre><code>jiri v23-profile install base
+</code></pre><p>The <code>jiri v23-profile install</code> command only writes to files under <code>JIRI_ROOT</code>,
 i.e. it will not write to system folders such as those under <code>/usr</code>.</p>
 <h1 id="install-vanadium-binaries">Install Vanadium binaries</h1>
 <p>For simplicity, we use <code>jiri go</code> to install tools. The <code>jiri go</code> command simply
@@ -218,19 +239,18 @@ augments the <code>GOPATH</code> environment variable with the various paths to 
 code under the <code>JIRI_ROOT</code> directory, and then runs the standard <code>go</code> tool.
 <!-- @installVanadiumBinaries @test --></p>
 <pre><code># Install specific tools needed for the tutorials.
-jiri go install v.io/x/ref/cmd/... v.io/x/ref/services/agent/... v.io/x/ref/services/mounttable/...</code></pre>
-<h1 id="verifying-installation">Verifying installation</h1>
+jiri go install v.io/x/ref/cmd/... v.io/x/ref/services/agent/... v.io/x/ref/services/mounttable/...
+</code></pre><h1 id="verifying-installation">Verifying installation</h1>
 <p>Compile all Go code:</p>
-<pre><code>jiri go build v.io/...</code></pre>
-<p>Run all Go tests:</p>
-<pre><code>jiri go test v.io/...</code></pre>
-<!-- TODO: On OS X, this opens a bunch of warning popups about accepting
+<pre><code>jiri go build v.io/...
+</code></pre><p>Run all Go tests:</p>
+<pre><code>jiri go test v.io/...
+</code></pre><!-- TODO: On OS X, this opens a bunch of warning popups about accepting
 incoming connections. We should make all test servers listen on the loopback
 address. -->
-
 <p>Install all Go binaries:</p>
-<pre><code>jiri go install v.io/...</code></pre>
-<p>You should now have the following binaries available, among others:</p>
+<pre><code>jiri go install v.io/...
+</code></pre><p>You should now have the following binaries available, among others:</p>
 <ul>
 <li><code>$JIRI_ROOT/release/go/bin/mounttabled</code></li>
 <li><code>$JIRI_ROOT/release/go/bin/syncbased</code></li>
@@ -238,8 +258,8 @@ address. -->
 </ul>
 <h1 id="syncing-the-vanadium-repositories">Syncing the Vanadium repositories</h1>
 <p>To sync to the latest version of the Vanadium source code:</p>
-<pre><code>jiri update</code></pre>
-
+<pre><code>jiri update
+</code></pre>
     </main>
   </body>
 </html>

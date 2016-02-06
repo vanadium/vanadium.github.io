@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>VDL Specification - Vanadium</title>
   
@@ -173,19 +183,19 @@
 </ol>
 <h2 id="identifiers">Identifiers</h2>
 <p>Identifiers name entities such as types and methods.  An identifier is a sequence of one or more ASCII letters and digits.  The first character of an identifier must be a letter.  We intentionally restrict to ASCII to more naturally support common generated languages.</p>
-<pre><code>identifier = [A-Za-z][A-Za-z0-9_]*</code></pre>
-<p>Examples of valid identifiers:</p>
+<pre><code>identifier = [A-Za-z][A-Za-z0-9_]*
+</code></pre><p>Examples of valid identifiers:</p>
 <pre><code>a
 this_is_an_identifier_
-AsIsThis</code></pre>
-<p>Identifiers may either be exported or unexported.  Exported identifiers may be used by other packages; unexported identifiers may not.  An identifier is exported if the first character is uppercase <code>[A-Z]</code>.  Most identifiers are required to be exported in VDL; exceptions to this rule are noted.</p>
+AsIsThis
+</code></pre><p>Identifiers may either be exported or unexported.  Exported identifiers may be used by other packages; unexported identifiers may not.  An identifier is exported if the first character is uppercase <code>[A-Z]</code>.  Most identifiers are required to be exported in VDL; exceptions to this rule are noted.</p>
 <pre><code>notExported
 alsoNotExported
-ThisIsExported</code></pre>
-<p>Here is a complete list of VDL keywords.  Keywords may not be used as identifiers.</p>
+ThisIsExported
+</code></pre><p>Here is a complete list of VDL keywords.  Keywords may not be used as identifiers.</p>
 <pre><code>const enum error import interface map package
-set stream struct type typeobject union</code></pre>
-<h2 id="built-in-identifiers">Built-in identifiers</h2>
+set stream struct type typeobject union
+</code></pre><h2 id="built-in-identifiers">Built-in identifiers</h2>
 <p>The following identifiers are built-in, and used to bootstrap the language to make it useful.  All built-in identifiers are available for use within other packages.</p>
 <pre><code>// Built-in types
 any bool byte error string typeobject
@@ -195,8 +205,8 @@ int16 int32 int64
 uint16 uint32 uint64
 
 // Built-in constants
-false true nil</code></pre>
-<h2 id="example">Example</h2>
+false true nil
+</code></pre><h2 id="example">Example</h2>
 <p>Here is a simplified example of two single-file VDL packages that showcase most of the main concepts.</p>
 <pre><code>// File: example/bignum/bignum.vdl
 
@@ -210,8 +220,8 @@ type Int string // arbitrary-precision integer
 const (
   MaxInt8 = Int(&quot;127&quot;)
   MinInt8 = Int(&quot;-128&quot;)
-)</code></pre>
-<p><!--separate code blocks--></p>
+)
+</code></pre><!--separate code blocks-->
 <pre><code>// File: example/arith/arith.vdl
 
 package arith
@@ -253,18 +263,18 @@ type Advanced interface {
 }
 
 // Errors may be defined for use across languages.
-error DivByZero() {&quot;en&quot;: &quot;divide by zero&quot;}</code></pre>
-<h1 id="packages">Packages</h1>
+error DivByZero() {&quot;en&quot;: &quot;divide by zero&quot;}
+</code></pre><h1 id="packages">Packages</h1>
 <p>VDL is organized into packages, where a package is a collection of one or more source files.  The files in a package collectively define the types, constants, interfaces and errors belonging to the package.  Those elements may in turn be used in another package.</p>
 <p>Each source file consists of a package clause, followed by a (possibly empty) set of imports, followed by a (possibly empty) set of definitions.</p>
 <pre><code>SourceFile = PackageClause &quot;;&quot; {Import &quot;;&quot;} {Def &quot;;&quot;}
 Def        = TypeDef | ConstDef | InterfaceDef | ErrorDef
 
 PackageClause = &quot;package&quot; PackageName
-PackageName   = identifier</code></pre>
-<p>A package clause begins each source file, and defines the package to which the file belongs.  A set of files in the same directory sharing the same PackageName form the definition of a package.  By convention the PackageName is the basename of the directory containing the source files.</p>
-<pre><code>package bignum</code></pre>
-<h1 id="standard-packages">Standard packages</h1>
+PackageName   = identifier
+</code></pre><p>A package clause begins each source file, and defines the package to which the file belongs.  A set of files in the same directory sharing the same PackageName form the definition of a package.  By convention the PackageName is the basename of the directory containing the source files.</p>
+<pre><code>package bignum
+</code></pre><h1 id="standard-packages">Standard packages</h1>
 <p>VDL comes with a collection of standard packages, which define common types and
 interfaces that may be used by all applications. E.g. the <a href="https://github.com/vanadium/go.v23/blob/master/vdlroot/time/time.vdl">time
 package</a>
@@ -282,11 +292,11 @@ concepts.</p>
 ImportSpec    = [PackageName] ImportPath
 ImportPath    = string_lit
 QualifiedName = PackageName &quot;.&quot; identifier
-NameRef       = QualifiedName | identifier</code></pre>
-<p>Examples of imports:</p>
+NameRef       = QualifiedName | identifier
+</code></pre><p>Examples of imports:</p>
 <pre><code>import &quot;time&quot;
-import big &quot;example/bignum&quot;</code></pre>
-<h1 id="types">Types</h1>
+import big &quot;example/bignum&quot;
+</code></pre><h1 id="types">Types</h1>
 <p>A type specifies a set of valid values.  The set of valid types is partitioned into different kinds, where each kind of type specifies its own rules determining the valid set of values.</p>
 <pre><code>// Built-in scalar type kinds
 bool            // boolean true / false
@@ -309,8 +319,8 @@ union  // disjunction of ordered sequence of fields
 
 // Variant type kinds
 any             // value can be of any type
-optional        // value might not exist</code></pre>
-<p>Types may be named or unnamed.  All built-in types are named with the name of their kind.  Types defined using the <code>type</code> keyword are named by the user.  The <code>any</code> and <code>typeobject</code> type kinds <em>cannot</em> be named by the user; all other kinds <em>can</em> be named by the user, and the <code>enum</code>, <code>struct</code> and <code>union</code> type kinds <em>must</em> be named by the user.  These naming rules strike a balance between expressibility in the VDL and practical limitations for generated code.</p>
+optional        // value might not exist
+</code></pre><p>Types may be named or unnamed.  All built-in types are named with the name of their kind.  Types defined using the <code>type</code> keyword are named by the user.  The <code>any</code> and <code>typeobject</code> type kinds <em>cannot</em> be named by the user; all other kinds <em>can</em> be named by the user, and the <code>enum</code>, <code>struct</code> and <code>union</code> type kinds <em>must</em> be named by the user.  These naming rules strike a balance between expressibility in the VDL and practical limitations for generated code.</p>
 <p><code>bool</code> represents boolean true and false values.</p>
 <p><code>string</code> represents a human-readable sequence of UTF8 runes.  Arbitrary binary data should not be represented using strings, instead use an <code>array</code> or <code>list</code> of bytes.</p>
 <p><code>byte</code> represents a single unsigned 8-bit byte.</p>
@@ -341,15 +351,15 @@ TypeExpr  = NameRef
           | &quot;union&quot; &quot;{&quot; [ Field {&quot;;&quot; Field} [&quot;;&quot;] ] &quot;}&quot;
           | &quot;?&quot; TypeExpr
 Label     = identifier
-Field     = FieldName {&quot;,&quot; FieldName} TypeExpr</code></pre>
-<p>Examples of type definitions:</p>
+Field     = FieldName {&quot;,&quot; FieldName} TypeExpr
+</code></pre><p>Examples of type definitions:</p>
 <pre><code>type Int string
 type Algorithm enum {Sieve;Elliptic}
 type Status struct {
   Wall, Cpu time.Duration
   Alg       Algorithm
-}</code></pre>
-<h1 id="constants">Constants</h1>
+}
+</code></pre><h1 id="constants">Constants</h1>
 <p>A constant represents an immutable value.  Constants may be typed or untyped.  There are six categories of constants, representing various typed and untyped combinations.  Typed constants may represent any valid value for their kind of type.  Untyped integer, rational and complex constants are collectively called numerics, and have &quot;infinite&quot; precision; they do not overflow or underflow.</p>
 <pre><code>category  untyped constant  type kind
 --------  ----------------  ---------
@@ -359,20 +369,20 @@ integer   untyped integer   byte, {u,}int{16,32,64}
 rational  untyped rational  float{32,64}
 complex   untyped complex   complex{64,128}
 misc                        enum, typeobject, array, list,
-                            set, map, struct, union</code></pre>
-<p>The following constants are built-in:</p>
+                            set, map, struct, union
+</code></pre><p>The following constants are built-in:</p>
 <pre><code>false: Untyped boolean constant
 true:  Untyped boolean constant
-nil:   Represents non-existent optional value</code></pre>
-<h1 id="literals">Literals</h1>
+nil:   Represents non-existent optional value
+</code></pre><h1 id="literals">Literals</h1>
 <p>There are four categories of scalar literals: string, integer, rational and imaginary.  Each literal represents its respective untyped constant, where the imaginary literal represents an untyped complex constant with real part zero.</p>
 <pre><code>string_lit    = /* e.g. &quot;abc&quot; `def` */
 integer_lit   = /* e.g. 0 123 0644 0xDeadBeef */
 rational_lit  = /* e.g. 0. .25 42.3 1e6 .123e+3 */
-imaginary_lit = /* e.g. 0i 0.i 123i .25i 1e6i .12e+3i */</code></pre>
-<p>Composite literals are also supported, and represent arrays, lists, sets, maps, structs and unions.  The type of every composite literal needs to be known in order for it to be compiled.  The full syntax is in the grammar; informally it looks like:</p>
-<pre><code>TypeExpr{key0:elem0, key1:elem1, ...}</code></pre>
-<p>The TypeExpr may be explicitly provided, or as a convenience, the TypeExpr may be elided for composite literals within a parent composite literal where the type may be implied.</p>
+imaginary_lit = /* e.g. 0i 0.i 123i .25i 1e6i .12e+3i */
+</code></pre><p>Composite literals are also supported, and represent arrays, lists, sets, maps, structs and unions.  The type of every composite literal needs to be known in order for it to be compiled.  The full syntax is in the grammar; informally it looks like:</p>
+<pre><code>TypeExpr{key0:elem0, key1:elem1, ...}
+</code></pre><p>The TypeExpr may be explicitly provided, or as a convenience, the TypeExpr may be elided for composite literals within a parent composite literal where the type may be implied.</p>
 <p>Array and list literals have optional keys and required elems, and each elem is assigned to list[index].  If a key is provided, the index is set to the key converted to a uint64; otherwise the index is set to one more than the previous index, or 0 if key0 isn&#39;t provided.</p>
 <p>Set literals have required keys and may not specify elems.  Map literals have required keys and elems.</p>
 <p>Struct literals must either have all keys provided, or no keys provided.  If keys are provided they are identifiers that must match field names of the struct, and the matching field is set to elem.  If keys are not provided, the fields of the struct are set in order, and the number of elems must exactly match the number of fields in the struct.</p>
@@ -381,16 +391,16 @@ imaginary_lit = /* e.g. 0i 0.i 123i .25i 1e6i .12e+3i */</code></pre>
 <pre><code>type Mode enum {Fast;Slow}
 
 // Enum constant
-const MyMode = Mode.Fast</code></pre>
-<p>Typeobject constants are specified using syntax similar to explicit type conversions.</p>
+const MyMode = Mode.Fast
+</code></pre><p>Typeobject constants are specified using syntax similar to explicit type conversions.</p>
 <pre><code>type Foo struct {A int32;B string}
 
 // Typeobject constants
 const (
   MyFooType     = typeobject(Foo)
   MyFooListType = typeobject([]Foo)
-)</code></pre>
-<h1 id="operators">Operators</h1>
+)
+</code></pre><h1 id="operators">Operators</h1>
 <p>Logical, bitwise, comparison and arithmetic operators are supported.  Not all operators support all constants.  The following table shows the operators and the supported constant categories.</p>
 <pre><code>// Unary operator (boolean)
 !          // logical not
@@ -417,8 +427,8 @@ const (
 
 // Binary operator (integer, rational, complex)
 +          // add
-- * /      // sub, mul, div</code></pre>
-<p>Binary operators are of the form <code>x op y</code>.  If x and y are both typed constants, their types must be identical.  If either x or y (or both) are untyped constants, the values are implicitly converted to a common type before performing the operation.</p>
+- * /      // sub, mul, div
+</code></pre><p>Binary operators are of the form <code>x op y</code>.  If x and y are both typed constants, their types must be identical.  If either x or y (or both) are untyped constants, the values are implicitly converted to a common type before performing the operation.</p>
 <h1 id="conversions">Conversions</h1>
 <p>Implicit conversions of untyped constants obey the following rules:</p>
 <pre><code>implicit conversion                   details
@@ -431,8 +441,8 @@ untyped integer  -&gt; {byte,uint,int}*  Only if no overflow
 untyped rational -&gt; float*            Only if no overflow,
                                       may lose precision
 untyped complex  -&gt; complex*          Only if no overflow,
-                                      may lose precision</code></pre>
-<p>Explicit conversions of scalars add the following rules:</p>
+                                      may lose precision
+</code></pre><p>Explicit conversions of scalars add the following rules:</p>
 <pre><code>explicit scalar conversion            details
 --------------------------            -------
 same kind -&gt; same kind                Allowed
@@ -450,8 +460,8 @@ complex* -&gt; complex*                  Allowed,
 complex* -&gt; float*                    Only if 0 imaginary,
                                       may lose precision
 float*   -&gt; {byte,uint,int}*          Only if 0 fractional,
-                                      and if no overflow</code></pre>
-<p>Explicit conversions of composites add the following rules:</p>
+                                      and if no overflow
+</code></pre><p>Explicit conversions of composites add the following rules:</p>
 <pre><code>     explicit
 composite conversion   details
 --------------------   -------
@@ -472,8 +482,8 @@ struct -&gt; struct       Only if fields with matching names
                        [unknown fields ignored]
 map -&gt; struct          Only if fields with matching keys
                        are convertible
-                       [unknown fields ignored]</code></pre>
-<h1 id="evaluation-and-definition">Evaluation and definition</h1>
+                       [unknown fields ignored]
+</code></pre><h1 id="evaluation-and-definition">Evaluation and definition</h1>
 <p>Named constants are defined using the const keyword.  Named consts and method tags are fully evaluated to a final value.  Intermediate results of const expressions may remain untyped, but final const values must be typed.  This restriction ensures const expression evaluation always occurs within the VDL compiler, and all generated code uses identical const values.  Otherwise we&#39;d be at the mercy of the compilers / interpreters for the generated languages, which has a wide variance in expression evaluation semantics.</p>
 <pre><code>ConstDef  = &quot;const&quot; ConstSpec
           | &quot;const&quot; &quot;(&quot; [ ConstSpec {&quot;;&quot; ConstSpec} [&quot;;&quot;] ] &quot;)&quot;
@@ -493,15 +503,15 @@ unary_op   = &quot;!&quot;  | &quot;+&quot;  | &quot;-&quot;  | &quot;^&quot;
 CompLit   = [TypeExpr] &quot;{&quot; [ KVLit {&quot;,&quot; KVLit} [&quot;,&quot;] ] &quot;}&quot;
 KVLit     = [KLit &quot;:&quot;] VLit
 KLit      = ConstExpr
-VLit      = ConstExpr | CompLit</code></pre>
-<p>Examples of const definitions:</p>
+VLit      = ConstExpr | CompLit
+</code></pre><p>Examples of const definitions:</p>
 <pre><code>const (
   MaxInt8       = Int(&quot;127&quot;)
   MinInt8       = Int(&quot;-128&quot;)
   Five          = int32(2 + 3)
   UnknownStatus = Status{Wall: -1, CPU: -1}
-)</code></pre>
-<h1 id="interfaces">Interfaces</h1>
+)
+</code></pre><h1 id="interfaces">Interfaces</h1>
 <p>An interface represents a set of methods.  Every interface has an InterfaceName.  Interfaces can embed other interfaces by referring to their InterfaceName.  This adds all methods of the embedded interface to the set of methods in the embedding interface.  Duplicate names are allowed, but only if the method signatures are identical.  Code generation for some languages may add additional semantics; e.g. object-oriented languages may use embedding as a signal for an inheritance relationship.</p>
 <p>Every method is named and contains optional InArgs, InStream and OutStream types, OutArgs and Tags.  The InArgs and OutArgs are positional, and arg names idiomatically start with a lowercase letter.  A single underscore &quot;_&quot; may be used as the InStream or OutStream type, which means there is no respective in or out stream type.  Idiomatic usage only uses the underscore if there is no InStream, but there is an OutStream type.</p>
 <p>The general flow for a method call is as follows:</p>
@@ -526,8 +536,8 @@ OutArgs       = &quot;error&quot;
 StreamTypes   = &quot;stream&quot; &quot;&lt;&quot; [ InStream [ &quot;,&quot; OutStream ] ] &quot;&gt;&quot;
 InStream      = TypeExpr
 OutStream     = TypeExpr
-Tags          = &quot;{&quot; [ ConstExpr {&quot;,&quot; ConstExpr} [&quot;,&quot;] ] &quot;}&quot;</code></pre>
-<p>Examples of interface definitions:</p>
+Tags          = &quot;{&quot; [ ConstExpr {&quot;,&quot; ConstExpr} [&quot;,&quot;] ] &quot;}&quot;
+</code></pre><p>Examples of interface definitions:</p>
 <pre><code>type Arith interface {
   Add(x, y bignum.Int) (bignum.Int | error)
   Div(x, y bignum.Int) (bignum.Int | error) {&quot;tag&quot;}
@@ -535,8 +545,8 @@ Tags          = &quot;{&quot; [ ConstExpr {&quot;,&quot; ConstExpr} [&quot;,&quo
 type Advanced interface {
   Arith
   Factor(x bignum.Int) stream&lt;_,Status&gt; ([]bignum.Int | error)
-}</code></pre>
-<h1 id="errors">Errors</h1>
+}
+</code></pre><h1 id="errors">Errors</h1>
 <p>An error represents an exceptional condition.  VDL defines a built-in <code>error</code> type which enables interoperability of error creation and checking across computing environments.  E.g. VDL errors are generated as error values in Go, while they&#39;re generated as exceptions in Java.  The core libraries allow you to check for occurrences of specific errors, even if the error was generated in a different process, or a different programming language.</p>
 <p>The wire format of the VDL <code>error</code> looks like this:</p>
 <pre><code>type RetryCode enum {
@@ -551,8 +561,8 @@ type error struct {
   Msg       string    // Error message, generated based on Id and ParamList.
   RetryCode RetryCode // Suggested retry behavior upon receiving this error.
   ParamList []any     // Variadic parameters associated with the error.
-}</code></pre>
-<p>Specific error instances may be defined in VDL.  This generates code in each native language, to make it easy to create and check errors.  Each error includes a unique identifier, which is automatically created with the form <code>PackagePath.ErrorName</code>.  E.g. an error definition with name <code>Foo</code> in package path <code>&quot;a/b/c&quot;</code> results in error id <code>&quot;a/b/c.Foo&quot;</code>.</p>
+}
+</code></pre><p>Specific error instances may be defined in VDL.  This generates code in each native language, to make it easy to create and check errors.  Each error includes a unique identifier, which is automatically created with the form <code>PackagePath.ErrorName</code>.  E.g. an error definition with name <code>Foo</code> in package path <code>&quot;a/b/c&quot;</code> results in error id <code>&quot;a/b/c.Foo&quot;</code>.</p>
 <pre><code>ErrorDef     = &quot;error&quot; ErrorSpec
              | &quot;error&quot; &quot;(&quot; [ ErrorSpec {&quot;;&quot; ErrorSpec} [&quot;;&quot;] ] &quot;)&quot;
 ErrorSpec    = ErrorName &quot;(&quot; [InArgs] &quot;)&quot; ErrorDetails
@@ -562,8 +572,8 @@ ErrorDetail  = ErrorAction
              | ErrorLang &quot;:&quot; ErrorFmt
 ErrorAction  = identifier
 ErrorLang    = string_lit
-ErrorFmt     = string_lit</code></pre>
-<p>Examples of error definitions:</p>
+ErrorFmt     = string_lit
+</code></pre><p>Examples of error definitions:</p>
 <pre><code>error (
   NoParams1() {&quot;en&quot;:&quot;en msg&quot;}
   NoParams2() {RetryRefetch, &quot;en&quot;:&quot;en msg&quot;}
@@ -573,18 +583,18 @@ ErrorFmt     = string_lit</code></pre>
     &quot;en&quot;:&quot;en x={x} y={y}&quot;,
     &quot;fr&quot;:&quot;fr y={y} x={x}&quot;,
   }
-)</code></pre>
-<h1 id="config-files">Config files</h1>
+)
+</code></pre><h1 id="config-files">Config files</h1>
 <p>Config files are a mechanism to specify configuration information to a program.  E.g. a command line program may need to be configured with directory paths for input or output.  Since VDL already has syntax to represent types and constants, it is natural to use the same syntax to represent configuration information.</p>
 <p>A config file exports a single constant, and may contain one or more imports and constants.  All constants representable in regular VDL are representable in config files, using the same syntax.</p>
 <p>Each config file consists of a config clause, followed by a (possibly empty) set of imports, followed by a (possibly empty) set of const definitions.  The config clause defines the exported constant via a ConstExpr.  As with regular constant expressions, the config clause definition may be an inline definition, or may simply name a const defined elsewhere in the file.</p>
 <pre><code>ConfigFile = ConfigClause &quot;;&quot; {Import &quot;;&quot;} {ConstDef &quot;;&quot;}
-ConfigClause = &quot;config&quot; &quot;=&quot; ConstExpr</code></pre>
-<p>Examples of config files:</p>
+ConfigClause = &quot;config&quot; &quot;=&quot; ConstExpr
+</code></pre><p>Examples of config files:</p>
 <pre><code>// File: 0.config - inline definition
 // (implicit type arith.Status)
-config = {0, 0, arith.Algorithm.Sieve}</code></pre>
-<p><!--separate code blocks--></p>
+config = {0, 0, arith.Algorithm.Sieve}
+</code></pre><!--separate code blocks-->
 <pre><code>// File: 1.config - using imports
 config = foo
 
@@ -593,8 +603,8 @@ import &quot;example/arith&quot;
 const (
   foo = arith.Status{0, 0, arith.Algorithm.Sieve}
   bar = arith.Status{1, 1, arith.Algorithm.Elliptic}
-)</code></pre>
-<p>Config files only contain constant definitions; types, interfaces and errors may not be specified within config files.  It is idiomatic to define a struct type specifying the format of the config file in a package, and export a constant of that type from the config file.</p>
+)
+</code></pre><p>Config files only contain constant definitions; types, interfaces and errors may not be specified within config files.  It is idiomatic to define a struct type specifying the format of the config file in a package, and export a constant of that type from the config file.</p>
 <p>Config files that use more than the built-in types need to import the packages defining the necessary types.  As a commonly-used exception to this rule, an implicit type may be provided to the config file compiler.  The implicit type is used to specify the type of the exported constant, if it is a composite literal that don&#39;t have an explicit type.  This allows the succinct inline definition syntax to be used, without specifying any imports.</p>
 <p>All valid config files must start with &quot;config&quot;.  However &quot;config&quot; is not itself a keyword in the grammar; it may be used as a regular identifier.</p>
 <h2 id="vdl-config">vdl.config</h2>

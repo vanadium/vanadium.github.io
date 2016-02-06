@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Example Apps - Vanadium</title>
   
@@ -149,7 +159,7 @@
 <li>Issues: <a href="https://github.com/vanadium/todos/issues">https://github.com/vanadium/todos/issues</a></li>
 </ul>
 <p><a href="https://github.com/vanadium/todos">Syncbase Todos</a> is an example app that demonstrates
-<a href="/syncbase/index.html">Syncbase</a>, Vanadium&#39;s p2p-synced datastore. Changes are synced in
+<a href="/concepts/syncbase-overview.html">Syncbase</a>, Vanadium&#39;s p2p-synced datastore. Changes are synced in
 real time, with or without an Internet connection.</p>
 <p>For more information, see the <a href="https://github.com/vanadium/todos/blob/master/README.md">README</a>.</p>
 <h1 id="vanadium-chat">Vanadium Chat</h1>
@@ -172,10 +182,10 @@ Piped data is displayed in a formatted way by a graphical viewer. Users can also
 send or redirect pipes to other users of P2B.</p>
 <p>For example, one can pipe a text log file and view it in a sortable, filterable,
 paged DataGrid in the browser:</p>
-<pre><code>$ tail -n 100 logfile.txt | p2b google/p2b/myInstance/vlog</code></pre>
-<p>As another example, one can pipe an image to someone else&#39;s browser:</p>
-<pre><code>$ cat cat.png | p2b google/p2b/myFriendsInstance/image</code></pre>
-<p>P2B supports several built-in plugins such as console, image viewer, log viewer,
+<pre><code>$ tail -n 100 logfile.txt | p2b google/p2b/myInstance/vlog
+</code></pre><p>As another example, one can pipe an image to someone else&#39;s browser:</p>
+<pre><code>$ cat cat.png | p2b google/p2b/myFriendsInstance/image
+</code></pre><p>P2B supports several built-in plugins such as console, image viewer, log viewer,
 git status viewer, and <code>dev/null</code>. Users can create their own plugins as well.</p>
 <p>For more information, see the <a href="https://github.com/vanadium/pipe2browser/blob/master/README.md">README</a> as well as the help page
 inside a running instance of the P2B application.</p>

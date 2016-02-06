@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Authentication Protocol - Vanadium</title>
   
@@ -153,9 +163,9 @@ then used to authorize RPCs.  This document describes:</p>
 <li>the reasons behind various design choices in a question-and-answer format.</li>
 </ul>
 <h1 id="principals-blessings">Principals &amp; blessings</h1>
-<p>A <a href="../glossary.html#principal">principal</a> is defined by a unique (public, private) key pair <code>(P, S)</code> and a
+<p>A <a href="/glossary.html#principal">principal</a> is defined by a unique (public, private) key pair <code>(P, S)</code> and a
 set of blessings in the form of certificate chains that bind a name to <code>P</code>.
-For more details, read <a href="../concepts/security.html">security concepts</a>.</p>
+For more details, read <a href="/concepts/security.html">security concepts</a>.</p>
 <p>Within the Go codebase, the set of blessings is encapsulated within the
 <a href="https://godoc.org/v.io/v23/security#Blessings"><code>v.io/v23/security.Blessings</code></a> type. The principal and all private key
 operations are encapsulated in the <a href="https://godoc.org/v.io/v23/security#Principal"><code>v.io/v23/security.Principal</code></a> type.</p>

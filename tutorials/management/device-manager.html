@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>The Device Manager - Vanadium</title>
   
@@ -167,10 +177,10 @@ is running on the same computer to keep things simple).</p>
 <h1 id="credentials">Credentials</h1>
 <p>We&#39;ll be using default <a href="/tutorials/basics.html#authorization">credentials</a> for all the commands and servers we start
 from the terminal. Recall that <code>tutorial</code> is the blessing name for these credentials:</p>
-<p><!-- @setCredentials @test --></p>
+<!-- @setCredentials @test -->
 <pre><code>export V23_CREDENTIALS=&quot;$V_TUT/cred/basics&quot;
-&quot;${V_BIN}/principal&quot; dump -s</code></pre>
-<h1 id="install-and-start-a-device-manager">Install and start a device manager</h1>
+&quot;${V_BIN}/principal&quot; dump -s
+</code></pre><h1 id="install-and-start-a-device-manager">Install and start a device manager</h1>
 <p>The <strong>device manager</strong> is a Vanadium application that runs on a device and is
 responsible for installing and running other Vanadium applications on behalf of
 users.</p>
@@ -181,64 +191,64 @@ the applications run under it.</p>
 <p>The device manager has a built-in mount table, which we can us for service
 discovery (as we learned in the <a href="/tutorials/naming/mount-table.html">mount table tutorial</a>). So give it a fixed
 port.</p>
-<p><!-- @installAndStartDeviceManager @test @sleep --></p>
+<!-- @installAndStartDeviceManager @test @sleep -->
 <pre><code>export V23_DEVICE_DIR=&quot;$V_TUT/devmgr&quot;
 PORT_MT=24000
 &quot;${V_BIN}/deviced&quot; stop 2&gt;/dev/null
 &quot;${V_BIN}/deviced&quot; uninstall --suid_helper=&quot;${V_BIN}/suidhelper&quot;
 V23_CREDENTIALS=&quot;&quot; &quot;${V_BIN}/deviced&quot; install --suid_helper=&quot;${V_BIN}/suidhelper&quot; --agent=&quot;${V_BIN}/agentd&quot; -- --v23.tcp.address=&quot;:$PORT_MT&quot; --name=&quot;&quot;
-V23_CREDENTIALS=&quot;&quot; &quot;${V_BIN}/deviced&quot; start</code></pre>
-<p>Check that the device manager service is mounted in the mount table. This
+V23_CREDENTIALS=&quot;&quot; &quot;${V_BIN}/deviced&quot; start
+</code></pre><p>Check that the device manager service is mounted in the mount table. This
 should print <code>/localhost:24000/devmgr</code>:
 <!-- @globMountTable @test --></p>
-<pre><code>&quot;${V_BIN}/namespace&quot; glob &quot;/localhost:$PORT_MT/*&quot;</code></pre>
-<h1 id="claim-the-device-manager">Claim the device manager</h1>
+<pre><code>&quot;${V_BIN}/namespace&quot; glob &quot;/localhost:$PORT_MT/*&quot;
+</code></pre><h1 id="claim-the-device-manager">Claim the device manager</h1>
 <p>The device manager is currently <strong>unclaimed</strong>, meaning that it does not have a
 blessing (other than the one it generates for itself).  The user must <strong>claim</strong>
 the device manager to unlock its functionality.  Claiming involves conferring a
 blessing, which then becomes the device manager&#39;s default blessing. We&#39;ll bless
 our device manager as <code>hal</code>, and verify that the device manager presents itself
 as <code>tutorial/hal</code>:</p>
-<p><!-- @claimDeviceManager @test --></p>
+<!-- @claimDeviceManager @test -->
 <pre><code>DEVICE_NAME=/localhost:$PORT_MT/devmgr
 &quot;${V_BIN}/device&quot; claim &quot;${DEVICE_NAME}/device&quot; hal
-&quot;${V_BIN}/vrpc&quot; identify &quot;${DEVICE_NAME}/device&quot;</code></pre>
-<h1 id="bring-up-a-server">Bring up a server</h1>
+&quot;${V_BIN}/vrpc&quot; identify &quot;${DEVICE_NAME}/device&quot;
+</code></pre><h1 id="bring-up-a-server">Bring up a server</h1>
 <p>We&#39;re now ready to deploy a Vanadium application on the device manager. We&#39;ll
 use the fortune server as our application.</p>
 <p>First, install the application, recording the installation name:</p>
-<p><!-- @installFortune @test --></p>
+<!-- @installFortune @test -->
 <pre><code>INSTALLATION_NAME=$( \
   &quot;${V_BIN}/device&quot; install-local &quot;${DEVICE_NAME}/apps&quot; \
   fortuneserver &quot;${V_TUT}/bin/server&quot; --service-name=myFortunes \
 )
-echo &quot;Installed: ${INSTALLATION_NAME}&quot;</code></pre>
-<p>Then create an instance of the application just installed and run it, providing
+echo &quot;Installed: ${INSTALLATION_NAME}&quot;
+</code></pre><p>Then create an instance of the application just installed and run it, providing
 the instance with a blessing called <code>fortune</code>. Record the instance name:</p>
-<p><!-- @startFortune @test --></p>
+<!-- @startFortune @test -->
 <pre><code>INSTANCE_NAME=$(&quot;${V_BIN}/device&quot; instantiate &quot;${INSTALLATION_NAME}&quot; fortune)
 &quot;${V_BIN}/device&quot; run &quot;${INSTANCE_NAME}&quot;
-echo &quot;Instantiated and started: ${INSTANCE_NAME}&quot;</code></pre>
-<p>Verify that the fortune server app runs with the expected blessing name, <code>tutorial/fortune</code>:
+echo &quot;Instantiated and started: ${INSTANCE_NAME}&quot;
+</code></pre><p>Verify that the fortune server app runs with the expected blessing name, <code>tutorial/fortune</code>:
 <!-- @identifyFortune @test --></p>
-<pre><code>&quot;${V_BIN}/vrpc&quot; identify &quot;/localhost:$PORT_MT/myFortunes&quot;</code></pre>
-<p>At this point, you can look at the log files from your server. To see what log files are available:
+<pre><code>&quot;${V_BIN}/vrpc&quot; identify &quot;/localhost:$PORT_MT/myFortunes&quot;
+</code></pre><p>At this point, you can look at the log files from your server. To see what log files are available:
 <!-- @listLogFiles @test --></p>
-<pre><code> ${V_BIN}/namespace glob &quot;${INSTANCE_NAME}/logs/*&quot;</code></pre>
-<p>You can use <em>debug logs read</em> to read any of these files. For example:
+<pre><code> ${V_BIN}/namespace glob &quot;${INSTANCE_NAME}/logs/*&quot;
+</code></pre><p>You can use <em>debug logs read</em> to read any of these files. For example:
 <!-- @readLogFiles @test --></p>
 <pre><code>LOGFILE=`${V_BIN}/namespace glob &quot;${INSTANCE_NAME}/logs/STDOUT-*&quot;`
-${V_BIN}/debug logs read $LOGFILE</code></pre>
-<h1 id="run-the-client">Run the client</h1>
+${V_BIN}/debug logs read $LOGFILE
+</code></pre><h1 id="run-the-client">Run the client</h1>
 <p>As in the <a href="/tutorials/basics.html">basics tutorial</a>, use the client to make a call to the server:</p>
-<p><!-- @fortuneClient @test --></p>
-<pre><code>&quot;${V_TUT}/bin/client&quot; --server &quot;/localhost:$PORT_MT/myFortunes&quot;</code></pre>
-<h1 id="cleanup">Cleanup</h1>
-<p><!-- @deviceManagerCleanup @test --></p>
+<!-- @fortuneClient @test -->
+<pre><code>&quot;${V_TUT}/bin/client&quot; --server &quot;/localhost:$PORT_MT/myFortunes&quot;
+</code></pre><h1 id="cleanup">Cleanup</h1>
+<!-- @deviceManagerCleanup @test -->
 <pre><code>&quot;${V_BIN}/device&quot; kill &quot;${INSTANCE_NAME}&quot;
 &quot;${V_BIN}/deviced&quot; stop
-&quot;${V_BIN}/deviced&quot; uninstall --suid_helper=&quot;${V_BIN}/suidhelper&quot;</code></pre>
-<h1 id="summary">Summary</h1>
+&quot;${V_BIN}/deviced&quot; uninstall --suid_helper=&quot;${V_BIN}/suidhelper&quot;
+</code></pre><h1 id="summary">Summary</h1>
 <p>You set up a device manager on your computer, and used the <code>device</code> command-line
 tool to install and start an application on it.</p>
 

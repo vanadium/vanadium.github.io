@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Tutorial Environment Setup - Vanadium</title>
   
@@ -156,7 +166,7 @@ you&#39;ll implicitly run the script on this page, and you&#39;ll run commands f
 earlier tutorials that create the <em>files</em> needed by your current tutorial.</p>
 <p>A second terminal won&#39;t need to recreate the files, but will need the <a href="/tutorials/faq.html#why-bash-">bash</a>
 environment defined below.</p>
-<p><!-- @envVars @buildjs @test @testui @completer --></p>
+<!-- @envVars @buildjs @test @testui @completer -->
 <pre><code># If JIRI_ROOT or V23_RELEASE are not defined, set them to the default values
 # from the installation instructions and hope for the best.
 
@@ -176,12 +186,10 @@ export V_BIN=${V23_RELEASE}/bin
 # code created as a result of doing the tutorials. To avoid trouble with
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
-if [ -n &quot;$V23_GOPATH&quot; ]; then
-  # Use the contributor&#39;s GOPATH rather than the release. See ../testing.md.
-  export GOPATH=$V_TUT:${V23_GOPATH}
-else
-  export GOPATH=$V_TUT:`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+if [ -z &quot;$V23_GOPATH&quot; ]; then
+  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
 fi
+export GOPATH=$V_TUT:${V23_GOPATH}
 
 # HISTCONTROL set as follows excludes long file creation commands used in
 # tutorials from your shell history.
@@ -195,8 +203,8 @@ function kill_tut_process() {
     wait $pid || true
     eval unset $1
   fi
-}</code></pre>
-
+}
+</code></pre>
     </main>
     <nav class="previous-next">
       <a href="/tutorials/hello-world.html" class="next">

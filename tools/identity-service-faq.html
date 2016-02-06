@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Vanadium Identity Service - Vanadium</title>
   
@@ -143,14 +153,14 @@
 
       <div class="toc"></div>
 
-      <p>The Vanadium Identity Service is a cloud service that is a <a href="../glossary.html#blessing-root">blessing root</a> for
+      <p>The Vanadium Identity Service is a cloud service that is a <a href="/glossary.html#blessing-root">blessing root</a> for
 blessing names that begin with <code>dev.v.io</code>. Applications can choose to
-<a href="../glossary.html#blessing-root">recognize</a> the authority of this service in order to broker
-authentication between different <a href="../glossary.html#principal">principals</a> that the application communicates
+<a href="/glossary.html#blessing-root">recognize</a> the authority of this service in order to broker
+authentication between different <a href="/glossary.html#principal">principals</a> that the application communicates
 with.</p>
 <p>The web interface for this service is accessible at <a href="https://dev.v.io/auth">https://dev.v.io/auth</a> and
 the design of this service (along with how to obtain a blessing from it) is
-described in <a href="../designdocs/identity-service.html">this document</a>.</p>
+described in <a href="/designdocs/identity-service.html">this document</a>.</p>
 <p>Some frequently asked questions about this service follow.</p>
 <h1 id="what-information-is-stored-by-the-service-">What information is stored by the service?</h1>
 <p>In order to obtain a blessing from this service, one must sign-in using their
@@ -188,14 +198,14 @@ have to be re-issued.</li>
 <p>This choice of default may be revisited based on user feedback.</p>
 <h1 id="what-information-is-provided-to-this-service-on-discharge-requests-">What information is provided to this service on discharge requests?</h1>
 <p>Use of the revocation caveat implies that the granted blessing is valid only
-when accompanied with a <a href="../glossary.html#discharge">discharge</a> issued by the identity service. This means
+when accompanied with a <a href="/glossary.html#discharge">discharge</a> issued by the identity service. This means
 that use of the blessing requires a periodic RPC to the identity service in
 order to obtain the discharge. This request to obtain a discharge only
 sends information about the caveat, no information on why the discharge is
 being requested is sent to this service.</p>
 <h1 id="what-are-the-terms-of-service-for-using-the-vanadium-identity-service-">What are the terms of service for using the Vanadium Identity Service?</h1>
 <p>Use of this service (including obtaining a blessing from it or listing
-blessings obtained from it) is subject to the <a href="../tos.html">terms of service</a> of all cloud
+blessings obtained from it) is subject to the <a href="/tos.html">terms of service</a> of all cloud
 services hosted at v.io.</p>
 <h1 id="where-can-i-find-the-code-that-backs-this-service-">Where can I find the code that backs this service?</h1>
 <p><a href="https://github.com/vanadium/go.ref/services/identity/identityd/main.go">https://github.com/vanadium/go.ref/services/identity/identityd/main.go</a></p>

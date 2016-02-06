@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Security - Vanadium</title>
   
@@ -206,7 +216,7 @@ the network and are used only for digital signing operations.</p>
 <h1 id="mutual-authentication">Mutual authentication</h1>
 <p>Clients and servers in a Vanadium remote procedure call (RPC) always act on
 behalf of a principal, and mutually authenticate each other via blessings bound
-to the other end&#39;s principal.  The <a href="../designdocs/authentication.html">Vanadium authentication protocol</a> allows
+to the other end&#39;s principal.  The <a href="/designdocs/authentication.html">Vanadium authentication protocol</a> allows
 clients and servers to exchange blessings bound to them, and verify that the
 other end possesses the private counterpart of the public key to which their
 blessings are bound.  At the end of the protocol, an encrypted channel is
@@ -339,7 +349,7 @@ selectively share blessings with appropriate peers.</p>
 <p>All blessings for a principal are stored in a <em>blessing store</em>, akin to a
 cookie jar in web browsers. The store marks the blessings to be presented when
 acting as a server (and a server always reveals its blessings first as per the
-<a href="../designdocs/authentication.html">Vanadium authentication protocol</a>). Clients select a subset of their blessings
+<a href="/designdocs/authentication.html">Vanadium authentication protocol</a>). Clients select a subset of their blessings
 from the store to share with a server based on the blessing names of the
 server.</p>
 <p>For example, Bob&#39;s blessing store can add the blessing <code>alice:houseguest:bob</code>
@@ -423,13 +433,13 @@ being able to specify arbitrary caveats in the access list).</p>
 </ul>
 </li>
 <li><p><strong>What are the privacy implications of exchanging blessings using the
-<a href="../designdocs/authentication.html">Vanadium authentication protocol</a>? </strong></p>
+<a href="/designdocs/authentication.html">Vanadium authentication protocol</a>? </strong></p>
 <p>Blessings can often contain <a href="http://en.wikipedia.org/wiki/Personally_identifiable_information">personally identifiable information</a> such as
 usernames and email addresses, and therefore revealing them to unauthorized
 parties poses a privacy risk. (Note that revealing blessings to unauthorized parties
 does not pose a security or authorization risk as the blessings can
 only be used by the principal they are bound to.)</p>
-<p>The <a href="../designdocs/authentication.html">Vanadium authentication protocol</a> ensures that blessings are always exchanged
+<p>The <a href="/designdocs/authentication.html">Vanadium authentication protocol</a> ensures that blessings are always exchanged
 over an encrypted channel and thus are protected from passive eavesdroppers.
 Protecting blessings from active attackers -- ones that can pose as a
 legitimate peer to the client or the server -- is more challenging. The protocol protects

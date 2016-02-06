@@ -119,20 +119,16 @@ main() {
 
   trap "rm -rf ${JIRI_ROOT}" INT TERM EXIT
 
-  # Create initial directories.
-  must run mkdir -p "${JIRI_ROOT}/devtools/bin"
+  # Run the jiri_bootstrap script.
+  curl -f -s https://raw.githubusercontent.com/vanadium/go.jiri/master/scripts/bootstrap_jiri | bash -s $JIRI_ROOT
 
-  # Clone the manifest repository.
-  retry run git clone https://vanadium.googlesource.com/manifest "${JIRI_ROOT}/.manifest"
+  # Import the Vanadium public manifest.
+  pushd $JIRI_ROOT
+  $JIRI_ROOT/.jiri_root/bin/jiri import -name=manifest public https://vanadium.googlesource.com/manifest
 
-  # Get and install the jiri tool.
-  GOPATH="${JIRI_ROOT}/tmp" retry run go get -d v.io/jiri
-  GOPATH="${JIRI_ROOT}/tmp" must run go build -o "${JIRI_ROOT}/devtools/bin/jiri" v.io/jiri
-  rm -rf "${JIRI_ROOT}/tmp"
-
-  # Install all Vanadium repositories and tools.
-  local -r VANADIUM_MANIFEST="${VANADIUM_MANIFEST:-default}"
-  retry "${JIRI_ROOT}/devtools/bin/jiri" update -manifest="${VANADIUM_MANIFEST}"
+  # Sync the Vanadium projects locally.
+  retry $JIRI_ROOT/.jiri_root/bin/jiri update
+  popd
 
   echo "Recommended for contributors:"
   echo "Add ${JIRI_ROOT}/devtools/bin to your PATH."

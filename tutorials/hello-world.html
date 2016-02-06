@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Hello World - Vanadium</title>
   
@@ -171,8 +181,8 @@ happening here in more detail, and take you much further into
 <p>When they do so, the tutorials create files in <code>$V_TUT</code> (likely
 <code>$HOME/v23_tutorial</code>):
 <!-- @displayVTut @test --></p>
-<pre><code>echo $V_TUT</code></pre>
-<p>The initial tutorials use Go language examples, but
+<pre><code>echo $V_TUT
+</code></pre><p>The initial tutorials use Go language examples, but
 <a href="/tutorials/faq.html#do-i-need-to-know-go-">you don&#39;t need to know Go</a> to do them.</p>
 <p>Since Vanadium is a distributed computing framework, its simplest demo
 requires two programs - a <em>server</em> and a <em>client</em>.</p>
@@ -181,7 +191,7 @@ requires two programs - a <em>server</em> and a <em>client</em>.</p>
 <p>The following command (read more about <code>cat</code> usage <a href="/tutorials/faq.html#where-is-the-source-code-">here</a>) creates a <a href="/glossary.html#vanadium-definition-language-vdl-">Vanadium Definition
 Language</a> file defining a <em>Hello</em>
 service:</p>
-<p><!-- @defineService @test @completer --></p>
+<!-- @defineService @test @completer -->
 <pre><code>mkdir -p $V_TUT/src/hello/ifc
  cat - &lt;&lt;EOF &gt;$V_TUT/src/hello/ifc/hello.vdl
 package ifc
@@ -190,20 +200,20 @@ type Hello interface {
   // Returns a greeting.
   Get() (greeting string | error)
 }
-EOF</code></pre>
-<h2 id="stub-code">Stub code</h2>
+EOF
+</code></pre><h2 id="stub-code">Stub code</h2>
 <p>Use the <code>hello.vdl</code> file to generate Go code describing the hello
 interface.  It will soon be linked into a client and server.</p>
-<p><!-- @compileInterface @test @completer --></p>
+<!-- @compileInterface @test @completer -->
 <pre><code>VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
-    $V_BIN/vdl generate --lang go $V_TUT/src/hello/ifc</code></pre>
-<p>You can see the newly generated file here:
+    $V_BIN/vdl generate --lang go $V_TUT/src/hello/ifc
+</code></pre><p>You can see the newly generated file here:
 <!-- @compileInterface @test --></p>
-<pre><code>ls $V_TUT/src/hello/ifc</code></pre>
-<h2 id="implementation">Implementation</h2>
+<pre><code>ls $V_TUT/src/hello/ifc
+</code></pre><h2 id="implementation">Implementation</h2>
 <p>The following implements the Hello interface:</p>
-<p><!-- @serviceImpl @test @completer --></p>
+<!-- @serviceImpl @test @completer -->
 <pre><code>mkdir -p $V_TUT/src/hello/service
  cat - &lt;&lt;EOF &gt;$V_TUT/src/hello/service/service.go
 package service
@@ -225,10 +235,10 @@ func (f *impl) Get(_ *context.T, _ rpc.ServerCall) (
     greeting string, err error) {
   return &quot;Hello World!&quot;, nil
 }
-EOF</code></pre>
-<h2 id="build-the-server">Build the server</h2>
+EOF
+</code></pre><h2 id="build-the-server">Build the server</h2>
 <p>Service in hand, we need an executable to serve it on the network.</p>
-<p><!-- @server @test @completer --></p>
+<!-- @server @test @completer -->
 <pre><code>mkdir -p $V_TUT/src/hello/server
  cat - &lt;&lt;EOF &gt;$V_TUT/src/hello/server/main.go
 package main
@@ -252,13 +262,13 @@ func main() {
   &lt;-signals.ShutdownOnSignals(ctx)  // Wait forever.
 }
 EOF
-go install hello/server</code></pre>
-<p>Your server binary is here:
+go install hello/server
+</code></pre><p>Your server binary is here:
 <!-- @checkTheBinary @test --></p>
-<pre><code>ls $V_TUT/bin</code></pre>
-<h1 id="make-a-client">Make a client</h1>
+<pre><code>ls $V_TUT/bin
+</code></pre><h1 id="make-a-client">Make a client</h1>
 <p>This client is short-lived; it starts, makes a call, then exits.</p>
-<p><!-- @client @test @completer --></p>
+<!-- @client @test @completer -->
 <pre><code>mkdir -p $V_TUT/src/hello/client
  cat - &lt;&lt;EOF &gt;$V_TUT/src/hello/client/main.go
 package main
@@ -288,35 +298,35 @@ func main() {
   fmt.Println(hello)
 }
 EOF
-go install hello/client</code></pre>
-<h1 id="make-a-principal">Make a principal</h1>
+go install hello/client
+</code></pre><h1 id="make-a-principal">Make a principal</h1>
 <p>All communication in Vanadium is authenticated, meaning both sides
 must recognize each other&#39;s identity.  In this initial example we&#39;ll
 cheat a bit - we&#39;ll define just one identity (called a <strong>principal</strong>),
 then use it for <em>both</em> the client and server.</p>
 <p>Create a principal called <code>tutorial</code>:</p>
-<p><!-- @principalTutorial @test --></p>
+<!-- @principalTutorial @test -->
 <pre><code>$V_BIN/principal create \
-    --overwrite $V_TUT/cred/basics tutorial</code></pre>
-<h1 id="run-your-code">Run your code</h1>
+    --overwrite $V_TUT/cred/basics tutorial
+</code></pre><h1 id="run-your-code">Run your code</h1>
 <p>Start the server:</p>
-<p><!-- @runServerAsPrincipal @test @sleep --></p>
+<!-- @runServerAsPrincipal @test @sleep -->
 <pre><code>PORT_HELLO=23000  # Pick an unused port.
 kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/basics \
     --v23.tcp.address :$PORT_HELLO &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Run the client to get a hello:</p>
-<p><!-- @runClientAsPrincipal @test --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Run the client to get a hello:</p>
+<!-- @runClientAsPrincipal @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/basics \
-    --server /localhost:$PORT_HELLO</code></pre>
-<p>That&#39;s it - you&#39;ve built and run your first Vanadium apps.</p>
+    --server /localhost:$PORT_HELLO
+</code></pre><p>That&#39;s it - you&#39;ve built and run your first Vanadium apps.</p>
 <h1 id="clean-up">Clean up</h1>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="summary">Summary</h1>
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>You created a server hosting a Hello service on a fixed port defined
 using VDL, then used the service from a command line client.</p>

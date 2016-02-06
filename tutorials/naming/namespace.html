@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Namespaces - Vanadium</title>
   
@@ -161,45 +171,45 @@ All tutorials require Vanadium <a href="/installation/">installation</a>, and mu
       <h1 id="introduction">Introduction</h1>
 <p>As done in the mount table tutorial, this tutorial will use just
 <a href="/tutorials/naming/mount-table.html#credentials">one set of credentials</a> for all processes:</p>
-<p><!-- @setCredentials @test --></p>
-<pre><code>export V23_CREDENTIALS=$V_TUT/cred/basics</code></pre>
-<p>This tutorial will use three distinct mount table servers, named
+<!-- @setCredentials @test -->
+<pre><code>export V23_CREDENTIALS=$V_TUT/cred/basics
+</code></pre><p>This tutorial will use three distinct mount table servers, named
 <code>HOME</code>, <code>METERS</code> and <code>UTILITY</code>.  These names are in uppercase to
 distinguish them from service names used in table entries, where we&#39;ll
 stick with a lowercase convention.</p>
 <p>Start <code>HOME</code> first:</p>
-<p><!-- @startTableHome @test @sleep --></p>
+<!-- @startTableHome @test @sleep -->
 <pre><code>PORT_MT_HOME=23000  # Pick an unused port.
 kill_tut_process TUT_PID_MT_HOME
 $V_BIN/mounttabled --v23.tcp.address :$PORT_MT_HOME &amp;
-TUT_PID_MT_HOME=$!</code></pre>
-<p>Start a fortune server:</p>
-<p><!-- @startFortune @test @sleep --></p>
+TUT_PID_MT_HOME=$!
+</code></pre><p>Start a fortune server:</p>
+<!-- @startFortune @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --endpoint-file-name $V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Add the fortune server to table <code>HOME</code>, and for reasons explained
+TUT_PID_SERVER=$!
+</code></pre><p>Add the fortune server to table <code>HOME</code>, and for reasons explained
 below, call it <code>television</code>:</p>
-<p><!-- @mountFortune @test --></p>
+<!-- @mountFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    mount television `cat $V_TUT/server.txt` 2h</code></pre>
-<h1 id="table-in-a-table">Table in a table</h1>
+    mount television `cat $V_TUT/server.txt` 2h
+</code></pre><h1 id="table-in-a-table">Table in a table</h1>
 <p>Like any Vanadium service, a mount table can be mounted in a mount
 table.</p>
 <p>Start table <code>METERS</code>:</p>
-<p><!-- @startTableMeters @test @sleep --></p>
+<!-- @startTableMeters @test @sleep -->
 <pre><code>PORT_MT_METERS=$(( $PORT_MT_HOME + 1 ))
 kill_tut_process TUT_PID_MT_METERS
 $V_BIN/mounttabled --v23.tcp.address :$PORT_MT_METERS &amp;
-TUT_PID_MT_METERS=$!</code></pre>
-<p>Mount it in table <code>HOME</code> at the name <code>meters</code>:</p>
-<p><!-- @tableInATable @test --></p>
+TUT_PID_MT_METERS=$!
+</code></pre><p>Mount it in table <code>HOME</code> at the name <code>meters</code>:</p>
+<!-- @tableInATable @test -->
 <pre><code>$V_BIN/mounttable \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    mount meters /localhost:$PORT_MT_METERS 2h M</code></pre>
-<p>The trailing <code>M</code> sets a bit in the mount table noting that this
+    mount meters /localhost:$PORT_MT_METERS 2h M
+</code></pre><p>The trailing <code>M</code> sets a bit in the mount table noting that this
 particular service happens to be a table.</p>
 <div class="note info"><p><code>mounttable</code> and <code>namespace</code> are distinct tools with <em>almost</em> the same
 abilities (see their help).  The <code>mounttable</code> tool doesn&#39;t
@@ -208,42 +218,42 @@ The <code>namespace</code> tool behaves more like a normal Vanadium client.</p>
 </div>
 
 <p>The <code>HOME</code> table now has two entries, <code>meters</code> and <code>television</code>:</p>
-<p><!-- @firstGlobOfHome @test --></p>
+<!-- @firstGlobOfHome @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    glob &#39;*&#39;</code></pre>
-<p>That exercises the basic commands needed to manipulate namespace.</p>
+    glob &#39;*&#39;
+</code></pre><p>That exercises the basic commands needed to manipulate namespace.</p>
 <h1 id="namespace-construction">Namespace construction</h1>
 <p>The <code>METERS</code> table is empty right now, so lets add two services to it.
 To save time, reuse the fortune service that&#39;s already running.  New,
 distinct instances wouldn&#39;t make any difference to this example.</p>
 <p>Mount the services as <code>gas</code> and <code>electric</code> in the <code>METERS</code> table:</p>
-<p><!-- @mountGas @test --></p>
+<!-- @mountGas @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_METERS \
-    mount gas `cat $V_TUT/server.txt` 2h</code></pre>
-<p><!-- @mountElectricFortune @test --></p>
+    mount gas `cat $V_TUT/server.txt` 2h
+</code></pre><!-- @mountElectricFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_METERS \
-    mount electric `cat $V_TUT/server.txt` 2h</code></pre>
-<p>The namespace you&#39;ve built is represented here:</p>
+    mount electric `cat $V_TUT/server.txt` 2h
+</code></pre><p>The namespace you&#39;ve built is represented here:</p>
 <p><img src="/images/tut/namespace-home-simple.svg" alt="The HOME namespace"></p>
 <p>Query the <code>HOME</code> table again, but this time
 stead of <code>*</code>, try <code>...</code> as an argument to <code>namespace glob</code>:</p>
-<p><!-- @queryTableInATable @test --></p>
+<!-- @queryTableInATable @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    glob &#39;...&#39;</code></pre>
-<p>This shows <code>television</code>, <code>meters</code>, <code>meters/gas</code> and <code>meters/electric</code>
+    glob &#39;...&#39;
+</code></pre><p>This shows <code>television</code>, <code>meters</code>, <code>meters/gas</code> and <code>meters/electric</code>
 along with endpoints.</p>
 <p>This means services available as root names to clients of <code>METERS</code> are
 now also available to clients of <code>HOME</code>.  For example, you can read
 the <code>gas</code> meter via the <code>HOME</code> table:</p>
-<p><!-- @fortuneNestedInTable @test --></p>
+<!-- @fortuneNestedInTable @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    --server meters/gas</code></pre>
-<p>Your television could display data from <code>meters/gas</code> or <code>meters/electric</code>.
+    --server meters/gas
+</code></pre><p>Your television could display data from <code>meters/gas</code> or <code>meters/electric</code>.
 Likewise, other services like <code>mediaServer</code> and <code>doorLock</code> can be
 mounted in your <code>HOME</code>, making them discoverable by the <code>television</code>.
 The <code>HOME</code> table is your home&#39;s <strong>namespace root</strong>.</p>
@@ -254,11 +264,11 @@ also be done with a single mount table, like this:</p>
 <p>That is, we could have omitted the <code>METERS</code> table entirely, and
 mounted the service in <code>HOME</code> at the name <code>meters/gas</code> with this
 alternative to the command used above (<strong>don&#39;t do this now!</strong>):</p>
-<p><!-- @mountElectricFortune @test --></p>
+<!-- @mountElectricFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    mount meters/gas `cat $V_TUT/server.txt` 2h</code></pre>
-<p>The trick is simply to use the special delimiter <code>/</code> directly in a
+    mount meters/gas `cat $V_TUT/server.txt` 2h
+</code></pre><p>The trick is simply to use the special delimiter <code>/</code> directly in a
 name.</p>
 <p>One might do this for the same reason one would group files in
 particular folders on a computer, but it means giving up the ability
@@ -269,18 +279,18 @@ section.</p>
 in a city-wide utility company table under your account number
 <code>12345</code>.</p>
 <p>Let&#39;s start another table <code>UTILITY</code>:</p>
-<p><!-- @startTableUtility @test @sleep --></p>
+<!-- @startTableUtility @test @sleep -->
 <pre><code>PORT_MT_UTILITY=$(( $PORT_MT_METERS + 1 ))
 kill_tut_process TUT_PID_MT_UTILITY
 $V_BIN/mounttabled --v23.tcp.address :$PORT_MT_UTILITY &amp;
-TUT_PID_MT_UTILITY=$!</code></pre>
-<p>Now mount your <code>METERS</code> in it, at a particular account number
+TUT_PID_MT_UTILITY=$!
+</code></pre><p>Now mount your <code>METERS</code> in it, at a particular account number
 <code>12345</code>:</p>
-<p><!-- @mountMetersInUtility @test --></p>
+<!-- @mountMetersInUtility @test -->
 <pre><code>$V_BIN/mounttable \
     --v23.namespace.root /localhost:$PORT_MT_UTILITY \
-    mount 12345 /localhost:$PORT_MT_METERS 5h M</code></pre>
-<p>The utility company can see the table you call <code>METERS</code> as an account
+    mount 12345 /localhost:$PORT_MT_METERS 5h M
+</code></pre><p>The utility company can see the table you call <code>METERS</code> as an account
 number <code>12345</code> - and the utility can see its children <code>gas</code> and
 <code>electric</code>.</p>
 <p>The utility company has no pointer to your <code>mediaServer</code> or other home
@@ -293,36 +303,36 @@ software under your control) would mount appropriate public tables
 locally.  That way your <code>television</code> can discover
 <code>GOOGLE/PLAY/MOVIES/starwars</code> (after <code>GOOGLE</code> is mounted locally).</p>
 <p>As an example of this, mount the <code>UTILITIES</code> table in <code>HOME</code>:</p>
-<p><!-- @mountUtilitiesInHome @test --></p>
+<!-- @mountUtilitiesInHome @test -->
 <pre><code>$V_BIN/mounttable \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    mount cityUtilities /localhost:$PORT_MT_UTILITY 5h M</code></pre>
-<p><img src="/images/tut/namespace-home-extended.svg" alt="The HOME namespace"></p>
+    mount cityUtilities /localhost:$PORT_MT_UTILITY 5h M
+</code></pre><p><img src="/images/tut/namespace-home-extended.svg" alt="The HOME namespace"></p>
 <p>Now, your television could display your gas usage by hitting the name
 <code>METERS/gas</code> (done above) or by hitting the name
 <code>cityUtilities/12345/gas</code>:</p>
-<p><!-- @readGas @test --></p>
+<!-- @readGas @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    --server cityUtilities/12345/gas</code></pre>
-<h1 id="cycles-ok">Cycles OK</h1>
+    --server cityUtilities/12345/gas
+</code></pre><h1 id="cycles-ok">Cycles OK</h1>
 <p>The fact that your gas meter is available via two distinct paths
 raises the question of cycles.  Cycles aren&#39;t prohibited.</p>
 <p>To see what happens, mount the <code>UTILITY</code> table in the <code>METERS</code> table
 with a short name <code>x</code>:</p>
-<p><!-- @mountUtilityInMeters @test --></p>
+<!-- @mountUtilityInMeters @test -->
 <pre><code>$V_BIN/mounttable \
     --v23.namespace.root /localhost:$PORT_MT_METERS \
-    mount x /localhost:$PORT_MT_UTILITY 5h M</code></pre>
-<p>Now read your gas meter via a name with cycles:</p>
-<p><!-- @longName @test --></p>
+    mount x /localhost:$PORT_MT_UTILITY 5h M
+</code></pre><p>Now read your gas meter via a name with cycles:</p>
+<!-- @longName @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    --server meters/x/12345/x/12345/x/12345/x/12345/gas</code></pre>
-<p>Infinite cycles in namespace resolution are prevented by counting steps
+    --server meters/x/12345/x/12345/x/12345/x/12345/gas
+</code></pre><p>Infinite cycles in namespace resolution are prevented by counting steps
 (there&#39;s an upper limit on the <code>/</code> count in any name).</p>
 <p>Use <code>namespace resolve</code> to see that you&#39;re accessing the same service:</p>
-<p><!-- @moreResolving @test --></p>
+<!-- @moreResolving @test -->
 <pre><code>name1=$($V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
     resolve meters/x/12345/x/12345/x/12345/x/12345/gas)
@@ -330,25 +340,25 @@ name2=$($V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_METERS \
     resolve gas)
 echo &quot;These should match:&quot;
-echo -e &quot;$name1\n$name2&quot;</code></pre>
-<p>Of course <code>television</code> will also resolve to this name because we&#39;re
+echo -e &quot;$name1\n$name2&quot;
+</code></pre><p>Of course <code>television</code> will also resolve to this name because we&#39;re
 reusing the same service.  Feel free to go back and start fresh server
 instances for <code>gas</code> and <code>electric</code> and do the same commands to assure
 yourself that <code>gas</code> doesn&#39;t get confused with <code>electric</code> or
 <code>television</code>.</p>
 <p>Take a look all at the path expansions using <code>namespace glob ...</code>:</p>
-<p><!-- @queryTableInATable @test --></p>
+<!-- @queryTableInATable @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT_HOME \
-    glob &#39;...&#39;</code></pre>
-<h1 id="cleanup">Cleanup</h1>
-<p><!-- @cleanup @test --></p>
+    glob &#39;...&#39;
+</code></pre><h1 id="cleanup">Cleanup</h1>
+<!-- @cleanup @test -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 kill_tut_process TUT_PID_MT_HOME
 kill_tut_process TUT_PID_MT_METERS
 kill_tut_process TUT_PID_MT_UTILITY
-unset V23_CREDENTIALS</code></pre>
-<h1 id="summary">Summary</h1>
+unset V23_CREDENTIALS
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>The command-line client <code>mounttable</code> supplements <code>namespace</code> to
 perform general operations on an instance of <code>mounttabled</code>.</p>

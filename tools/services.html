@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Vanadium Cloud Services - Vanadium</title>
   
@@ -143,14 +153,14 @@
 
       <div class="toc"></div>
 
-      <p>While it&#39;s possible to run all Vanadium infrastructure services on your own we host several of them to ease development overhead. The following services are available to use and are often the default values for most configurations. All services listed here are covered by the the <a href="../tos.html">terms of service</a>.</p>
+      <p>While it&#39;s possible to run all Vanadium infrastructure services on your own we host several of them to ease development overhead. The following services are available to use and are often the default values for most configurations. All services listed here are covered by the the <a href="/tos.html">terms of service</a>.</p>
 <h1 id="mount-table">Mount table</h1>
-<p>The <a href="../glossary.html#mount-table">Mount table</a> is a service that allows other Vanadium applications to discover and address one another. To be discovered an application will mount itself at a &quot;name&quot; and other applications (clients) can then address the service.</p>
-<p>See also: <a href="../concepts/naming.html">Naming Concepts</a>, <a href="https://godoc.org/v.io/x/ref/services/mounttable"><code>mounttable</code> Go documentation</a></p>
+<p>The <a href="/glossary.html#mount-table">Mount table</a> is a service that allows other Vanadium applications to discover and address one another. To be discovered an application will mount itself at a &quot;name&quot; and other applications (clients) can then address the service.</p>
+<p>See also: <a href="/concepts/naming.html">Naming Concepts</a>, <a href="https://godoc.org/v.io/x/ref/services/mounttable"><code>mounttable</code> Go documentation</a></p>
 <h1 id="identity-service">Identity service</h1>
 <p>The Identity Service is an HTTP server that uses OAuth to create blessings. It allows users to &quot;login&quot; to a service and affords them the ability to generate and manage access credentials.
 Google runs such a service at <a href="https://dev.v.io/auth">https://dev.v.io/auth</a>.</p>
-<p>See also: <a href="../concepts/security.html">Security Concepts</a>, <a href="https://godoc.org/v.io/x/ref/services/identity/identityd">identityd Go documentation</a>, <a href="identity-service-faq.html">Identity service FAQ</a></p>
+<p>See also: <a href="/concepts/security.html">Security Concepts</a>, <a href="https://godoc.org/v.io/x/ref/services/identity/identityd">identityd Go documentation</a>, <a href="/tools/identity-service-faq.html">Identity service FAQ</a></p>
 <h1 id="proxy-service">Proxy service</h1>
 <p>The Proxy Service listens for connections from Vanadium services (typically behind NATs) and proxies these services to the outside world.</p>
 <p>See also: <a href="https://godoc.org/v.io/x/ref/services/proxy">proxy Go documentation</a></p>

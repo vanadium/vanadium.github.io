@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Globber - Vanadium</title>
   
@@ -181,7 +191,7 @@ and directory names.</p>
 <h2 id="services">Services</h2>
 <p>Let&#39;s create two services: one for files, one for directories.</p>
 <h3 id="file-service">File service</h3>
-<p><!-- @newFileService @test @completer --></p>
+<!-- @newFileService @test @completer -->
 <pre><code> mkdir -p $V_TUT/src/fileserver
  cat - &lt;&lt;EOF &gt;$V_TUT/src/fileserver/file_service.go
 package main
@@ -203,13 +213,13 @@ func (s *fileService) GetContents(*context.T, rpc.ServerCall) ([]byte, error) {
 func (s *fileService) SetContents(*context.T, rpc.ServerCall, []byte) (error) {
   return errors.New(&quot;method not implemented&quot;)
 }
-EOF</code></pre>
-<p><strong>Code walk</strong></p>
+EOF
+</code></pre><p><strong>Code walk</strong></p>
 <p>Since we&#39;re not going to send any calls to the file service in this example, we
 leave it unimplemented.</p>
 <p>The directory service is the interesting part.</p>
 <h3 id="directory-service">Directory service</h3>
-<p><!-- @newDirService @test @completer --></p>
+<!-- @newDirService @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fileserver/dir_service.go
 package main
 
@@ -247,8 +257,8 @@ func (s *dirService) GlobChildren__(
   }
   return nil
 }
-EOF</code></pre>
-<p><strong>Code walk</strong></p>
+EOF
+</code></pre><p><strong>Code walk</strong></p>
 <p><code>GlobChildren__</code> is a special method that is automatically detected by the
 Vanadium infrastructure. It is called when the server receives a glob request,
 e.g. from a client using <code>namespace glob</code> to inspect the server&#39;s namespace.</p>
@@ -260,7 +270,7 @@ directory and sends the ones that match.</p>
 <code>GlobChildren__</code>.</p>
 <p>Let&#39;s add a custom dispatcher that uses our two services.</p>
 <h2 id="dispatcher">Dispatcher</h2>
-<p><!-- @newDispatcher @test @completer --></p>
+<!-- @newDispatcher @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fileserver/dispatcher.go
 package main
 
@@ -291,8 +301,8 @@ func (d *myDispatcher) Lookup(
     return &amp;fileService{path}, nil, nil
   }
 }
-EOF</code></pre>
-<p><strong>Code walk</strong></p>
+EOF
+</code></pre><p><strong>Code walk</strong></p>
 <p>This dispatcher maps the suffix to a file or directory on the local file system.
 If it is a file, <code>Lookup</code> returns a <code>fileService</code> object. If it is a directory,
 it returns a <code>dirService</code> object.</p>
@@ -303,7 +313,7 @@ will enforce that all the method arguments and return values have the types
 defined in the <a href="/glossary.html#vanadium-definition-language-vdl-">VDL</a> file. Adding a <a href="/glossary.html#vanadium-definition-language-vdl-">VDL</a> file is left as an exercise.</p>
 <p>All we need now is the <code>main</code> function.</p>
 <h2 id="main">main</h2>
-<p><!-- @newMain @test @completer --></p>
+<!-- @newMain @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fileserver/main.go
 package main
 
@@ -333,36 +343,36 @@ func main() {
   &lt;-signals.ShutdownOnSignals(ctx)
 }
 EOF
-go build fileserver</code></pre>
-<p><strong>Code walk</strong></p>
+go build fileserver
+</code></pre><p><strong>Code walk</strong></p>
 <p>The <code>main</code> function creates the vanadium server that serves our custom
 dispatcher.</p>
 <h1 id="try-it">Try it</h1>
 <p>Start a mount table.</p>
-<p><!-- @startMountTable @test @sleep --></p>
+<!-- @startMountTable @test @sleep -->
 <pre><code>PORT_MT=23000  # Pick an unused port.
 kill_tut_process TUT_PID_MT
 $V_BIN/mounttabled \
     --v23.credentials $V_TUT/cred/basics \
     --v23.tcp.address :$PORT_MT &amp;
 TUT_PID_MT=$!
-export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
-<p>Fire up the file server with its root directory set to &quot;$V_TUT&quot;:</p>
-<p><!-- @buildServer @test @completer --></p>
-<pre><code>go install fileserver</code></pre>
-<p><!-- @runServer @test @sleep --></p>
+export V23_NAMESPACE=/localhost:$PORT_MT
+</code></pre><p>Fire up the file server with its root directory set to &quot;$V_TUT&quot;:</p>
+<!-- @buildServer @test @completer -->
+<pre><code>go install fileserver
+</code></pre><!-- @runServer @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/fileserver \
     --v23.credentials $V_TUT/cred/basics \
     --mount-name my-file-server \
     --root-dir &quot;$V_TUT&quot; &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>Let&#39;s take a look at the server&#39;s namespace.</p>
-<p><!-- @glob @test --></p>
+TUT_PID_SERVER=$!
+</code></pre><p>Let&#39;s take a look at the server&#39;s namespace.</p>
+<!-- @glob @test -->
 <pre><code>$V_BIN/namespace \
     --v23.credentials $V_TUT/cred/basics \
-    glob &quot;my-file-server/...&quot;</code></pre>
-<p>All the files under &quot;$V_TUT&quot; are in the server&#39;s namespace.</p>
+    glob &quot;my-file-server/...&quot;
+</code></pre><p>All the files under &quot;$V_TUT&quot; are in the server&#39;s namespace.</p>
 <h1 id="exercises">Exercises</h1>
 <ol>
 <li><p>What would it take to modify the fortune server from <a href="/tutorials/naming/suffix-part1.html">The suffix - Part I</a>
@@ -379,11 +389,11 @@ etc.?</p>
 </li>
 </ol>
 <h1 id="cleanup">Cleanup</h1>
-<p><!-- @cleanup @test --></p>
+<!-- @cleanup @test -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 kill_tut_process TUT_PID_MT
-unset V23_NAMESPACE</code></pre>
-<h1 id="summary">Summary</h1>
+unset V23_NAMESPACE
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li>Services that can have children in the namespace need to implement
 the <code>GlobChildren__</code> method.</li>

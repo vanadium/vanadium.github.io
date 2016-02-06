@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Naming - Vanadium</title>
   
@@ -149,8 +159,8 @@ physical locations - with or without an internet connection.</p>
 <p>Vanadium names, usually abbreviated to &quot;<em>names</em>&quot; refer to objects.</p>
 <p>Objects implement RPC methods.  In other words, methods are invoked on
 object names. The basic primitive is thus:</p>
-<pre><code>name.method(args) -&gt; results</code></pre>
-<p>For example, if the name <code>/host:8080/a/y/foo.jpg</code> represents a JPEG file, then
+<pre><code>name.method(args) -&gt; results
+</code></pre><p>For example, if the name <code>/host:8080/a/y/foo.jpg</code> represents a JPEG file, then
 <code>/host:8080/a/y/foo.jpg.Get()</code> will return the contents of that file.</p>
 <p>Object names are hierarchical consisting of components separated by slashes (/).
 Glob patterns, as on Unix, are restricted to matching name components.</p>
@@ -198,7 +208,7 @@ will begin, thus overriding the root of the namespace asked to perform the
 resolution. This would allow <code>Client 2</code> to refer to <code>a</code> as <code>/ns1.v.io:8101/a</code>.
 The element immediately after the leading slash must be an address, either in
 <code>dnsname:port</code>, <code>ipv6:port</code>, or <code>ipv4:port</code> format, or in the Vanadium
-<a href="../glossary.html#endpoint">endpoint format</a> that encodes more detailed information about the
+<a href="/glossary.html#endpoint">endpoint format</a> that encodes more detailed information about the
 server supporting the object (such as protocol versions or a globally unique
 id). In all cases they provide a starting point in the <a href="http://en.wikipedia.org/wiki/Forest_(graph_theory)#forest">forest</a> of
 namespaces. The object addressed by that element can be another mount table or

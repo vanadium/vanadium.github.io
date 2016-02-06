@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Coding Guidelines - Vanadium</title>
   
@@ -144,8 +154,8 @@
       <div class="toc"></div>
 
       <h1 id="code-organization">Code organization</h1>
-<p>Vanadium is spread across multiple <a href="https://github.com/vanadium">git repositories</a>. The <a href="contributing.html#repositories">contributor
-installation</a> process arranges these repositories as follows (some repositories
+<p>Vanadium is spread across multiple <a href="https://github.com/vanadium">git repositories</a>. The [contributor
+installation] process arranges these repositories as follows (some repositories
 omitted, for brevity):</p>
 <pre><code> $JIRI_ROOT
    .manifest         # Multi-repo configuration data
@@ -163,8 +173,8 @@ omitted, for brevity):</p>
        browser       # Vanadium namespace browser
        chat          # Chat program
    third_party       # Third-party code
-   website           # Source for this site</code></pre>
-<p>Each repository has a <code>README.md</code> file summarizing its purpose. The <code>devtools</code>
+   website           # Source for this site
+</code></pre><p>Each repository has a <code>README.md</code> file summarizing its purpose. The <code>devtools</code>
 directory isn&#39;t a repository, but rather a top-level directory where contributor
 tools are placed during installation. The <code>.manifest</code> repository contains the
 configuration that describes this repository arrangement.</p>
@@ -175,7 +185,6 @@ TODO:
 - Suggestions for how to name things (hyphens vs. underscores).
 - Using optional arguments: variadic functions / varargs vs. Options structs.
 -->
-
 <h1 id="go">Go</h1>
 <p>Use <a href="https://golang.org/cmd/gofmt/">gofmt</a> and suggestions from <a href="http://golang.org/doc/effective_go.html">Effective Go</a>.</p>
 <h2 id="interfaces">Interfaces</h2>
@@ -201,15 +210,13 @@ is useful when trying to reproduce failures that may not occur when the
 random number generator is seeded differently.</li>
 </ul>
 <!-- TODO: Explain modules, expect, timekeeper? -->
-
 <!-- TODO: Describe dependency management (apis vs. impls, what can depend on
 what). -->
-
 <h1 id="vdl">VDL</h1>
 <p>The <code>devtools/bin/vdl</code> tool uses VDL files to generate files
-containing <a href="../glossary.html#remote-procedure-call-rpc-">RPC</a> stub code for various languages - Go, JavaScript,
+containing <a href="/glossary.html#remote-procedure-call-rpc-">RPC</a> stub code for various languages - Go, JavaScript,
 etc.</p>
-<p><a href="../glossary.html#vandium-definition-language-vdl-">VDL</a> is not Go, but is modeled after Go, so VDL code should follow
+<p><a href="/glossary.html#vandium-definition-language-vdl-">VDL</a> is not Go, but is modeled after Go, so VDL code should follow
 Go&#39;s style guidelines.</p>
 <p>VDL files have a <a href="https://golang.org/doc/code.html#PackagePaths">Go-like notion of packages</a>.  Go code
 generated from a VDL file must appear in a location that respects both
@@ -220,7 +227,6 @@ generated Go should be placed.</p>
 <h1 id="javascript">JavaScript</h1>
 <p>Follow the <a href="https://github.com/felixge/node-style-guide">Node.js Style Guide</a>. Use our <a href="https://github.com/vanadium/js/blob/master/.jshintrc">.jshintrc</a>.</p>
 <!-- TODO: Documentation generation (jsdoc). -->
-
 <h1 id="shell">Shell</h1>
 <p>We prefer Go programs over shell scripts for jobs traditionally given
 to shell scripts.</p>

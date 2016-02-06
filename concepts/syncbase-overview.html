@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Syncbase - Vanadium</title>
   
@@ -266,7 +276,7 @@ contains data from multiple syncgroups, peers will receive only the parts of the
 batch for which they are a member.</p>
 <h2 id="access-control">Access Control</h2>
 <p>Syncbase enables collaboration between multiple users, so it is important for it
-to have fine grained access control. Syncbase uses the <a href="security.html">Vanadium security model</a>
+to have fine grained access control. Syncbase uses the <a href="/concepts/security.html">Vanadium security model</a>
 for identification and authentication. The mechanisms for authorization vary by
 database type.</p>
 <h3 id="nosql-acls">NoSQL ACLs</h3>
@@ -277,12 +287,12 @@ related data and have new data automatically inherit the right ACL if possible.<
 TODO list might have a table like:</p>
 <pre><code>&lt;list uuid&gt;                -&gt; List
 &lt;list uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry
-&lt;list uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry</code></pre>
-<p>All entries in the list have a common prefix, making it easy to find all of the
+&lt;list uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry
+</code></pre><p>All entries in the list have a common prefix, making it easy to find all of the
 entries in the list. Because this list is fully collaborative, the developer
 would set a simple ACL like:</p>
-<pre><code>&lt;list uuid&gt; -&gt; {&lt;owner&gt;: Read, Write, Admin; &lt;friends&gt;: Read, Write}</code></pre>
-<p>All entries in the list would inherit this ACL. We expect that most apps will
+<pre><code>&lt;list uuid&gt; -&gt; {&lt;owner&gt;: Read, Write, Admin; &lt;friends&gt;: Read, Write}
+</code></pre><p>All entries in the list would inherit this ACL. We expect that most apps will
 use a single ACL for a group of related data, so we optimized for this case.</p>
 <p>There are also apps that will require finer-grained ACLs. For example, a blog
 might have a table like:</p>
@@ -290,14 +300,14 @@ might have a table like:</p>
 &lt;post uuid&gt;/comments/&lt;uuid&gt;                 -&gt; Comment
 &lt;post uuid&gt;/comments/&lt;uuid&gt;/comments/&lt;uuid&gt; -&gt; Comment
 &lt;post uuid&gt;/comments/&lt;uuid&gt;                 -&gt; Comment
-&lt;post uuid&gt;/comments/&lt;uuid&gt;                 -&gt; Comment</code></pre>
-<p>All comments on the Post have a key with a prefix of the Post&#39;s uuid. This makes
+&lt;post uuid&gt;/comments/&lt;uuid&gt;                 -&gt; Comment
+</code></pre><p>All comments on the Post have a key with a prefix of the Post&#39;s uuid. This makes
 it efficient to find all of the comments for the post. Comments on comments (row
 3) are similarly nested. The developer would set ACLs like:</p>
 <pre><code>&lt;post uuid&gt;                 -&gt; {&lt;author&gt;: Read, Write, Admin; &lt;friends&gt;: Read}
 &lt;post uuid&gt;/comments/       -&gt; {&lt;author&gt;: Read, Write, Admin; &lt;friends&gt;: Read, Insert}
-&lt;post uuid&gt;/comments/&lt;uuid&gt; -&gt; {&lt;friend&gt;: Read, Write, Admin; &lt;friends&gt;: Read}</code></pre>
-<h2 id="sql-acls">SQL ACLs</h2>
+&lt;post uuid&gt;/comments/&lt;uuid&gt; -&gt; {&lt;friend&gt;: Read, Write, Admin; &lt;friends&gt;: Read}
+</code></pre><h2 id="sql-acls">SQL ACLs</h2>
 <p><em>Lots TBD here. We&#39;re thinking that the developer would use a query to specify
 the ACL. This would mean that the ACL is dependent on the properties of the data
 (e.g. salesperson can see all customer data where Location = &quot;CA&quot;).</em></p>
@@ -340,9 +350,9 @@ database with rows like:</p>
 &lt;list1 uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry
 &lt;list2 uuid&gt;                -&gt; List
 &lt;list2 uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry
-&lt;list2 uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry</code></pre>
-<p>The app could then create two syncgroups: one with the prefix &quot;<list1 uuid>&quot; and
-another with the prefix &quot;<list2 uuid>&quot;. Another user&#39;s &quot;<list3 uuid>&quot; syncgroup
+&lt;list2 uuid&gt;/entries/&lt;uuid&gt; -&gt; Entry
+</code></pre><p>The app could then create two syncgroups: one with the prefix <code>&lt;list1 uuid&gt;</code> and
+another with the prefix <code>&lt;list2 uuid&gt;</code>. Another user&#39;s <code>&lt;list3 uuid&gt;</code> syncgroup
 could be added directly to this database. It is important that the developer use
 UUIDs to avoid conflicts. However, the system does not enforce that the
 developer use UUIDs because there are times when the developer might actually
@@ -384,8 +394,8 @@ or just &quot;folder2&quot;?</p>
 <pre><code>folder1
 folder1/doc1
 folder1/folder2
-folder1/folder2/doc2</code></pre>
-<p>We decided that the keys would be fully copied between the peers in the
+folder1/folder2/doc2
+</code></pre><p>We decided that the keys would be fully copied between the peers in the
 syncgroup (i.e. &quot;folder1/folder2&quot;).</p>
 <p>We recognize that these hierarchical folders are not a perfect fit for the NoSQL
 data model. Our goal is that the SQL database handles this much better.</p>

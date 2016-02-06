@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Permissions Authorizer - Vanadium</title>
   
@@ -180,7 +190,7 @@ write to her service but confine her friends to read operations only,
 which don&#39;t change state.</p>
 <p>To do so Alice defines two new tags, <em>Reader</em> and <em>Writer</em>, and adds
 them to the service VDL:</p>
-<p><!-- @fortuneInterfaceWithTags @test @completer --></p>
+<!-- @fortuneInterfaceWithTags @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/ifc/fortune.vdl
 package ifc
 
@@ -201,11 +211,11 @@ EOF
 VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
     $V_BIN/vdl generate --lang go $V_TUT/src/fortune/ifc
-go build fortune/ifc</code></pre>
-<p>To exploit this a <strong>new authorizer</strong> is needed - one
+go build fortune/ifc
+</code></pre><p>To exploit this a <strong>new authorizer</strong> is needed - one
 that honors permissions provided at the server
 command line:</p>
-<p><!-- @permissionsAuthorizer @test @completer --></p>
+<!-- @permissionsAuthorizer @test @completer -->
 <pre><code> cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/util/authorizer.go
 package util
 
@@ -232,11 +242,11 @@ func MakeAuthorizer() (authorizer security.Authorizer) {
 }
 EOF
 
-go install fortune/server</code></pre>
-<h2 id="a-specific-permissions-map">A specific permissions map</h2>
+go install fortune/server
+</code></pre><h2 id="a-specific-permissions-map">A specific permissions map</h2>
 <p>Now restart the server with a <em>permissions map</em> that
 allows <strong>family</strong> to read and write and <strong>friends</strong> to read only:</p>
-<p><!-- @startServerWithPerms @test @sleep --></p>
+<!-- @startServerWithPerms @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
@@ -244,8 +254,8 @@ $V_TUT/bin/server \
     --perms &#39;{&quot;R&quot;: {&quot;In&quot;: [&quot;alice:family&quot;,
                            &quot;alice:friend&quot;]},
               &quot;W&quot;: {&quot;In&quot;: [&quot;alice:family&quot;]}}&#39; &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>This takes the form of a map.  The keys are the service method labels
+TUT_PID_SERVER=$!
+</code></pre><p>This takes the form of a map.  The keys are the service method labels
 (<code>R</code> is an abbreviation for <code>Reader</code>, a label on <code>Get</code>), and the
 values are lists of blessing patterns.  Principals with blessings matching
 a pattern in the &#39;In&#39; list can make the call.  An optional list called
@@ -260,33 +270,33 @@ exactly by the name <code>alice:houseguest</code>.</p>
 <h2 id="impact-on-bob-and-carol">Impact on Bob and Carol</h2>
 <p>You can quickly confirm that Bob (already <a href="/tutorials/security/principals-and-blessings.html#blessings">blessed as a
 <code>friend</code></a>) can read:</p>
-<p><!-- @bobCanRead @test --></p>
+<!-- @bobCanRead @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>But Bob cannot write (he&#39;s not family):</p>
-<p><!-- @bobCannotWrite --></p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>But Bob cannot write (he&#39;s not family):</p>
+<!-- @bobCannotWrite -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Bob is awesome.&#39;</code></pre>
-<p>Introduce Carol:</p>
-<p><!-- @createCarol @test @completer --></p>
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/carol carol</code></pre>
-<p>At this point no request from Carol will succeed because Carol is
+    --add &#39;Bob is awesome.&#39;
+</code></pre><p>Introduce Carol:</p>
+<!-- @createCarol @test @completer -->
+<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/carol carol
+</code></pre><p>At this point no request from Carol will succeed because Carol is
 unknown to Alice.</p>
 <p>Suppose Carol is Alice&#39;s sister and Alice gives Carol the blessing
 <code>alice:family:sister</code>:</p>
-<p><!-- @aliceBlessCarolAsSister @test @completer --></p>
+<!-- @aliceBlessCarolAsSister @test @completer -->
 <pre><code>$V_BIN/principal bless \
     --v23.credentials $V_TUT/cred/alice \
     --for=24h $V_TUT/cred/carol family:sister | \
         $V_BIN/principal set \
             --v23.credentials $V_TUT/cred/carol \
-            forpeer - alice</code></pre>
-<p>Now that Carol is seen as part of the family she&#39;ll be able to invoke
+            forpeer - alice
+</code></pre><p>Now that Carol is seen as part of the family she&#39;ll be able to invoke
 both <code>Get</code> and <code>Add</code>:</p>
-<p><!-- @clientIsCarol @test --></p>
+<!-- @clientIsCarol @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/carol \
     --server `cat $V_TUT/server.txt`
@@ -294,12 +304,12 @@ both <code>Get</code> and <code>Add</code>:</p>
 $V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/carol \
     --server `cat $V_TUT/server.txt` \
-    --add &#39;Eat kale.&#39;</code></pre>
-<p><img src="/images/tut/security04-alice-carol-succeed-bob-fails.svg" alt="Alice&#39;s permissions policy allows Carol to Get and Add data to the server, but Bob can only Get"></p>
+    --add &#39;Eat kale.&#39;
+</code></pre><p><img src="/images/tut/security04-alice-carol-succeed-bob-fails.svg" alt="Alice&#39;s permissions policy allows Carol to Get and Add data to the server, but Bob can only Get"></p>
 <p>We&#39;re done with the server now.</p>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<h1 id="summary">Summary</h1>
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>Vanadium provides a pre-built <em>Permissions authorizer</em>.</p>
 </li>

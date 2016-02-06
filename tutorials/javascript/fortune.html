@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Fortune in JS - Vanadium</title>
   
@@ -201,13 +211,13 @@ type Fortune interface {
 }</code></pre>
 
 <p>The <code>vdl</code> tool generates a JavaScript file from this protocol definition.</p>
-<p><!-- @generateFortuneVDLJS @buildjs @test @testui @completer --></p>
+<!-- @generateFortuneVDLJS @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune
 VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
     $V_BIN/vdl generate -lang=javascript -js-out-dir=$V_TUT/src \
-    $V_TUT/src/fortune/ifc</code></pre>
-<p>When generating JavaScript, the flag <code>-js-out-dir</code> is used to specify where
+    $V_TUT/src/fortune/ifc
+</code></pre><p>When generating JavaScript, the flag <code>-js-out-dir</code> is used to specify where
 generated files should appear.
 After running this command, <code>$V_TUT/src/fortune/ifc/index.js</code>
 should have been created.</p>
@@ -216,7 +226,7 @@ should have been created.</p>
 It defines the <code>Get</code> and <code>Add</code> methods and attaches the VDL-generated interface
 description to the service&#39;s prototype chain.</p>
 <p>Create <code>$V_TUT/src/fortune/service/index.js</code>.</p>
-<p><!-- @fortuneImplementation @buildjs @test @testui @completer --></p>
+<!-- @fortuneImplementation @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/service
 cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/service/index.js
 var vdlFortune = require(&#39;../ifc&#39;);
@@ -246,8 +256,8 @@ FortuneService.prototype.get = function(ctx, serverCall) {
     this.fortunes.length);
   return this.fortunes[fortuneIndex];
 };
-EOF</code></pre>
-<p>This service implementation is analogous to Go&#39;s. It also exposes two fields,
+EOF
+</code></pre><p>This service implementation is analogous to Go&#39;s. It also exposes two fields,
 <code>fortunes</code> and <code>numFortunesServed</code>, which will be used to make the fortune teller
 more interactive.</p>
 <h2 id="fortune-server">Fortune server</h2>
@@ -255,7 +265,7 @@ more interactive.</p>
 serves the service and an HTML page to display the server status.</p>
 <h3 id="server-code">Server code</h3>
 <p>Use a Vanadium server to serve the Fortune service.</p>
-<p><!-- @fortuneServerJS @buildjs @test @testui @completer --></p>
+<!-- @fortuneServerJS @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/server
 cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/index.js
 var vanadium = require(&#39;vanadium&#39;);
@@ -290,8 +300,8 @@ function getDefaultServiceName(accountName) {
   var homeDir = accountName.replace(/^dev.v.io:u:/, &#39;users/&#39;).replace(vanadium.security.ChainSeparator.val, &#39;/&#39;);
   return homeDir + &#39;/tutorial/fortune&#39;;
 }
-EOF</code></pre>
-<p>The Fortune server works similarly to the one in the <a href="/tutorials/basics.html">Client/Server Basics tutorial</a>.
+EOF
+</code></pre><p>The Fortune server works similarly to the one in the <a href="/tutorials/basics.html">Client/Server Basics tutorial</a>.
 The service implementation:</p>
 <ul>
 <li>Uses a VDL protocol to define the Fortune interface</li>
@@ -331,7 +341,7 @@ an endpoint address and is resolved against a mount table.</p>
 <li>The service&#39;s list of fortunes</li>
 </ul>
 <p>The service will manipulate the page as its data is updated.</p>
-<p><!-- @fortuneServerHTML @buildjs @test @testui @completer --></p>
+<!-- @fortuneServerHTML @buildjs @test @testui @completer -->
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/fortune-server.html
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -382,8 +392,8 @@ an endpoint address and is resolved against a mount table.</p>
   &lt;script src=&quot;browser/fortune-server.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h2 id="fortune-client">Fortune client</h2>
+EOF
+</code></pre><h2 id="fortune-client">Fortune client</h2>
 <p>As with the server, the client consists of two files: a JavaScript file that
 contains the application logic and an HTML page for the user interface.</p>
 <h3 id="client-code">Client code</h3>
@@ -393,7 +403,7 @@ contains the application logic and an HTML page for the user interface.</p>
 <li>Upon pressing the <code>Get</code> button, the client makes a <code>Get</code> RPC request.</li>
 </ul>
 <p>Create <code>$V_TUT/src/fortune/client/index.js</code>.</p>
-<p><!-- @fortuneClientJS @buildjs @test @testui @completer --></p>
+<!-- @fortuneClientJS @buildjs @test @testui @completer -->
 <pre><code>mkdir -p $V_TUT/src/fortune/client
 cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/client/index.js
 var vanadium = require(&#39;vanadium&#39;);
@@ -466,8 +476,8 @@ function getDefaultServiceName(accountName) {
   var homeDir = accountName.replace(/^dev.v.io:u:/, &#39;users/&#39;).replace(vanadium.security.ChainSeparator.val, &#39;/&#39;);
   return homeDir + &#39;/tutorial/fortune&#39;;
 }
-EOF</code></pre>
-<h3 id="client-html">Client HTML</h3>
+EOF
+</code></pre><h3 id="client-html">Client HTML</h3>
 <p>Create the client&#39;s HTML page. This page contains:</p>
 <ul>
 <li>An input for selecting the server endpoint</li>
@@ -476,7 +486,7 @@ EOF</code></pre>
 <li>A running list of fortunes received</li>
 <li>JavaScript code to manipulate these elements</li>
 </ul>
-<p><!-- @fortuneClientHTML @buildjs @test @testui @completer --></p>
+<!-- @fortuneClientHTML @buildjs @test @testui @completer -->
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/fortune-client.html
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -518,8 +528,8 @@ EOF</code></pre>
   &lt;script src=&quot;browser/fortune-client.js&quot;&gt;&lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h3 id="about-bindto">About bindTo</h3>
+EOF
+</code></pre><h3 id="about-bindto">About bindTo</h3>
 <p>The example above uses <code>bindTo</code> to retrieve a service stub. This step does not
 exist when using Go.</p>
 <pre><code class="noclipboard">client.bindTo(context, name, callback);</code></pre>
@@ -556,14 +566,14 @@ be traced.</p>
 <h3 id="browserify">Browserify</h3>
 <p>Use <code>browserify</code> to build the browser-targeted JavaScript files, which
 integrate the Vanadium libraries with the server and client code.</p>
-<p><!-- @browserifyFortune @buildjs @test @testui @completer --></p>
+<!-- @browserifyFortune @buildjs @test @testui @completer -->
 <pre><code>NODE_PATH=$V_TUT $V_TUT/node_modules/.bin/browserify \
   $V_TUT/src/fortune/client/index.js -o $V_TUT/browser/fortune-client.js
 NODE_PATH=$V_TUT $V_TUT/node_modules/.bin/browserify \
-  $V_TUT/src/fortune/server/index.js -o $V_TUT/browser/fortune-server.js</code></pre>
-<h3 id="combined-html-page">Combined HTML page</h3>
+  $V_TUT/src/fortune/server/index.js -o $V_TUT/browser/fortune-server.js
+</code></pre><h3 id="combined-html-page">Combined HTML page</h3>
 <p>For demonstration purposes, the Fortune client and server are shown on the same page.</p>
-<p><!-- @fortuneIndexHTML @buildjs @test @testui @completer --></p>
+<!-- @fortuneIndexHTML @buildjs @test @testui @completer -->
 <pre><code>cat - &lt;&lt;EOF &gt;$V_TUT/fortune.html
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -579,14 +589,14 @@ NODE_PATH=$V_TUT $V_TUT/node_modules/.bin/browserify \
   &lt;/div&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-EOF</code></pre>
-<h3 id="try-it-out">Try it out</h3>
+EOF
+</code></pre><h3 id="try-it-out">Try it out</h3>
 <p>You are ready to serve the web pages on a local server. Run the web server on port 8989.</p>
 <p>Using node-static, the command is:</p>
-<p><!-- @nodeStaticBackground @test @testui @sleep --></p>
+<!-- @nodeStaticBackground @test @testui @sleep -->
 <pre><code>$V_TUT/node_modules/.bin/static $V_TUT -p 8989 &gt; /dev/null &amp;
-TUT_PID_HTTPD=$!</code></pre>
-<p>This static server runs in the background and is stopped in the <a href="#cleanup">Cleanup section</a>.</p>
+TUT_PID_HTTPD=$!
+</code></pre><p>This static server runs in the background and is stopped in the <a href="#cleanup">Cleanup section</a>.</p>
 <p>Go to <a href="http://127.0.0.1:8989/fortune.html">http://127.0.0.1:8989/fortune.html</a> to view the examples.</p>
 <h2 id="interoperating-with-go">Interoperating with Go</h2>
 <p>The client and server defined here can communicate with the client and server that was defined in Go.</p>
@@ -597,8 +607,8 @@ the proper blessings for communication with the browser. To read more, go to
 the <a href="/concepts/security.html">Security Concepts</a> page or run through the <a href="/tutorials/security/principals-and-blessings.html">Principals and blessings</a> tutorial.</p>
 <p>Use the <code>principal</code> tool, as follows:</p>
 <pre><code>$V_BIN/principal --v23.credentials $V_TUT/cred/basics \
-  seekblessings</code></pre>
-<p>A new tab will appear in the browser. Click the <code>Bless</code> button. The Go code
+  seekblessings
+</code></pre><p>A new tab will appear in the browser. Click the <code>Bless</code> button. The Go code
 will now have access to an OAuth-authenticated blessing that matches the
 browser&#39;s.</p>
 <p>In general, it is not necessary to generate an identical set of blessings; other
@@ -615,33 +625,33 @@ It should match the service name listed on the Fortune page.</p>
     --v23.credentials $V_TUT/cred/basics default \
     | $V_BIN/principal dumpblessings - \
     | awk -F/ &#39;/Blessings/ {print &quot;users/&quot; $3 &quot;/chrome/tutorial/fortune&quot;}&#39;
-  )</code></pre>
-<p>Use the Go fortune client to request a fortune from the JS server.</p>
+  )
+</code></pre><p>Use the Go fortune client to request a fortune from the JS server.</p>
 <pre><code>$V_TUT/bin/client --v23.credentials $V_TUT/cred/basics \
-  --server $JS_FORTUNE_NAME</code></pre>
-<p>It is also possible to add a fortune:</p>
+  --server $JS_FORTUNE_NAME
+</code></pre><p>It is also possible to add a fortune:</p>
 <pre><code>$V_TUT/bin/client --v23.credentials $V_TUT/cred/basics \
-  --server $JS_FORTUNE_NAME -add &#39;Fortune favors the bold.&#39;</code></pre>
-<h3 id="go-server-js-client">Go server + JS client</h3>
+  --server $JS_FORTUNE_NAME -add &#39;Fortune favors the bold.&#39;
+</code></pre><h3 id="go-server-js-client">Go server + JS client</h3>
 <p>To use a Go fortune server with a JS client, first run the server.</p>
-<p><!-- @runFortuneGoServer @test @testui @sleep --></p>
+<!-- @runFortuneGoServer @test @testui @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server --v23.credentials $V_TUT/cred/basics \
   --endpoint-file-name=$V_TUT/server.txt &amp;
-TUT_PID_SERVER=$!</code></pre>
-<p>The server&#39;s endpoint will be used to identify the fortune service. To get
+TUT_PID_SERVER=$!
+</code></pre><p>The server&#39;s endpoint will be used to identify the fortune service. To get
 the endpoint, run the following command.</p>
-<p><!-- @runFortuneGoServer --></p>
-<pre><code>cat $V_TUT/server.txt # The go server&#39;s endpoint address</code></pre>
-<p>The Go server&#39;s endpoint should be printed out to the console.
+<!-- @runFortuneGoServer -->
+<pre><code>cat $V_TUT/server.txt # The go server&#39;s endpoint address
+</code></pre><p>The Go server&#39;s endpoint should be printed out to the console.
 <strong>Copy this endpoint and paste it into the client page&#39;s Server field.</strong></p>
 <p>The JS client will now be able to call <code>Get</code> and <code>Add</code> on the Go server.</p>
 <h2 id="cleanup">Cleanup</h2>
 <p>Once finished, stop the HTTP server and the Go fortune server.</p>
-<p><!-- @runFortuneGoServer @test @testui --></p>
+<!-- @runFortuneGoServer @test @testui -->
 <pre><code>kill $TUT_PID_HTTPD
-kill $TUT_PID_SERVER</code></pre>
-<h2 id="summary">Summary</h2>
+kill $TUT_PID_SERVER
+</code></pre><h2 id="summary">Summary</h2>
 <p>Congratulations! You have successfully run the Go-JS fortune example.</p>
 <p>You have:</p>
 <ul>

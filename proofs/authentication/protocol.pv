@@ -1,0 +1,343 @@
+(* Vanadium Authentication Protocol --------------------------------------------
+
+Informal Protocol Specification:
+D is Dialer, A is Acceptor
+D         : Dialer
+A         : Acceptor
+
+g         : Diffie-Hellman Group generator
+x,y       : exponents
+P_X       : Public Key of X
+B_X       : Blessing of X
+sign_X(M) : Private Key Signature of M by Principal X
+key(n)    : A symmetric key generated with Diffie-Hellman secret n
+{M}_k     : Message M encrypted with symmetric key k
+
+Protocol:
+
+D generates x, and A generates y
+
+D ---> A: g^x
+A ---> D: g^y
+A ---> D: {B_A, sign_A(hash("A", g^x, g^y))}_key(g^xy)
+D ---> A: {B_D, sign_D(hash("D", g^x, g^y))}_key(g^xy)
+D ---> A: {M}_key(g^xy)
+
+We are interested in verifying the following correctness properties:
+
+(1) Mutual Authentication
+    Acceptor only authenticates a session once the dialer has authenticated
+    the same session, where a session is defined by the session encryption
+    key and the public key of the dialer's and acceptor's blessings.
+
+(2) Channel Secrecy
+    Any message sent from dialer to acceptor on the established
+    encrypted channel is not revealed to the attacker.
+
+(3) Dialer Privacy
+    The dialer's public key is never revealed to the attacker.
+
+The acceptor reveals its blessing to any dialer that wants to talk to it,
+therefore the acceptor's public key is not a secret. We verify that the
+acceptor's public key can be obtained by the attacker.
+------------------------------------------------------------------------------*)
+
+set predicatesImplementable = nocheck.
+set maxDepth                = 20.
+set maxHyp                  = none.
+set ignoreTypes = true.
+set attacker    = active.
+set keyCompromise = none.
+set simplifyDerivation = true.
+set abbreviateDerivation = true.
+set explainDerivation = true.
+set reconstructTrace = true.
+set unifyDerivation = true.
+set reconstructDerivation = true.
+set displayDerivation = true.
+set traceBacktracking = true.
+set traceDisplay = short.
+set verboseClauses = none.
+set abbreviateClauses = true.
+set removeUselessClausesBeforeDisplay = true.
+set verboseEq = true.
+set verboseRules = false.
+set verboseRedundant = false.
+
+(* DiffieHellmanGroup ----------------------------------------------------------
+   Defines a group type G that facilitates the running of the Diffie-Hellman
+   protocol.
+------------------------------------------------------------------------------*)
+
+type G.         (*Diffie-Hellman Group*)
+type Exponent.  (*Diffie-Hellman Group Exponents*)
+
+const g:G [data].  (*The generator of G, publicly known*)
+
+(* Type Conversion -----------------------------------------------------------*)
+fun gToBitstring(G):bitstring [data].
+
+(* Group Definition ---------------------------------------------------------*)
+fun exp(G, Exponent):G.
+
+(* Associativity of group multiplication abstracted *)
+equation
+   forall x:Exponent, y:Exponent;
+      exp(exp(g, x), y) = exp(exp(g, y), x).
+
+(* Symmetric key crypto primitives ---------------------------------------------
+   Symmetric key encryption and decryption primitives.
+------------------------------------------------------------------------------*)
+
+type SymmetricKey.
+
+fun generateKey(bitstring):SymmetricKey.
+
+(* Type Conversion -----------------------------------------------------------*)
+fun keyToBitstring(SymmetricKey):bitstring [data].
+
+(* symmetricEncrypt(msg, key): Authenticated encryption of 'msg' using symmetric key 'key' *)
+fun symmetricEncrypt(bitstring, SymmetricKey):bitstring.
+
+(* symmetricDecrypt(ciphertext, key): Decrypt 'ciphertext' using symmetric key 'key' *)
+fun symmetricDecrypt(bitstring, SymmetricKey):bitstring
+reduc
+   forall key:SymmetricKey, message:bitstring;
+      symmetricDecrypt(symmetricEncrypt(message, key), key) = message.
+
+(* Public key crypto primitives ------------------------------------------------
+   Signing and verification primitives.
+------------------------------------------------------------------------------*)
+
+(* publicKey(PrivateKey):Corresponding PublicKey *)
+fun publicKey(bitstring):bitstring.
+
+(* sign(message, PrivateKey):signed message bitstring
+   Signed message cannot be decrypted. *)
+fun sign(bitstring, bitstring):bitstring.
+
+(* verifySignature(PublicKey, plaintext, signed) *)
+pred verifySignature(bitstring, bitstring, bitstring).
+clauses
+   forall privateKey:bitstring, msg:bitstring;
+      verifySignature(publicKey(privateKey), msg, sign(msg, privateKey)).
+
+(* Tuples and Hashing  ---------------------------------------------------------
+   Defines the arbitrary length bitstring tuple and associated functions.
+------------------------------------------------------------------------------*)
+
+const null:bitstring [data]. (*Empty Tuple*)
+
+(* t(Tuple, bitstring): bitstring representation of tuple concatenation *)
+fun t(bitstring, bitstring):bitstring [data].
+
+(* hash(item): a truly one-way hash function on item *)
+fun hash(bitstring):bitstring.
+
+(* Certificate -----------------------------------------------------------------
+   A Vanadium Certificate:
+      A tuple (Name, PublicKey, Caveats, Signature)
+------------------------------------------------------------------------------*)
+
+(* certificate(Name, PublicKey, Caveats, Signature) *)
+fun certificate(bitstring, bitstring, bitstring, bitstring):bitstring [data].
+
+(* Blessing --------------------------------------------------------------------
+   A Vanadium Blessing:
+      An arbitrary length tuple/list of Certificates
+------------------------------------------------------------------------------*)
+
+(* publicKeyBlessing(blessing): Returns the public key of last certificate of the
+   certificate chain represented by 'blessing'. *)
+fun publicKeyBlessing(bitstring):bitstring
+reduc forall blessing:bitstring, nm:bitstring, pk:bitstring,
+             cavs:bitstring, sgn:bitstring;
+         publicKeyBlessing(t(blessing, certificate(nm, pk, cavs, sgn))) = pk.
+
+(* verifyBlessing(blessing): Returns whether the certificate chain represented by
+   'blessing' is cryptographically valid. *)
+pred verifyBlessing(bitstring).
+clauses
+   forall nm:bitstring, pk:bitstring, cavs:bitstring, sgn:bitstring;
+      verifySignature(pk, hash(t(t(t(null, nm), pk), cavs)), sgn)
+         -> verifyBlessing(t(null, certificate(nm, pk, cavs, sgn)));
+   forall b:bitstring,
+          nm:bitstring, pk:bitstring, cavs:bitstring, sgn:bitstring;
+      verifySignature(
+         publicKeyBlessing(b),
+         hash(t(hash(b), hash(t(t(t(null, nm), pk), cavs)))),
+         sgn
+      ) &&
+      verifyBlessing(b)
+         -> verifyBlessing(t(b, certificate(nm, pk, cavs, sgn))).
+
+(* newSelfBlessing(privateKey): Returns a new blessing with a single certificate
+   self-signed by the provided 'privateKey'. *)
+letfun newSelfBlessing(privKey:bitstring) =
+   new nm:bitstring;
+   new cavs:bitstring;
+   let pubKey = publicKey(privKey) in
+   let contentHash = hash(t(t(t(null, nm), pubKey), cavs)) in
+   let signature = sign(contentHash, privKey) in
+   let cert = certificate(nm, pubKey, cavs, sign(contentHash, privKey)) in
+   t(null, cert).
+
+(* bless(pubKey, withBlessing, withPrivKey): Returns a new blessing with a
+   certificate for 'pubKey' chained on to certificate chain represented by
+   'withBlessing'. *)
+letfun bless(pubKey:bitstring, withBlessing:bitstring, withPrivKey:bitstring) =
+   new nm:bitstring;
+   new cavs:bitstring;
+   let contentHash = hash(t(t(t(null, nm), pubKey), cavs)) in
+   let signature = sign(hash(t(hash(withBlessing), contentHash)), withPrivKey) in
+   let cert = certificate(nm, pubKey, cavs, signature) in
+   t(withBlessing, cert).
+
+(* Authentication Protocol ----------------------------------------------------
+   Formalizes the Vanadium authentication protocol.
+------------------------------------------------------------------------------*)
+letfun signedChannelBinding(privKey:bitstring, tag:bitstring, binding:bitstring) =
+   sign(hash(t(tag, binding)), privKey).
+
+letfun verifyChannelBinding(pubKey:bitstring, tag:bitstring, binding:bitstring, signature:bitstring) =
+   verifySignature(pubKey, hash(t(tag, binding)), signature).
+
+(* Public communication network. *)
+free dToACh:channel.  (* channel simulating a network pipe from dialer to acceptor *)
+free aToDCh:channel.  (* channel simulating a network pipe from acceptor to dialer *)
+
+free acceptorTag:bitstring.
+free dialerTag:bitstring.
+free messageTag:bitstring.
+
+event acceptsAcceptor(SymmetricKey, bitstring, bitstring).
+event acceptsDialer(SymmetricKey, bitstring, bitstring).
+event termDialer(SymmetricKey, bitstring, bitstring).
+
+let encrypter(key:SymmetricKey, inCh:channel, outCh:channel) =
+  in(inCh, msg:bitstring);
+  out(outCh, symmetricEncrypt(msg, key)).
+
+let decrypter(key:SymmetricKey, inCh:channel, outCh:channel) =
+  in(inCh, ctxt:bitstring);
+  let ptxt = symmetricDecrypt(ctxt, key) in
+  out(outCh, ptxt).
+
+(* Setup performs a Diffie-Hellman key exchange and returns the generated
+   symmetric key, the local and remote channel bindings on retCh. *)
+let setup(outCh:channel, inCh:channel, retCh:channel) =
+   new x:Exponent;
+   let g_x = exp(g, x) in
+   out(outCh, g_x) | 
+   in(inCh, g_y:G);
+   let key = generateKey(gToBitstring(exp(g_y, x))) in
+   let localBnd = t(gToBitstring(g_x), gToBitstring(g_y)) in
+   let remoteBnd = t(gToBitstring(g_y), gToBitstring(g_x)) in
+   out(retCh, t(t(keyToBitstring(key), localBnd), remoteBnd)).
+
+(* readRemoteAuth receives the auth message (blessings + signed channel binding) sent
+   by the remote end and verifies it. If verification succeeds, it returns the public
+   key of the remote end on retCh. *)
+let readRemoteAuth(inCh:channel, key: SymmetricKey, binding: bitstring, tag: bitstring, retCh:channel) =
+   in(inCh, auth:bitstring);
+   let t(blessing:bitstring, chBinding:bitstring) = symmetricDecrypt(auth, key) in
+   let pubKey = publicKeyBlessing(blessing) in
+   (* Verify authentication message and return pubKey only if verification succeeeds. *)
+   if (
+      verifyBlessing(blessing) &&
+      verifyChannelBinding(pubKey, tag, binding, chBinding)
+   ) then
+   out(retCh, pubKey).
+
+(* Dialer process which takes as input the blessings and private key to
+   be used during authentication, the expected public key of the acceptor
+   (used for authorizing the acceptor's blessings). *)
+let dialHandshake(blessing:bitstring, privKey:bitstring, pubKeyExpected:bitstring) =
+   (* Setup *)
+   new retCh1:channel;
+   setup(dToACh, aToDCh, retCh1) |
+   in(retCh1, t(t(keyToBitstring(key:SymmetricKey), localBnd:bitstring), remoteBnd:bitstring));
+
+   (* Receive auth mesage *)
+   new retCh2:channel;
+   readRemoteAuth(aToDCh, key, remoteBnd, acceptorTag, retCh2) |
+   in(retCh2, pubKeyAcceptor:bitstring);
+   event acceptsDialer(key, publicKeyBlessing(blessing), pubKeyAcceptor);
+
+   (* Send auth message *)
+   if (pubKeyAcceptor = pubKeyExpected) then
+   let signedBinding = signedChannelBinding(privKey, dialerTag, localBnd) in
+   out(dToACh, symmetricEncrypt(t(blessing, signedBinding), key));
+
+   (* Receive auth success confirmation. *)
+   in(aToDCh, msg:bitstring);
+   let t(tag:bitstring, pubKey:bitstring) = symmetricDecrypt(msg, key) in
+   if tag = messageTag then
+   if pubKey = publicKeyBlessing(blessing) then
+   event termDialer(key, publicKeyBlessing(blessing), pubKeyAcceptor).
+
+(* Acceptor process which takes as input the blessings and private key to
+   be used during authentication. *)
+let acceptHandshake(blessing:bitstring, privKey:bitstring) =
+   (* Setup *)
+   new retCh:channel;
+   setup(aToDCh, dToACh, retCh) |
+
+   (* Send auth message *)
+   in(retCh, t(t(keyToBitstring(key:SymmetricKey), localBnd:bitstring), remoteBnd:bitstring));
+   let signedBinding = signedChannelBinding(privKey, acceptorTag, localBnd) in
+   let acceptorAuth = t(blessing, signedBinding) in
+   out(aToDCh, symmetricEncrypt(acceptorAuth, key));
+
+   (* Receive auth message *)
+   new retCh2:channel;
+   readRemoteAuth(dToACh, key, remoteBnd, dialerTag, retCh2) |
+   in(retCh2, pubKeyDialer:bitstring);
+   event acceptsAcceptor(key, pubKeyDialer, publicKeyBlessing(blessing));
+
+   (* Send auth success confirmation. *)
+   out(aToDCh, symmetricEncrypt(t(messageTag, pubKeyDialer), key)).
+
+(* Protocol Process *)
+let handshake(
+    blessingDialer:bitstring,
+    privKeyDialer:bitstring,
+    blessingAcceptor:bitstring,
+    privKeyAcceptor:bitstring) =
+   let pubKeyAcceptor = publicKeyBlessing(blessingAcceptor) in
+   dialHandshake(blessingDialer, privKeyDialer, pubKeyAcceptor) |
+   acceptHandshake(blessingAcceptor, privKeyAcceptor) .
+
+(* Authentication Protocol Instance --------------------------------------------
+   Instantiates the Vanadium authentication protocol for specific dialer and
+   acceptor blessings and formalizes the desired correctness properties -- mutual
+   authentication, channel secrecy and dialer privacy.
+------------------------------------------------------------------------------*)
+
+free privKeyDialer:bitstring [private].
+free privKeyAcceptor:bitstring [private].
+
+let handshakeInstance() =
+    new rootPrivKey:bitstring;
+    let rootBlessing = newSelfBlessing(rootPrivKey) in
+    let blessingDialer = bless(publicKey(privKeyDialer), rootBlessing, rootPrivKey) in
+    let blessingAcceptor = bless(publicKey(privKeyAcceptor), rootBlessing, rootPrivKey) in
+    handshake(blessingDialer, privKeyDialer, blessingAcceptor, privKeyAcceptor) .
+
+(* Authenticity *)
+query k:SymmetricKey;
+   event(acceptsAcceptor(k, publicKey(privKeyDialer), publicKey(privKeyAcceptor))) ==> event(acceptsDialer(k, publicKey(privKeyDialer), publicKey(privKeyAcceptor))).
+   (* Desired ProVerif output: event(acceptsAcceptor(k,publicKey(privKeyDialer[]),publicKey(privKeyAcceptor[]))) ==> event(acceptsDialer(k,publicKey(privKeyDialer[]),publicKey(privKeyAcceptor[]))) is true *)
+query k:SymmetricKey;
+   event(termDialer(k, publicKey(privKeyDialer), publicKey(privKeyAcceptor))) ==> event(acceptsAcceptor(k, publicKey(privKeyDialer), publicKey(privKeyAcceptor))).
+   (* Desired ProVerif output: event(termDialer(k,publicKey(privKeyDialer[]),publicKey(privKeyAcceptor[]))) ==> event(acceptsAcceptor(k,publicKey(privKeyDialer[]),publicKey(privKeyAcceptor[]))) is true *)
+
+(* Channel Secrecy and Dialer Privacy*)
+query attacker(privKeyDialer).  (* Desired ProVerif output: not attacker(privKeyDialer) is true *)
+query attacker(privKeyAcceptor).  (* Desired ProVerif output: not attacker(privKeyAcceptor) is true *)
+query attacker(publicKey(privKeyDialer)).  (* Desired ProVerif output: not attacker(publicKey(privKeyDialer)) is true *)
+
+(* Lack of Acceptor Privacy *)
+query attacker(publicKey(privKeyAcceptor)).  (* Desired ProVerif output: not attacker(publicKey(privKeyAcceptor)) is false *)
+
+process handshakeInstance()

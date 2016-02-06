@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>The Mount Table - Vanadium</title>
   
@@ -166,9 +176,9 @@ re-made with the prerequisites script above.</p>
 <p>To keep security simple initially, all processes here will
 <a href="/tutorials/basics.html#authorization">use the same credentials</a>.  Further, credentials will be specified
 using this environment variable:</p>
-<p><!-- @setCredentials @test --></p>
-<pre><code>export V23_CREDENTIALS=$V_TUT/cred/basics</code></pre>
-<p>Vanadium programs consult this environment variable when the
+<!-- @setCredentials @test -->
+<pre><code>export V23_CREDENTIALS=$V_TUT/cred/basics
+</code></pre><p>Vanadium programs consult this environment variable when the
 credentials aren&#39;t specified by using the <code>--v23.credentials</code> flag,
 or by using a <a href="/tutorials/security/agent.html">security agent</a>.</p>
 <h1 id="start-a-table">Start a table</h1>
@@ -179,16 +189,16 @@ read that file so it would know where to find the server.</p>
 endpoint, we&#39;ll use a server.</p>
 <p>The server is called a <em>mount table</em>, and its executable has the name
 <code>mounttabled</code>:</p>
-<p><!-- @startMountTable @test @sleep --></p>
+<!-- @startMountTable @test @sleep -->
 <pre><code>PORT_MT=23000  # Pick an unused port.
 kill_tut_process TUT_PID_MT
 $V_BIN/mounttabled --v23.tcp.address :$PORT_MT &amp;
-TUT_PID_MT=$!</code></pre>
-<p>A mount table happens to be a Vanadium service.  This means the <a href="/tutorials/basics.html#the-vrpc-client">vrpc</a>
+TUT_PID_MT=$!
+</code></pre><p>A mount table happens to be a Vanadium service.  This means the <a href="/tutorials/basics.html#the-vrpc-client">vrpc</a>
 program can report its <a href="https://vanadium.googlesource.com/release.go.v23/+/master/services/mounttable/service.vdl">VDL interface</a>:</p>
-<p><!-- @queryMountTable @test --></p>
-<pre><code>$V_BIN/vrpc signature /localhost:$PORT_MT</code></pre>
-<p>It also means that the mount table has a <a href="/glossary.html#principal">principal</a> - it must run
+<!-- @queryMountTable @test -->
+<pre><code>$V_BIN/vrpc signature /localhost:$PORT_MT
+</code></pre><p>It also means that the mount table has a <a href="/glossary.html#principal">principal</a> - it must run
 with credentials.  Since the <code>--v23.credentials</code> flag wasn&#39;t
 specified at startup, the Vanadium runtime consulted the environment
 variable <code>V23_CREDENTIALS</code> (set above) to get the credentials.</p>
@@ -201,18 +211,18 @@ be discussed in later tutorial.</p>
 <p>The table is up, but empty.</p>
 <p>Start the existing fortune server binary, so we have a service to put
 in the table:</p>
-<p><!-- @startFortune @test @sleep --></p>
+<!-- @startFortune @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_S1
 $V_TUT/bin/server --endpoint-file-name $V_TUT/s1.txt &amp;
-TUT_PID_S1=$!</code></pre>
-<h2 id="mounting">Mounting</h2>
+TUT_PID_S1=$!
+</code></pre><h2 id="mounting">Mounting</h2>
 <p><code>namespace</code> is a command line client dedicated to manipulating mount
 tables.  The following mounts the server at the name <code>fortuneAlpha</code>.</p>
-<p><!-- @mountFortune @test --></p>
+<!-- @mountFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT \
-    mount fortuneAlpha `cat $V_TUT/s1.txt` 100m</code></pre>
-<p>The flag <code>--v23.namespace.root</code> specifies which <strong>mount table</strong> to
+    mount fortuneAlpha `cat $V_TUT/s1.txt` 100m
+</code></pre><p>The flag <code>--v23.namespace.root</code> specifies which <strong>mount table</strong> to
 use.  The flag is available in all Vanadium programs.</p>
 <p>In Vanadium, services live in hierachical trees called the
 <strong>namespaces</strong>.  The <em>root</em> node of a tree is a mount table, hence the
@@ -222,11 +232,11 @@ tables.</p>
 <p><em>To <a href="http://en.wikipedia.org/wiki/Glob_%28programming%29">glob</a></em> is to use a character pattern to select strings from a set.</p>
 <p>The command <code>namespace glob *</code> reports the names of <em>all</em> known
 names:</p>
-<p><!-- @queryMountTable @test --></p>
+<!-- @queryMountTable @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT \
-    glob -l &#39;*&#39;</code></pre>
-<p>There&#39;s just one name: <code>fortuneAlpha</code>.  Use of the flag <code>-l</code>
+    glob -l &#39;*&#39;
+</code></pre><p>There&#39;s just one name: <code>fortuneAlpha</code>.  Use of the flag <code>-l</code>
 triggers additional output; you see the name&#39;s <a href="/glossary.html#endpoint">endpoint</a>,
 and you see it will expire (will be dropped from the table) in
 about one hundred minutes.  That&#39;s what the <code>100m</code> meant in the
@@ -234,24 +244,24 @@ about one hundred minutes.  That&#39;s what the <code>100m</code> meant in the
 <h2 id="resolution">Resolution</h2>
 <p>When a name is known, and you just want to resolve it to an
 <a href="/glossary.html#endpoint">endpoint</a>, use <code>namespace resolve {name}</code>:</p>
-<p><!-- @resolveFortune @test --></p>
+<!-- @resolveFortune @test -->
 <pre><code>$V_BIN/namespace \
     --v23.namespace.root /localhost:$PORT_MT \
-    resolve fortuneAlpha</code></pre>
-<p>The output should match the endpoint recorded in <code>$V_TUT/s1.txt</code>:</p>
-<p><!-- @lookAtEndpoint @test --></p>
-<pre><code>cat $V_TUT/s1.txt</code></pre>
-<h1 id="name-usage">Name usage</h1>
+    resolve fortuneAlpha
+</code></pre><p>The output should match the endpoint recorded in <code>$V_TUT/s1.txt</code>:</p>
+<!-- @lookAtEndpoint @test -->
+<pre><code>cat $V_TUT/s1.txt
+</code></pre><h1 id="name-usage">Name usage</h1>
 <p>Recapping, here&#39;s how you connected the fortune client to the fortune
 server using a full service endpoint name in the <a href="/tutorials/basics.html">basics tutorial</a>:</p>
-<p><!-- @reviewFortune @test --></p>
-<pre><code>$V_TUT/bin/client --server `cat $V_TUT/s1.txt`</code></pre>
-<p>Now you can use the name <code>fortuneAlpha</code> instead:</p>
-<p><!-- @fortuneWithTable @test --></p>
+<!-- @reviewFortune @test -->
+<pre><code>$V_TUT/bin/client --server `cat $V_TUT/s1.txt`
+</code></pre><p>Now you can use the name <code>fortuneAlpha</code> instead:</p>
+<!-- @fortuneWithTable @test -->
 <pre><code>$V_TUT/bin/client \
     --v23.namespace.root /localhost:$PORT_MT \
-    --server fortuneAlpha</code></pre>
-<p>The <code>client</code> program didn&#39;t need to be recompiled to allow this new
+    --server fortuneAlpha
+</code></pre><p>The <code>client</code> program didn&#39;t need to be recompiled to allow this new
 usage because Vanadium code in the client interprets the value
 of the <code>--server</code> flag.</p>
 <p>In the first command, <code>--server</code>&#39;s value was something like
@@ -269,12 +279,12 @@ may retry depending on various configurations.</p>
 constantly specify the <code>--v23.namespace.root</code> flag with the same
 value.</p>
 <p>Ommiting the flag will trigger use the following shell variable:</p>
-<p><!-- @setNamespace @test --></p>
-<pre><code>export V23_NAMESPACE=/localhost:$PORT_MT</code></pre>
-<p>Now a fortune retrieval is as simple as:</p>
-<p><!-- @fortuneWithTableAgain @test --></p>
-<pre><code>$V_TUT/bin/client --server fortuneAlpha</code></pre>
-<h2 id="flags-vs-variables">Flags vs. variables</h2>
+<!-- @setNamespace @test -->
+<pre><code>export V23_NAMESPACE=/localhost:$PORT_MT
+</code></pre><p>Now a fortune retrieval is as simple as:</p>
+<!-- @fortuneWithTableAgain @test -->
+<pre><code>$V_TUT/bin/client --server fortuneAlpha
+</code></pre><h2 id="flags-vs-variables">Flags vs. variables</h2>
 <p>In Vanadium, flag values, when specified, always trump the values of
 corresponding shell variables.  So <code>--v23.namespace.root</code> trumps
 <code>$V23_NAMESPACE</code>, and <code>--v23.credentials</code> trumps <code>$V23_CREDENTIALS</code>.</p>
@@ -288,63 +298,63 @@ HTTP.</p>
 <h2 id="many-names-one-endpoint">Many names, one endpoint</h2>
 <p>A single service instance can have multiple names.  Mount the same
 service again, with the name <code>fortuneBeta</code>, and a brief time to live:</p>
-<p><!-- @mountFortune @test --></p>
-<pre><code>$V_BIN/namespace mount fortuneBeta `cat $V_TUT/s1.txt` 5m</code></pre>
-<p>Do the <code>glob</code> again:</p>
-<p><!-- @doTheGlob @test --></p>
-<pre><code>$V_BIN/namespace glob -l &#39;*&#39;</code></pre>
-<p>You&#39;ll see two names, with the same endpoint, but with <em>different</em>
+<!-- @mountFortune @test -->
+<pre><code>$V_BIN/namespace mount fortuneBeta `cat $V_TUT/s1.txt` 5m
+</code></pre><p>Do the <code>glob</code> again:</p>
+<!-- @doTheGlob @test -->
+<pre><code>$V_BIN/namespace glob -l &#39;*&#39;
+</code></pre><p>You&#39;ll see two names, with the same endpoint, but with <em>different</em>
 expiration times.  Later you&#39;ll find the names can have different
 access control lists as well.</p>
 <p>Confirm that the second name works:</p>
-<p><!-- @fortuneViaOtherName @test --></p>
-<pre><code>$V_TUT/bin/client --server fortuneBeta</code></pre>
-<h2 id="many-endpoints-one-name">Many endpoints, one name</h2>
+<!-- @fortuneViaOtherName @test -->
+<pre><code>$V_TUT/bin/client --server fortuneBeta
+</code></pre><h2 id="many-endpoints-one-name">Many endpoints, one name</h2>
 <p>Start a <strong>second instance</strong> of the fortune server:</p>
-<p><!-- @startAnotherFortune @test @sleep --></p>
+<!-- @startAnotherFortune @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_S2
 $V_TUT/bin/server --endpoint-file-name $V_TUT/s2.txt &amp;
-TUT_PID_S2=$!</code></pre>
-<p>Mount it on the (original) name <code>fortuneAlpha</code>:</p>
-<p><!-- @mountFortuneAgain @test --></p>
-<pre><code>$V_BIN/namespace mount fortuneAlpha `cat $V_TUT/s2.txt` 100m</code></pre>
-<p>List the names again:</p>
-<p><!-- @doTheGlob @test --></p>
-<pre><code>$V_BIN/namespace glob -l &#39;*&#39;</code></pre>
-<p>Now the name <code>fortuneAlpha</code> reports two endpoints, with distinct
+TUT_PID_S2=$!
+</code></pre><p>Mount it on the (original) name <code>fortuneAlpha</code>:</p>
+<!-- @mountFortuneAgain @test -->
+<pre><code>$V_BIN/namespace mount fortuneAlpha `cat $V_TUT/s2.txt` 100m
+</code></pre><p>List the names again:</p>
+<!-- @doTheGlob @test -->
+<pre><code>$V_BIN/namespace glob -l &#39;*&#39;
+</code></pre><p>Now the name <code>fortuneAlpha</code> reports two endpoints, with distinct
 expiration times.</p>
 <p>This is a means to implement redundancy, load sharing, etc.  The mount
 table will resolve specific requests to one endpoint, but multiple
 endpoints let it assign a server using simple rotation, or by using
 load, response times, etc.</p>
 <p>Confirm that <code>fortuneAlpha</code> still works (with two endpoints):</p>
-<p><!-- @fortuneViaOriginalName @test --></p>
-<pre><code>$V_TUT/bin/client --server fortuneAlpha</code></pre>
-<p>Now kill the original server:</p>
-<p><!-- @killTutS1 @test --></p>
-<pre><code>kill_tut_process TUT_PID_S1</code></pre>
-<p>And retry the request:</p>
-<p><!-- @fortuneFromS2 @test --></p>
-<pre><code>$V_TUT/bin/client --server fortuneAlpha</code></pre>
-<p>You should still get a fortune, but this time it can only come from
+<!-- @fortuneViaOriginalName @test -->
+<pre><code>$V_TUT/bin/client --server fortuneAlpha
+</code></pre><p>Now kill the original server:</p>
+<!-- @killTutS1 @test -->
+<pre><code>kill_tut_process TUT_PID_S1
+</code></pre><p>And retry the request:</p>
+<!-- @fortuneFromS2 @test -->
+<pre><code>$V_TUT/bin/client --server fortuneAlpha
+</code></pre><p>You should still get a fortune, but this time it can only come from
 the second server instance.</p>
 <p>The mount table will still report the dangling endpoint until it
 expires, as it might come back to life.</p>
 <h1 id="unmounting">Unmounting</h1>
 <p>Unmounting works as you might expect:</p>
-<p><!-- @unmountFortune @test --></p>
+<!-- @unmountFortune @test -->
 <pre><code>$V_BIN/namespace unmount fortuneAlpha `cat $V_TUT/s1.txt`
-$V_BIN/namespace unmount fortuneBeta `cat $V_TUT/s1.txt`</code></pre>
-<p>That leaves only server 2 in the table (with the name <code>fortuneAlpha</code>):</p>
-<p><!-- @globAfterUnmountFortune @test --></p>
-<pre><code>$V_BIN/namespace glob -l &#39;*&#39;</code></pre>
-<p>The reported endpoint should match the stored endpoint of server 2:</p>
-<p><!-- @catS2Name @test --></p>
-<pre><code>cat $V_TUT/s2.txt</code></pre>
-<p>Unmount it as well:
+$V_BIN/namespace unmount fortuneBeta `cat $V_TUT/s1.txt`
+</code></pre><p>That leaves only server 2 in the table (with the name <code>fortuneAlpha</code>):</p>
+<!-- @globAfterUnmountFortune @test -->
+<pre><code>$V_BIN/namespace glob -l &#39;*&#39;
+</code></pre><p>The reported endpoint should match the stored endpoint of server 2:</p>
+<!-- @catS2Name @test -->
+<pre><code>cat $V_TUT/s2.txt
+</code></pre><p>Unmount it as well:
 <!-- @globAfterUnmountFortune @test --></p>
-<pre><code>$V_BIN/namespace unmount fortuneAlpha `cat $V_TUT/s2.txt`</code></pre>
-<div class="note warning"><h2 id="optionally-observe-failure">Optionally observe failure</h2>
+<pre><code>$V_BIN/namespace unmount fortuneAlpha `cat $V_TUT/s2.txt`
+</code></pre><div class="note warning"><h2 id="optionally-observe-failure">Optionally observe failure</h2>
 <p>Optionally, confirm that client use of the unmounted name <code>fortuneAlpha</code> fails.
 Feel free to interrupt before the retry attempts exhaust themselves.</p>
 <pre><code>$V_TUT/bin/client --server fortuneAlpha
@@ -352,12 +362,12 @@ Feel free to interrupt before the retry attempts exhaust themselves.</p>
 
 
 <h1 id="cleanup">Cleanup</h1>
-<p><!-- @cleanup @test --></p>
+<!-- @cleanup @test -->
 <pre><code>kill_tut_process TUT_PID_S2
 kill_tut_process TUT_PID_MT
 unset V23_CREDENTIALS
-unset V23_NAMESPACE</code></pre>
-<h1 id="summary">Summary</h1>
+unset V23_NAMESPACE
+</code></pre><h1 id="summary">Summary</h1>
 <ul>
 <li><p>A service called <code>mounttabled</code> is a Vanadium service that helps
 Vanadium services find each other.</p>

@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Internal Tutorial Testing - Vanadium</title>
   
@@ -152,32 +162,32 @@ branch of Vanadium.</p>
 use their existing installation instead.</p>
 <p>To run the tests, <code>$JIRI_ROOT</code> needs a value, and the binaries need to be in
 place. Check your state:</p>
-<p><!-- @checkInstall --></p>
+<!-- @checkInstall -->
 <pre><code>[ -z &quot;${JIRI_ROOT:?&#39;Must define JIRI_ROOT&#39;}&quot; ]
 [ -x &quot;$JIRI_ROOT/devtools/bin/jiri&quot; ] || echo &#39;No jiri!&#39;
-[ -x &quot;$JIRI_ROOT/release/go/bin/principal&quot; ] || echo &#39;No bin!&#39;</code></pre>
-<p>Development also requires Node.js. Install it as follows:</p>
+[ -x &quot;$JIRI_ROOT/release/go/bin/principal&quot; ] || echo &#39;No bin!&#39;
+</code></pre><p>Development also requires Node.js. Install it as follows:</p>
 <pre><code># Adds node to $JIRI_ROOT/environment/cout/node/bin. The Makefile adds this to
 # $PATH automatically.
-jiri v23-profile install nodejs</code></pre>
-<p>Since you&#39;re presumably considering a commit, be sure everything is up to date:</p>
+jiri v23-profile install nodejs
+</code></pre><p>Since you&#39;re presumably considering a commit, be sure everything is up to date:</p>
 <pre><code>unset GOPATH
 jiri update
-jiri go install v.io/...</code></pre>
-<p>If this builds cleanly, you can meaningfully test the tutorials.</p>
+jiri go install v.io/...
+</code></pre><p>If this builds cleanly, you can meaningfully test the tutorials.</p>
 <p>The tutorials don&#39;t use the <code>jiri</code> tool, so define the following
 <strong>tutorial environment</strong> to run the tests:</p>
-<p><!-- @defineLocalEnv @test @testui @buildjs --></p>
+<!-- @defineLocalEnv @test @testui @buildjs -->
 <pre><code>export V23_RELEASE=${JIRI_ROOT}/release/go
 
 # Extract GOPATH from jiri utility.
 export V23_GOPATH=`jiri go env GOPATH`
-echo &quot;V23_GOPATH=$V23_GOPATH&quot;</code></pre>
-<p>That&#39;s it for prep.</p>
+echo &quot;V23_GOPATH=$V23_GOPATH&quot;
+</code></pre><p>That&#39;s it for prep.</p>
 <p>Run all tutorial tests against your development branch like this:</p>
 <pre><code>cd ${JIRI_ROOT}/website
-make test-tutorials</code></pre>
-<p>If those pass, you&#39;re good.</p>
+make test-tutorials
+</code></pre><p>If those pass, you&#39;re good.</p>
 <h2 id="manual-execution">Manual execution</h2>
 <p>If you&#39;re having trouble, you can do tutorials manually to pinpoint a problem.</p>
 <p>Behave like a user following the instructions, but skip the Vanadium
@@ -187,8 +197,8 @@ will run using your local development branch.</p>
 <h2 id="purely-external-execution">Purely external execution</h2>
 <p>The command:</p>
 <pre><code>cd ${JIRI_ROOT}/website
-make test-tutorials-external</code></pre>
-<p>This tests the tutorials <strong>against Vanadium code freshly downloaded from the
+make test-tutorials-external
+</code></pre><p>This tests the tutorials <strong>against Vanadium code freshly downloaded from the
 external site to your <code>/tmp</code> directory</strong>. It&#39;s a production test behaving like
 an external user; <em>not</em> a local test running against local changes. If you&#39;re
 broken locally, this is a way to see if an external user is seeing a problem

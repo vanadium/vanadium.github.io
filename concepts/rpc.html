@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>RPC System - Vanadium</title>
   
@@ -153,16 +163,16 @@ known as the <strong>client</strong> and the receiver that implements the RPC is
 <strong>server</strong>.  A single device may often behave as a client for some operations,
 and as a server for other operations.</p>
 <p>An example of a simple RPC:</p>
-<pre><code>  Divide(x, y int32) (quotient, remainder int32 | error)</code></pre>
-<p>The client calls <code>Divide</code> like a regular function, providing two integer input
+<pre><code>  Divide(x, y int32) (quotient, remainder int32 | error)
+</code></pre><p>The client calls <code>Divide</code> like a regular function, providing two integer input
 arguments <code>x</code> and <code>y</code>.  The server implements <code>Divide</code> and returns either the
 result of <code>x/y</code> as two integer output arguments <code>quotient</code> and <code>remainder</code>, or
 an error.  Notice that errors may always occur, e.g. the client may be unable to
 contact the server if the server isn&#39;t running.  Every RPC includes the
 possibility of returning an error rather than the specified output arguments.</p>
 <p>An example of a streaming RPC:</p>
-<pre><code>  Print(format string) stream&lt;int32, string&gt; (string | error)</code></pre>
-<p>The client calls <code>Print</code> and provides a single string argument <code>format</code>.
+<pre><code>  Print(format string) stream&lt;int32, string&gt; (string | error)
+</code></pre><p>The client calls <code>Print</code> and provides a single string argument <code>format</code>.
 Thereafter the client may stream zero or more integer arguments to the server,
 and the server will reply with the string representation of that argument.  When
 the operation is finished, the server responds with a string containing any
@@ -195,8 +205,8 @@ type Restaurant interface {
   Order(item Food) (Price | error)
   // Price returns the price for the item of food.
   Price(item Food) (Price | error)
-}</code></pre>
-<p><strong>Types</strong> define data sent via RPC.</p>
+}
+</code></pre><p><strong>Types</strong> define data sent via RPC.</p>
 <pre><code>// Food enumerates the available food items.
 type Food enum {
   Pizza
@@ -204,28 +214,28 @@ type Food enum {
   Calzone
 }
 // Price represents the price of a food item.
-type Price uint16</code></pre>
-<p><strong>Constants</strong> to hold fixed data used by the application protocol.</p>
+type Price uint16
+</code></pre><p><strong>Constants</strong> to hold fixed data used by the application protocol.</p>
 <pre><code>// StandardPrices holds standard fixed prices for each
 // food item.
 const StandardPrices map[Food]Price{
   Pizza: 10, Pasta: 8, Calzone: 9,
-}</code></pre>
-<p><strong>Errors</strong> that may be returned from failing RPCs, with support for
+}
+</code></pre><p><strong>Errors</strong> that may be returned from failing RPCs, with support for
 internationalization of the error messages.</p>
 <pre><code>// MissingIngredients is returned when a food item is
 // unavailable, because an ingredient is out of stock.
 error MissingIngredients(ingredientName string) {
   &quot;en&quot; : &quot;{ingredientName} is out of stock&quot;
-}</code></pre>
-<p>For more details see the <a href="../designdocs/vdl-spec.html">VDL specification</a>.</p>
+}
+</code></pre><p>For more details see the <a href="/designdocs/vdl-spec.html">VDL specification</a>.</p>
 <h1 id="vom">VOM</h1>
 <p>The Vanadium Object Marshalling (VOM) format is the underlying serialization
 format used by the RPC system.  VOM supports serialization of all types
 representable in VDL. It is a self-describing protocol that retains full type
 information when transmitting values and, in particular, retains type
 information for all method arguments.</p>
-<p>For more details see the <a href="../designdocs/vom-spec.html">VOM specification</a>.</p>
+<p>For more details see the <a href="/designdocs/vom-spec.html">VOM specification</a>.</p>
 
     </main>
   </body>

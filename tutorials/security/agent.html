@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>The Agent - Vanadium</title>
   
@@ -162,9 +172,9 @@ All tutorials require Vanadium <a href="/installation/">installation</a>, and mu
 <p>In the <a href="/tutorials/security/principals-and-blessings.html#principals">principals tutorial</a> you used the <code>principal create</code> command
 to create the <em>principals</em> Alice, Bob, etc.  The operation made
 collections of files in the specified target directories, e.g.:</p>
-<p><!-- @lsCredAlice @test --></p>
-<pre><code>ls $V_TUT/cred/alice $V_TUT/cred/bob</code></pre>
-<p>Stored among these files are the private keys associated with Alice
+<!-- @lsCredAlice @test -->
+<pre><code>ls $V_TUT/cred/alice $V_TUT/cred/bob
+</code></pre><p>Stored among these files are the private keys associated with Alice
 and Bob.  The keys could be encrypted (there are ways to do that), but
 at the moment, they aren&#39;t.  At no point during earlier tutorials did
 you - the tutee - get prompted for a passphrase, despite frequent use
@@ -202,7 +212,7 @@ other becomes Bob.</p>
 <p>The only difference between the following command sequence and
 <a href="/tutorials/security/permissions-authorizer.html#a-specific-permissions-map">previous usage</a> is that <code>agentd</code> takes the
 <code>--v23.credentials</code> flag, rather than the client and server.</p>
-<p><!-- @twoAgents @test --></p>
+<!-- @twoAgents @test -->
 <pre><code># Clean up from previous attempt, if any.
 kill_tut_process TUT_PID_AGENT
 /bin/rm -f $V_TUT/server.txt
@@ -223,8 +233,8 @@ $V_BIN/agentd --v23.credentials $V_TUT/cred/bob \
     $V_TUT/bin/client --server `cat $V_TUT/server.txt`
 
 # All done, kill the server.
-kill_tut_process TUT_PID_AGENT</code></pre>
-<p>The above should run without errors, i.e. the client should report a
+kill_tut_process TUT_PID_AGENT
+</code></pre><p>The above should run without errors, i.e. the client should report a
 fortune.</p>
 <p>The crucial new behavior here is that <em>neither the server nor client
 binary had access to private keys</em>.  The runtime off-loaded all crypto
@@ -237,15 +247,15 @@ send the private keys to that identity elsewhere.</p>
 <p>Use <code>bash {scriptName}</code> as the argument to <code>agentd</code> to safely
 run a script as a given identity.  Here, the script just runs
 <code>principal dump</code> commands, introspecting its own identity:</p>
-<p><!-- @becomeAlice @test --></p>
+<!-- @becomeAlice @test -->
 <pre><code>cat &lt;&lt;EOF &gt; $V_TUT/subshell.sh
   $V_BIN/principal dump
   $V_BIN/principal get forpeer ... | \
       $V_BIN/principal dumpblessings -
 EOF
 $V_BIN/agentd --v23.credentials $V_TUT/cred/alice \
-    bash $V_TUT/subshell.sh</code></pre>
-<p>Don&#39;t do this now, but say you wanted to spend the day as Alice.  To
+    bash $V_TUT/subshell.sh
+</code></pre><p>Don&#39;t do this now, but say you wanted to spend the day as Alice.  To
 interactively issue many commands as a particular Vanadium principal,
 just start an agent-wrapped <em>interactive</em> shell:</p>
 <p><code>$V_BIN/agentd --v23.credentials {directory} bash</code></p>
@@ -254,7 +264,7 @@ supports the correct file descriptor forwarding to allow this.</p>
 <h1 id="alice-s-vassals">Alice&#39;s vassals</h1>
 <p>If you&#39;re running <em>as Alice</em>, and you want to run some program <code>foo</code>
 with a distinct principal, use <code>vbecome</code>:</p>
-<p><!-- @becomeOthers @test --></p>
+<!-- @becomeOthers @test -->
 <pre><code>cat &lt;&lt;EOF &gt; $V_TUT/subshell.sh
   echo &quot; &quot;
   echo &quot;************************ Alice:&quot;
@@ -265,8 +275,8 @@ with a distinct principal, use <code>vbecome</code>:</p>
 EOF
 $V_BIN/agentd --v23.credentials $V_TUT/cred/alice \
     --additional-principals $V_TUT/cred/alice \
-    bash $V_TUT/subshell.sh</code></pre>
-<p>Compare the output of the two <code>dump</code> commands to see that the first
+    bash $V_TUT/subshell.sh
+</code></pre><p>Compare the output of the two <code>dump</code> commands to see that the first
 one ran as simply <em>alice</em>, while the second, with <code>vbecome</code>, ran as
 <em>alice:andy</em>.</p>
 <p>The public keys of the two differ, indicating that the vassal is a
@@ -277,7 +287,7 @@ client.  This example omits the <code>--name</code> flag on <code>vbecome</code>
 case, <code>vbecome</code> uses the name of the executable being run as the blessing
 name.  Thus, in this case, the blessing name will be <em>alice:client</em> (the agent
 runs as <em>alice</em>, and the executable&#39;s name is <em>client</em>).</p>
-<p><!-- @onceMoreWithFeeling @test --></p>
+<!-- @onceMoreWithFeeling @test -->
 <pre><code>cat &lt;&lt;EOF &gt; $V_TUT/subshell.sh
   $V_TUT/bin/server \
       --endpoint-file-name $V_TUT/server.txt \
@@ -291,8 +301,8 @@ runs as <em>alice</em>, and the executable&#39;s name is <em>client</em>).</p>
 EOF
 $V_BIN/agentd --v23.credentials $V_TUT/cred/alice \
     --additional-principals $V_TUT/cred/alice \
-    bash $V_TUT/subshell.sh</code></pre>
-<p>The RPC works because the client runs with a blessing derived from the
+    bash $V_TUT/subshell.sh
+</code></pre><p>The RPC works because the client runs with a blessing derived from the
 principal running the server - specifically, the client runs with the
 blessing <code>alice:client</code> (note the server&#39;s permissions).</p>
 <h1 id="secure-blessing">Secure blessing</h1>
@@ -311,21 +321,21 @@ distinct agents (neither process can see private keys).</p>
 send the blessing.</p>
 <p>First start Bob.  He&#39;ll wait for the blessing, then dump it and exit
 as soon as he gets it.</p>
-<p><!-- @receiveBlessing @sleep --></p>
+<!-- @receiveBlessing @sleep -->
 <pre><code>cat &lt;&lt;EOF &gt; $V_TUT/subshell1.sh
   $V_BIN/principal recvblessings \
       --remote-arg-file $V_TUT/recvblessings_args.json
   $V_BIN/principal dump
 EOF
 $V_BIN/agentd --v23.credentials $V_TUT/cred/bob \
-    bash $V_TUT/subshell1.sh &amp;</code></pre>
-<div class="note info"><p>The next commands can be run in the same terminal, but you might want to
+    bash $V_TUT/subshell1.sh &amp;
+</code></pre><div class="note info"><p>The next commands can be run in the same terminal, but you might want to
 start a <a href="/tutorials/setup.html">second terminal</a> to keep the process output disentangled.</p>
 </div>
 
 <p>Now run Alice.  Alice will transmit the blessing, using instructions
 Bob left her in the file <code>$V_TUT/recvblessings_args.json</code>.</p>
-<p><!-- @transmitBlessing @sleep --></p>
+<!-- @transmitBlessing @sleep -->
 <pre><code>cat &lt;&lt;EOF &gt; $V_TUT/subshell2.sh
   echo &quot; &quot;
   echo &quot;Transmitting the blessing.&quot;
@@ -335,8 +345,8 @@ Bob left her in the file <code>$V_TUT/recvblessings_args.json</code>.</p>
       companion
 EOF
 $V_BIN/agentd --v23.credentials $V_TUT/cred/alice \
-    bash $V_TUT/subshell2.sh</code></pre>
-<p>The <code>bless</code> command above transmits the blessing <code>alice:companion</code> from
+    bash $V_TUT/subshell2.sh
+</code></pre><p>The <code>bless</code> command above transmits the blessing <code>alice:companion</code> from
 Alice to Bob.  This blessing can be seen in the output of <code>principal
 dump</code> in the output from Bob&#39;s shell.</p>
 <p>In this scenario, neither Alice nor Bob nor the principal programs

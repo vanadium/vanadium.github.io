@@ -23,12 +23,10 @@ export V_BIN=${V23_RELEASE}/bin
 # code created as a result of doing the tutorials. To avoid trouble with
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
-if [ -n "$V23_GOPATH" ]; then
-  # Use the contributor's GOPATH rather than the release. See ../testing.md.
-  export GOPATH=$V_TUT:${V23_GOPATH}
-else
-  export GOPATH=$V_TUT:`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+if [ -z "$V23_GOPATH" ]; then
+  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
 fi
+export GOPATH=$V_TUT:${V23_GOPATH}
 
 # HISTCONTROL set as follows excludes long file creation commands used in
 # tutorials from your shell history.
@@ -77,12 +75,10 @@ export V_BIN=${V23_RELEASE}/bin
 # code created as a result of doing the tutorials. To avoid trouble with
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
-if [ -n "$V23_GOPATH" ]; then
-  # Use the contributor's GOPATH rather than the release. See ../testing.md.
-  export GOPATH=$V_TUT:${V23_GOPATH}
-else
-  export GOPATH=$V_TUT:`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+if [ -z "$V23_GOPATH" ]; then
+  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
 fi
+export GOPATH=$V_TUT:${V23_GOPATH}
 
 # HISTCONTROL set as follows excludes long file creation commands used in
 # tutorials from your shell history.

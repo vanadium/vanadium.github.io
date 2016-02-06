@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>OS X Prerequisites - Vanadium</title>
   
@@ -150,12 +160,12 @@ should work on most recent versions of OS X.</p>
 <h1 id="homebrew">Homebrew</h1>
 <p><a href="http://brew.sh/">Homebrew</a> is a widely-used OS X package manager. We&#39;ll use it to install other
 prerequisites.</p>
-<pre><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></pre>
-<h1 id="os-x-command-line-tools">OS X command line tools</h1>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</code></pre><h1 id="os-x-command-line-tools">OS X command line tools</h1>
 <p>These are the standard UNIX command line tools for development.</p>
 <p>Enterthe following command in a terminal window:</p>
-<pre><code>xcode-select --install</code></pre>
-<p>This will pop up a dialog window to install the command line tools:</p>
+<pre><code>xcode-select --install
+</code></pre><p>This will pop up a dialog window to install the command line tools:</p>
 <p><img src="/images/os-x-xcode-dialog.png" alt=""></p>
 <p>Click &quot;Install&quot;.</p>
 <p>Note, you can also install all of <a href="https://developer.apple.com/xcode/">Xcode</a>, but that&#39;s not needed for Vanadium
@@ -167,8 +177,8 @@ the command line tools for your version from
 <p>Vanadium code is managed using Git. Learn more about Git setup on <a href="https://help.github.com/articles/set-up-git">GitHub</a>.</p>
 <p>The OS X command line tools include <code>git</code>, but usually an out-of-date copy.
 We recommend you install the latest version using Homebrew.</p>
-<pre><code>brew install git</code></pre>
-<h1 id="go">Go</h1>
+<pre><code>brew install git
+</code></pre><h1 id="go">Go</h1>
 <p>Go can be installed with an OS X package installer:</p>
 <ol>
 <li>Download the <strong>darwin .pkg installer</strong> for your system and OS version from

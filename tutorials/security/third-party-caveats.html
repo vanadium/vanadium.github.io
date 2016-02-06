@@ -2,7 +2,17 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,
+      initial-scale=1,
+      minimum-scale=1,
+      maximum-scale=1,
+      user-scalable=no,
+      minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
     <title>Third-party Caveats - Vanadium</title>
   
@@ -205,23 +215,23 @@ give her access without contacting Google.</p>
 <p>Google is contacted, however, to confirm her access and to revoke it.</p>
 <h1 id="seek-a-blessing">Seek a blessing</h1>
 <p>Set up some credentials:</p>
-<p><!-- @initializeCredentials @test --></p>
+<!-- @initializeCredentials @test -->
 <pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/cheapDrive cheapDrive
 $V_BIN/principal create --overwrite $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite $V_TUT/cred/$USER $USER</code></pre>
-<p>Now you (really you) will use your Google account to <em>seek a blessing</em>:</p>
-<p><!-- @seekBlessing --></p>
+$V_BIN/principal create --overwrite $V_TUT/cred/$USER $USER
+</code></pre><p>Now you (really you) will use your Google account to <em>seek a blessing</em>:</p>
+<!-- @seekBlessing -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
-    seekblessings --from https://dev.v.io/auth/google</code></pre>
-<p>A browser will start up, log you into Google, ask you to approve
+    seekblessings --from https://dev.v.io/auth/google
+</code></pre><p>A browser will start up, log you into Google, ask you to approve
 Vanadium access to your identity (details
 <a href="#seeking-a-blessing">here</a>), and show you a web form.</p>
 <p>In the <strong>Blessing Name</strong> section, in the <strong>extension</strong> field (read
 about extensions <a href="#the-extension">here</a>) please enter:</p>
-<p><!-- @extensionText --></p>
-<pre><code>docs</code></pre>
-<p>Leave everything else in its default state, click <strong>BLESS</strong>, and
+<!-- @extensionText -->
+<pre><code>docs
+</code></pre><p>Leave everything else in its default state, click <strong>BLESS</strong>, and
 close the browser window.</p>
 <p>The appendix provides a
 <a href="#seeking-a-blessing">summary of what just happened</a>.</p>
@@ -229,12 +239,12 @@ close the browser window.</p>
 <p>If all went well, you&#39;ve just stored a blessing from <code>dev.v.io</code> to
 your credentials directory (<code>$V_TUT/cred/$USER</code>).</p>
 <p>Examine the blessing&#39;s name as follows:</p>
-<p><!-- @getUsersBlessingName @test --></p>
+<!-- @getUsersBlessingName @test -->
 <pre><code>blessingName=`$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
     get default -names`
-echo $blessingName</code></pre>
-<p>It should look like:</p>
+echo $blessingName
+</code></pre><p>It should look like:</p>
 <pre><code class="noclipboard nohighlight">dev.v.io:u:${yourEmailAddress}:docs</code></pre>
 
 <p>Blessing names are unforgeable.  Anyone who recognizes <code>dev.v.io</code> (the
@@ -245,11 +255,11 @@ form has either directly authenticated with Google as
 enables revocation.</p>
 <p>Report the caveat on this blessing using a command
 <a href="/tutorials/security/principals-and-blessings.html#caveats">introduced earlier</a>:</p>
-<p><!-- @getTheCaveat @test --></p>
+<!-- @getTheCaveat @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
-    get forpeer -caveats=$blessingName ...</code></pre>
-<p>The output should be something like</p>
+    get forpeer -caveats=$blessingName ...
+</code></pre><p>The output should be something like</p>
 <pre><code class="noclipboard nohighlight">ThirdPartyCaveat:
 Requires discharge from /ns.dev.v.io:8101/identity/dev.v.io:u/discharger</code></pre>
 
@@ -275,11 +285,11 @@ other</em>.</p>
 <em>unrecognized</em> peer, we have to arrange for <em>recognition</em>.</p>
 <h3 id="your-recognized-roots">Your recognized roots</h3>
 <p>List the principals that <code>$USER</code> recognizes:</p>
-<p><!-- @dumpUsersRecognition1 @test --></p>
+<!-- @dumpUsersRecognition1 @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
-    get recognizedroots</code></pre>
-<p>This command shows that principal <code>$USER</code> recognizes two principals -
+    get recognizedroots
+</code></pre><p>This command shows that principal <code>$USER</code> recognizes two principals -
 itself, and <code>dev.v.io</code>.</p>
 <p>Self recognition of of the name corresponding to the value of <code>$USER</code>
 was established with the <code>principal create</code> command above.  This is an
@@ -287,14 +297,14 @@ example of a <a href="/glossary.html#self-blessing">self-blessing</a>.  Recognit
 result of seeking a blessing from <code>dev.v.io</code>.</p>
 <p>Now, let <em>you</em>, as <code>$USER</code>, recognize CheapDrive so that you can make
 requests to it later:</p>
-<p><!-- @userRecognizesCheapDrive @test --></p>
+<!-- @userRecognizesCheapDrive @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/cheapDrive \
     get default | \
         $V_BIN/principal \
             --v23.credentials $V_TUT/cred/$USER \
-            recognize -</code></pre>
-<p>This command says:</p>
+            recognize -
+</code></pre><p>This command says:</p>
 <blockquote>
 <p>Extract the blessing <code>cheapDrive</code> presents to clients, and then
 arrange for <code>$USER</code> to recognize the principal that created said
@@ -303,37 +313,37 @@ blessing.</p>
 <p>In this case, the blessing creator was CheapDrive itself.</p>
 <p>Confirm that <code>cheapDrive</code> now appears in the list of roots recognized by
 <code>$USER</code>:</p>
-<p><!-- @dumpUsersRecognition2 @test --></p>
+<!-- @dumpUsersRecognition2 @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
-    get recognizedroots</code></pre>
-<p>The key reported for <code>cheapDrive</code> should match the output of this
+    get recognizedroots
+</code></pre><p>The key reported for <code>cheapDrive</code> should match the output of this
 command:</p>
-<p><!-- @dumpCheapDrivesKey @test --></p>
+<!-- @dumpCheapDrivesKey @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/cheapDrive \
-    get publickey -pretty</code></pre>
-<h3 id="alice-s-recognized-roots">Alice&#39;s recognized roots</h3>
+    get publickey -pretty
+</code></pre><h3 id="alice-s-recognized-roots">Alice&#39;s recognized roots</h3>
 <p>Likewise, let Alice recognize CheapDrive:</p>
-<p><!-- @aliceRecognizesCheapDrive @test --></p>
+<!-- @aliceRecognizesCheapDrive @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/cheapDrive \
     get default | \
         $V_BIN/principal \
             --v23.credentials $V_TUT/cred/alice \
-            recognize -</code></pre>
-<p>Alice now recognizes CheapDrive.  CheapDrive has <strong>not</strong> blessed
+            recognize -
+</code></pre><p>Alice now recognizes CheapDrive.  CheapDrive has <strong>not</strong> blessed
 Alice.  Nothing has happened that could be construed as delegation.</p>
 <h3 id="cheapdrive-s-recognized-roots">CheapDrive&#39;s recognized roots</h3>
 <p>Finally, let CheapDrive recognize <code>dev.v.io</code>:</p>
-<p><!-- @cheapDriveRecognizesGoogle @test --></p>
+<!-- @cheapDriveRecognizesGoogle @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
     get default |
         $V_BIN/principal \
             --v23.credentials $V_TUT/cred/cheapDrive \
-            recognize -</code></pre>
-<p>This last command relies on the fact that <code>$USER</code>&#39;s default blessing
+            recognize -
+</code></pre><p>This last command relies on the fact that <code>$USER</code>&#39;s default blessing
 came from <code>dev.v.io</code>.</p>
 <p>These recognition steps will make more sense shortly.  The recognition
 graph, excluding self-recognition, is shown below.</p>
@@ -346,39 +356,39 @@ graph, excluding self-recognition, is shown below.</p>
 securely access CheapDrive&#39;s service.</p>
 <p>Use the <code>$blessingName</code> you sought above to define a <a href="/glossary.html#permissions">Permissions</a>
 specification for reading:</p>
-<p><!-- @definePermissions @test --></p>
+<!-- @definePermissions @test -->
 <pre><code>perms=`echo {\&quot;R\&quot;: {\&quot;In\&quot;: [\&quot;$blessingName\&quot;]}}`
-echo $perms</code></pre>
-<p>Finally, start a server with those permissions.</p>
-<p><!-- @startServer  --></p>
+echo $perms
+</code></pre><p>Finally, start a server with those permissions.</p>
+<!-- @startServer  -->
 <pre><code>kill_tut_process TUT_PID_SERVER
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/cheapDrive \
     --endpoint-file-name $V_TUT/server.txt \
     --perms &quot;$perms&quot; &amp;
-TUT_PID_SERVER=$!</code></pre>
-<h2 id="make-requests">Make requests</h2>
+TUT_PID_SERVER=$!
+</code></pre><h2 id="make-requests">Make requests</h2>
 <p>Make a request as You:</p>
-<p><!-- @getYourFortune --></p>
+<!-- @getYourFortune -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/$USER \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>This request succeeds because the server was configured to accept your
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>This request succeeds because the server was configured to accept your
 blessing, and because the server recognizes the root of that blessing
 (<code>dev.v.io</code>).</p>
 <p>Now make a request as (your lawyer) Alice:</p>
 <div class="note warning"><p>This request should fail.</p>
 </div>
 
-<p><!-- @aliceTriesAndFails --></p>
+<!-- @aliceTriesAndFails -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>This fails because Alice lacks the proper blessing.</p>
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>This fails because Alice lacks the proper blessing.</p>
 <h2 id="bless-alice">Bless Alice</h2>
 <p>Extend your <code>dev.v.io</code> blessing to Alice using
 the <a href="#the-extension">extension</a> <code>lawyer</code>:</p>
-<p><!-- @blessYourLawyer @test --></p>
+<!-- @blessYourLawyer @test -->
 <pre><code>$V_BIN/principal \
     --v23.credentials $V_TUT/cred/$USER \
     get default | \
@@ -387,21 +397,21 @@ the <a href="#the-extension">extension</a> <code>lawyer</code>:</p>
             bless --with=- --for=24h $V_TUT/cred/alice lawyer | \
                 $V_BIN/principal \
                    --v23.credentials $V_TUT/cred/alice \
-                   set forpeer - cheapDrive</code></pre>
-<p>Take a look at Alice&#39;s new blessing name:</p>
-<p><!-- @blessYourLawyer @test --></p>
+                   set forpeer - cheapDrive
+</code></pre><p>Take a look at Alice&#39;s new blessing name:</p>
+<!-- @blessYourLawyer @test -->
 <pre><code>$V_BIN/principal get peermap \
-    --v23.credentials $V_TUT/cred/alice | grep cheapDrive</code></pre>
-<p>The choice of <code>lawyer</code> as part of the name here will be shared only
+    --v23.credentials $V_TUT/cred/alice | grep cheapDrive
+</code></pre><p>The choice of <code>lawyer</code> as part of the name here will be shared only
 with CheapDrive servers, since that was the argument of <code>forpeer</code>.</p>
 <p>This blessing, and its hint that Alice is your lawyer, will not be
 presented to any other peer that Alice interacts with.</p>
 <p>Now Alice can examine your CheapDrive data:</p>
-<p><!-- @aliceSucceeds --></p>
+<!-- @aliceSucceeds -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<p>As long as Alice doesn&#39;t lose her credentials data, her requests will
+    --server `cat $V_TUT/server.txt`
+</code></pre><p>As long as Alice doesn&#39;t lose her credentials data, her requests will
 continue to work - until you revoke the blessing.</p>
 <h2 id="revoke-the-blessing">Revoke the blessing</h2>
 <p>Visit <a href="https://dev.v.io/auth">dev.v.io/auth</a>, and click <strong>SHOW BLESSINGS</strong>.</p>
@@ -409,15 +419,15 @@ continue to work - until you revoke the blessing.</p>
 <a href="#seek-a-blessing">Seek a Blessing</a> step above, and click its
 <strong>Revoke</strong> button.</p>
 <p>Alice should no longer be able to read, i.e. this command should fail:</p>
-<p><!-- @aliceShouldFail --></p>
+<!-- @aliceShouldFail -->
 <pre><code>$V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/alice \
-    --server `cat $V_TUT/server.txt`</code></pre>
-<h2 id="cleanup">Cleanup</h2>
+    --server `cat $V_TUT/server.txt`
+</code></pre><h2 id="cleanup">Cleanup</h2>
 <p>We&#39;re done with the server.</p>
-<p><!-- @killServer @test --></p>
-<pre><code>kill_tut_process TUT_PID_SERVER</code></pre>
-<p>The blessing you obtained above, which you&#39;ve just rendered useless,
+<!-- @killServer @test -->
+<pre><code>kill_tut_process TUT_PID_SERVER
+</code></pre><p>The blessing you obtained above, which you&#39;ve just rendered useless,
 nevertheless still consumes a tiny bit of disk space in
 <code>$V_TUT/cred/$USER</code>.  Feel free to delete that, along with <code>$V_TUT</code> and
 everything below it.</p>
