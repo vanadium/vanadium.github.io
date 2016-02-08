@@ -21,7 +21,7 @@ echo "Block 'define_V23_RELEASE' (3/8 in test) of content/installation/step-by-s
 export V23_RELEASE=${JIRI_ROOT}/release/go
 #----------------------------------------------------------------------#  End 3
 
- bash -e <<'HANDLED_SCRIPT'
+ bash -euo pipefail <<'HANDLED_SCRIPT'
 function handledTrouble() {
   echo " "
   echo "Unable to continue!"

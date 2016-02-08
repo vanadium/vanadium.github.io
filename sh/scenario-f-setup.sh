@@ -43,7 +43,7 @@ function kill_tut_process() {
 }
 #----------------------------------------------------------------------#  End 1
 
- bash -e <<'HANDLED_SCRIPT'
+ bash -euo pipefail <<'HANDLED_SCRIPT'
 function handledTrouble() {
   echo " "
   echo "Unable to continue!"
