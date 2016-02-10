@@ -26158,7 +26158,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       }
       rawWriter.writeUint(1);
       rawWriter.writeUint(kindToBootstrapType(type.kind).id);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.OPTIONAL:
       elemId = this._encodeType(type.elem, pending);
@@ -26169,7 +26169,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       }
       rawWriter.writeUint(1);
       rawWriter.writeUint(elemId);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.ENUM:
       rawWriter.writeUint(BootstrapTypes.unionIds.ENUM_TYPE);
@@ -26182,7 +26182,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       for (i = 0; i < type.labels.length; i++) {
         rawWriter.writeString(type.labels[i]);
       }
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.ARRAY:
       elemId = this._encodeType(type.elem, pending);
@@ -26195,7 +26195,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       rawWriter.writeUint(elemId);
       rawWriter.writeUint(2);
       rawWriter.writeUint(type.len);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.LIST:
       elemId = this._encodeType(type.elem, pending);
@@ -26206,7 +26206,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       }
       rawWriter.writeUint(1);
       rawWriter.writeUint(elemId);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.SET:
       keyId = this._encodeType(type.key, pending);
@@ -26217,7 +26217,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       }
       rawWriter.writeUint(1);
       rawWriter.writeUint(keyId);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.MAP:
       keyId = this._encodeType(type.key, pending);
@@ -26231,7 +26231,7 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
       rawWriter.writeUint(keyId);
       rawWriter.writeUint(2);
       rawWriter.writeUint(elemId);
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     case kind.STRUCT:
     case kind.UNION:
@@ -26260,9 +26260,9 @@ TypeEncoder.prototype._encodeWireType = function(type, typeId, pending) {
         rawWriter.writeString(field.name);
         rawWriter.writeUint(1);
         rawWriter.writeUint(field.id);
-        rawWriter.writeByte(endByte);
+        rawWriter.writeControlByte(endByte);
       }
-      rawWriter.writeByte(endByte);
+      rawWriter.writeControlByte(endByte);
       break;
     default:
       throw new Error('encodeWireType with unknown kind: ' + type.kind);
@@ -26320,7 +26320,7 @@ function _typeIncomplete(type, pending, seen) {
  module.exports = {
    version80: 0x80,
    version81: 0x81,
-   defaultVersion: 0x80,
+   defaultVersion: 0x81,
    allowedVersions: [0x80, 0x81]
  };
 
