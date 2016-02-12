@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Internal Tutorial Wipe Slate - Vanadium</title>
+    <title>Mailing List - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -142,37 +142,24 @@
     <main>
       <h1 class="title">
         
-        Internal Tutorial Wipe Slate
+        Mailing List
       </h1>
 
+      <div class="toc"></div>
 
+      <ul>
+<li><a href="https://groups.google.com/a/v.io/forum/#!forum/vanadium-discuss">Vanadium Discuss mailing list</a> - Mailing list for discussion of Vanadium-related topics (e.g. questions, changes, feature requests).</li>
+</ul>
 
-      
-      <p>Clear, but don&#39;t delete, the tutorial workspace directory.</p>
-<p>Might be used in tests, tutorial preparation, etc.</p>
-<!-- @deleteTutdirContent @test @testui @completer -->
-<pre><code>if [ -z &quot;${V_TUT}&quot; ]; then
-  echo &quot;V_TUT not defined, nothing to do.&quot;
-else
-  if [ -d &quot;${V_TUT}&quot; ]; then
-    /bin/rm -rf $V_TUT/*
-    echo &quot;Removed contents of $V_TUT&quot;
-  else
-    echo &quot;Not a directory: V_TUT=\&quot;$V_TUT\&quot;&quot;
-  fi
-fi
-</code></pre>
     </main>
-    <nav class="previous-next">
-      <a href="/tutorials/hello-world.html" class="next">
-        <div class="text-wrapper">
-          <small>Next</small>
-          <div class="text">
-            <span>Hello World</span>
-          </div>
-        </div>
-        <div class="icon"><i class="material-icons">arrow_forward</i></div>
-      </a>
-</nav>
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-59720824-6', 'auto');
+        ga('send', 'pageview');
+    </script>
   </body>
 </html>
