@@ -97,14 +97,6 @@
       <a href="/tutorials/java/android.html">Location Service in Android</a>
     </nav>
     
-        <a href="#" class="nav">JavaScript</a>
-        <nav>
-          <a href="/tutorials/javascript/">Overview</a>
-          <a href="/tutorials/javascript/hellopeer.html">Hello Peer</a>
-      <a href="/tutorials/javascript/fortune.html">Fortune in JS</a>
-      <a href="/tutorials/javascript/security.html">Security in JS</a>
-    </nav>
-    
         <a href="/tutorials/faq.html">Tutorial FAQ</a>
       </nav>
     
@@ -219,9 +211,9 @@ not write to any files outside of the <code>JIRI_ROOT</code> directory.
 <!-- @runBootstrapScript @test --></p>
 <pre><code># This can take several minutes.
 curl -f https://vanadium.github.io/bootstrap.sh | bash
-</code></pre><p>Add <code>$JIRI_ROOT/devtools/bin</code> to your <code>PATH</code>, for <code>jiri</code>:
+</code></pre><p>Add <code>$JIRI_ROOT/.jiri_root/scripts</code> to your <code>PATH</code>, for <code>jiri</code>:
 <!-- @addDevtoolsToPath @test --></p>
-<pre><code>export PATH=$JIRI_ROOT/devtools/bin:$PATH
+<pre><code>export PATH=$JIRI_ROOT/.jiri_root/scripts:$PATH
 </code></pre><p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
 <h1 id="additional-prerequisites">Additional prerequisites</h1>
 <p>Some components of Vanadium (e.g. Syncbase) have additional prerequisites,
@@ -229,7 +221,7 @@ including Snappy, LevelDB, and Node.js.</p>
 <p>We recommend using the <code>jiri v23-profile</code> command to install all such
 prerequisites. This command uses <code>apt-get</code> on Linux and <code>brew</code> on OS X. Note,
 the <code>jiri</code> tool and its various plugins are located in
-<code>$JIRI_ROOT/devtools/bin</code>.
+<code>$JIRI_ROOT/.jiri_root/scripts</code>.
 <!-- @installBaseProfile @test --></p>
 <pre><code>jiri v23-profile install base
 </code></pre><p>The <code>jiri v23-profile install</code> command only writes to files under <code>JIRI_ROOT</code>,

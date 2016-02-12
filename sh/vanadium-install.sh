@@ -68,7 +68,7 @@ curl -f https://vanadium.github.io/bootstrap.sh | bash
 #----------------------------------------------------------------------#  Start 6
 echo "Block 'addDevtoolsToPath' (6/8 in test) of content/installation/step-by-step.md"
 ####
-export PATH=$JIRI_ROOT/devtools/bin:$PATH
+export PATH=$JIRI_ROOT/.jiri_root/scripts:$PATH
 #----------------------------------------------------------------------#  End 6
 
 #----------------------------------------------------------------------#  Start 7

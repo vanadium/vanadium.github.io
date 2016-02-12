@@ -420,194 +420,166 @@ $V_BIN/principal create \
 #----------------------------------------------------------------------#  End 9
 
 #
-# Script @completer from content/tutorials/javascript/hellopeer.md 
+# Script @completer from content/tutorials/security/principals-and-blessings.md 
 #
 #----------------------------------------------------------------------#  Start 1
-echo "Block 'createProjectDir' (1/6 in completer) of content/tutorials/javascript/hellopeer.md"
+echo "Block 'makeAliceAndBob' (1/2 in completer) of content/tutorials/security/principals-and-blessings.md"
 ####
-export V_TUT=${V_TUT-$HOME/v23_tutorial}
-mkdir -p $V_TUT
+$V_BIN/principal create --overwrite $V_TUT/cred/alice alice
+$V_BIN/principal create --overwrite $V_TUT/cred/bob bob
 #----------------------------------------------------------------------#  End 1
 
 #----------------------------------------------------------------------#  Start 2
-echo "Block 'removeThisBlockBeforeRelease' (2/6 in completer) of content/tutorials/javascript/hellopeer.md"
+echo "Block 'aliceBlessBobAsFriend' (2/2 in completer) of content/tutorials/security/principals-and-blessings.md"
 ####
-cd $V_TUT
-echo "{}" > $V_TUT/package.json
-npm install git+https://vanadium.googlesource.com/release.js.core
-npm install browserify node-static
+$V_BIN/principal bless \
+    --v23.credentials $V_TUT/cred/alice \
+    --for=24h $V_TUT/cred/bob friend:bob | \
+        $V_BIN/principal \
+            --v23.credentials $V_TUT/cred/bob \
+            set forpeer - alice
+#----------------------------------------------------------------------#  End 2
+
+#
+# Script @completer from content/tutorials/security/permissions-authorizer.md 
+#
+#----------------------------------------------------------------------#  Start 1
+echo "Block 'fortuneInterfaceWithTags' (1/4 in completer) of content/tutorials/security/permissions-authorizer.md"
+####
+ cat - <<EOF >$V_TUT/src/fortune/ifc/fortune.vdl
+package ifc
+
+type MyTag string
+const (
+  Reader = MyTag("R")
+  Writer = MyTag("W")
+)
+
+type Fortune interface {
+  // Returns a random fortune.
+  Get() (Fortune string | error) {Reader}
+  // Adds a fortune to the set used by Get().
+  Add(Fortune string) error {Writer}
+}
+EOF
+
+VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
+    VDLPATH=$V_TUT/src \
+    $V_BIN/vdl generate --lang go $V_TUT/src/fortune/ifc
+go build fortune/ifc
+#----------------------------------------------------------------------#  End 1
+
+#----------------------------------------------------------------------#  Start 2
+echo "Block 'permissionsAuthorizer' (2/4 in completer) of content/tutorials/security/permissions-authorizer.md"
+####
+ cat - <<EOF >$V_TUT/src/fortune/server/util/authorizer.go
+package util
+
+import (
+  "bytes"
+  "flag"
+  "fortune/ifc"
+  "v.io/v23/security"
+  "v.io/v23/security/access"
+  "v.io/v23/vdl"
+)
+
+var (
+	perms = flag.String("perms", "",
+      "JSON-encoded access.Permissions.")
+)
+
+func MakeAuthorizer() (authorizer security.Authorizer) {
+  aMap, _ := access.ReadPermissions(
+      bytes.NewBufferString(*perms))
+  typ := vdl.TypeOf(ifc.Reader)
+  authorizer, _ = access.PermissionsAuthorizer(aMap, typ)
+  return
+}
+EOF
+
+go install fortune/server
 #----------------------------------------------------------------------#  End 2
 
 #----------------------------------------------------------------------#  Start 3
-echo "Block 'helloPeerJS' (3/6 in completer) of content/tutorials/javascript/hellopeer.md"
+echo "Block 'createCarol' (3/4 in completer) of content/tutorials/security/permissions-authorizer.md"
 ####
-mkdir -p $V_TUT/src/hello
-cat - <<EOF >$V_TUT/src/hello/peer.js
-var vanadium = require('vanadium');
-
-// Define HelloService and the hello() method.
-function HelloService() {}
-
-HelloService.prototype.hello = function(ctx, serverCall, greeting) {
-  displayHello(greeting);
-};
-
-// Initialize Vanadium runtime.
-vanadium.init(function(err, runtime) {
-  if (err) {
-    showStatus('Initialization error: ' + err);
-    return;
-  }
-  showStatus('Initialized');
-  runtime.on('crash', function(err) {
-    showStatus('The runtime has crashed unexpectedly and the page must be reloaded.');
-  });
-
-  setupServer(runtime);
-  setupClient(runtime);
-});
-
-// Setup the server.
-function setupServer(runtime) {
-  // Create a server and serve the HelloService.
-  var serviceName = getLocalPeerName(runtime.accountName);
-  runtime.newServer(serviceName, new HelloService(), function(err) {
-    if (err) {
-      showServerStatus('Failed to serve ' + serviceName + ': ' + err);
-      return;
-    }
-    showServerStatus('Serving');
-    // HelloService is now served.
-  });
-}
-
-// Setup the client.
-function setupClient(runtime) {
-  // Create a client and bind to the service.
-  var client = runtime.getClient();
-  var ctx = runtime.getContext();
-
-  var serviceName = getRemotePeerName(runtime.accountName);
-  showClientStatus('Binding');
-  client.bindTo(ctx, serviceName, function(err, helloService) {
-    if (err) {
-      showClientStatus('Failed to bind to ' + serviceName + ': ' + err);
-      return;
-    }
-    showClientStatus('Ready');
-
-    registerButtonHandler(function(greeting) {
-      showClientStatus('Calling');
-      // Call hello() on the service.
-      helloService.hello(ctx, greeting, function(err) {
-        if (err) {
-          showClientStatus('Error invoking hello(): ' + err);
-          return;
-        }
-        showClientStatus('Ready');
-      });
-    });
-  });
-}
-
-// Get the local and remote names.
-function getLocalPeerName(accountName) {
-  var homeDir = accountName.replace(/^dev.v.io:u:/, 'users/').replace(vanadium.security.ChainSeparator.val, '/');
-  var hash = window.location.hash;
-  return homeDir + '/tutorial/hello' + hash;
-}
-function getRemotePeerName(accountName) {
-  var localPeer = getLocalPeerName(accountName);
-  var splitPeer = localPeer.split('#');
-  if (splitPeer[1] == 'A') {
-    splitPeer[1] = 'B';
-  } else {
-    splitPeer[1] = 'A';
-  }
-  return splitPeer.join('#');
-}
-
-// Manipulate the html page.
-function displayHello(greeting) {
-  var li = document.createElement('li');
-  li.textContent = greeting;
-  document.getElementById('receivedhellos').appendChild(li);
-}
-function registerButtonHandler(fn) {
-  document.getElementById('hellobutton').addEventListener('click', function() {
-    var greeting = document.getElementById('hellotext').value;
-    fn(greeting);
-  });
-}
-function showClientStatus(text) {
-  document.getElementById('clientstatus').textContent = text;
-}
-function showServerStatus(text) {
-  document.getElementById('serverstatus').textContent = text;
-}
-function showStatus(text) {
-  showClientStatus(text);
-  showServerStatus(text);
-}
-EOF
+$V_BIN/principal create --overwrite $V_TUT/cred/carol carol
 #----------------------------------------------------------------------#  End 3
 
 #----------------------------------------------------------------------#  Start 4
-echo "Block 'browserifyServer' (4/6 in completer) of content/tutorials/javascript/hellopeer.md"
+echo "Block 'aliceBlessCarolAsSister' (4/4 in completer) of content/tutorials/security/permissions-authorizer.md"
 ####
-mkdir -p $V_TUT/browser
-NODE_PATH=$V_TUT $V_TUT/node_modules/.bin/browserify \
-  $V_TUT/src/hello/peer.js -o $V_TUT/browser/hello-peer.js
+$V_BIN/principal bless \
+    --v23.credentials $V_TUT/cred/alice \
+    --for=24h $V_TUT/cred/carol family:sister | \
+        $V_BIN/principal set \
+            --v23.credentials $V_TUT/cred/carol \
+            forpeer - alice
 #----------------------------------------------------------------------#  End 4
 
-#----------------------------------------------------------------------#  Start 5
-echo "Block 'helloPeerHTML' (5/6 in completer) of content/tutorials/javascript/hellopeer.md"
+#
+# Script @completer from content/tutorials/naming/suffix-part1.md 
+#
+#----------------------------------------------------------------------#  Start 1
+echo "Block 'newDispatcher' (1/2 in completer) of content/tutorials/naming/suffix-part1.md"
 ####
-cat - <<EOF >$V_TUT/browser/peer.html
- <!DOCTYPE html>
- <html>
- <head>
-   <title>Hello Peer</title>
- </head>
- <body>
-   <div>
-     <div style="float:left;"><input id="hellotext" value="Hello World"></input><button id="hellobutton">Send</button></div>
-     <div style="float:right; white-space:nowrap">
-     <div>Client Status: <span id="clientstatus">Initializing</span></div>
-     <div>Server Status: <span id="serverstatus">Initializing</span></div>
-     </div>
-   </div>
-   <div style="clear:both;">
-     Received Greetings:
-     <ol id="receivedhellos"></ol>
-   </div>
-   <script src="hello-peer.js"></script>
- </body>
- </html>
-EOF
-#----------------------------------------------------------------------#  End 5
+ cat - <<EOF >$V_TUT/src/fortune/server/util/dispatcher.go
+package util
 
-#----------------------------------------------------------------------#  Start 6
-echo "Block 'helloMainHTML' (6/6 in completer) of content/tutorials/javascript/hellopeer.md"
+import (
+  "errors"
+  "strings"
+  "sync"
+  "fortune/ifc"
+  "fortune/service"
+  "v.io/v23/context"
+  "v.io/v23/rpc"
+  "v.io/v23/security"
+)
+
+type myDispatcher struct {
+  mu sync.Mutex
+  registry map[string]interface{}
+}
+
+func (d *myDispatcher) Lookup(
+    _ *context.T, suffix string) (interface{}, security.Authorizer, error) {
+  if strings.Contains(suffix, "/") {
+    return nil, nil, errors.New("unsupported service name")
+  }
+  auth := MakeAuthorizer()
+  d.mu.Lock()
+  defer d.mu.Unlock()
+  if suffix == "" {
+    names := make([]string, 0, len(d.registry))
+    for name, _ := range d.registry {
+      names = append(names, name)
+    }
+    return rpc.ChildrenGlobberInvoker(names...), auth, nil
+  }
+  s, ok := d.registry[suffix]
+  if !ok {
+    // Make the service on first attempt to use.
+    s = ifc.FortuneServer(service.Make())
+    d.registry[suffix] = s
+  }
+  return s, auth, nil;
+}
+
+func MakeDispatcher() rpc.Dispatcher {
+  return &myDispatcher {
+    registry: make(map[string]interface{}),
+  }
+}
+EOF
+#----------------------------------------------------------------------#  End 1
+
+#----------------------------------------------------------------------#  Start 2
+echo "Block 'buildServer' (2/2 in completer) of content/tutorials/naming/suffix-part1.md"
 ####
-cat - <<EOF >$V_TUT/hello.html
- <!DOCTYPE html>
- <html>
- <head>
-   <title>Hello Peers</title>
- </head>
- <body style="background: #000000;">
-   <div style="position:fixed;top:0px;left:0px;bottom:0px;width:48%; background: #ffffff;">
-     <iframe id="frameA" src="browser/peer.html#A" style="width:100%; height:100%;" frameBorder="0"></iframe>
-   </div>
-   <div style="position:fixed;top:0px;right:0px;bottom:0px;width:48%; background: #ffffff;">
-     <iframe id="frameB" src="browser/peer.html#B" style="width:100%; height:100%;" frameBorder="0"></iframe>
-   </div>
- </body>
- </html>
-
-EOF
-#----------------------------------------------------------------------#  End 6
+go install fortune/server
+#----------------------------------------------------------------------#  End 2
 
 echo " "
 echo "All done.  No errors."

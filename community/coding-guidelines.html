@@ -97,14 +97,6 @@
       <a href="/tutorials/java/android.html">Location Service in Android</a>
     </nav>
     
-        <a href="#" class="nav">JavaScript</a>
-        <nav>
-          <a href="/tutorials/javascript/">Overview</a>
-          <a href="/tutorials/javascript/hellopeer.html">Hello Peer</a>
-      <a href="/tutorials/javascript/fortune.html">Fortune in JS</a>
-      <a href="/tutorials/javascript/security.html">Security in JS</a>
-    </nav>
-    
         <a href="/tutorials/faq.html">Tutorial FAQ</a>
       </nav>
     
@@ -159,6 +151,8 @@
 installation] process arranges these repositories as follows (some repositories
 omitted, for brevity):</p>
 <pre><code> $JIRI_ROOT
+   .jiri_root        # Jiri utils and metadata
+     scripts/jiri    # Jiri command-line tool
    devtools          # Contributor tool binaries
    environment       # Platform-dependent configuration
    manifest          # Multi-repo configuration data
@@ -215,7 +209,7 @@ random number generator is seeded differently.</li>
 what). -->
 <h1 id="vdl">VDL</h1>
 <p>The <code>devtools/bin/vdl</code> tool uses VDL files to generate files
-containing <a href="/glossary.html#remote-procedure-call-rpc-">RPC</a> stub code for various languages - Go, JavaScript,
+containing <a href="/glossary.html#remote-procedure-call-rpc-">RPC</a> stub code for various languages - Go, Java, JavaScript,
 etc.</p>
 <p><a href="/glossary.html#vandium-definition-language-vdl-">VDL</a> is not Go, but is modeled after Go, so VDL code should follow
 Go&#39;s style guidelines.</p>
