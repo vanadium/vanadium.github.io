@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1,
+                                   minimum-scale=1,
+                                   maximum-scale=1,
+                                   user-scalable=no,
+                                   minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+    <title>Syncbase - Vanadium</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
+  
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+    <script src="/js/react-0.14.3.min.js"></script>
+    <script src="/js/react-dom-0.14.3.min.js"></script>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/favicons/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+  
+    <link rel="stylesheet" href="/css/bundle.teal.css">
+    <script src="/js/bundle.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+      ga('create', 'UA-59720824-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header class="mdl-shadow--2dp">
+      <div class="row">
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
+        <div class="logo"><a href="/">Vanadium</a> – <a href="/syncbase">Syncbase</a> </div>
+        <div class="spacer"></div>
+        <nav>
+          <a href="/syncbase">Overview</a>
+          <a href="/syncbase/quickstart.html">Quick Start</a>
+          <a href="/">Vanadium</a>
+        </nav>
+      </div>
+    </header>
+    <div class="sidebar"></div>
+    <div class="sidebar-data">
+      <a href="/syncbase/">Overview</a>
+      <a href="/syncbase/quickstart.html">Quick Start</a>
+    
+      <a href="#" class="nav">Tutorial</a>
+       <nav>
+        <a href="/syncbase/tutorial/step1.html">Step 1</a>
+    <a href="/syncbase/tutorial/step2.html">Step 2</a>
+    <a href="/syncbase/tutorial/step3.html">Step 3</a>
+   </nav>
+    
+      <a href="#" class="nav">Guides</a>
+      <nav>
+        <a href="/syncbase/guides/data-model.html">Data Model</a>
+    <a href="/syncbase/guides/data-flow.html">Data Flow</a>
+    <a href="/syncbase/guides/synchronization.html">Synchronization</a>
+    <a href="/syncbase/guides/batches.html">Batches</a>
+    <a href="/syncbase/guides/acls.html">Access Control</a>
+    <a href="/syncbase/guides/syncql.html">SyncQL Queries</a>
+    <a href="/syncbase/guides/blobs.html">Blobs</a>
+    <a href="/syncbase/guides/conflict.html">Conflict Resolution</a>
+    <a href="/syncbase/guides/schema.html">Schema and upgrades</a>
+    <a href="/syncbase/guides/cloud.html">Cloud Syncbase</a>
+  </nav>
+    
+      <a href="/syncbase/example-apps.html">Example Apps</a>
+    </div>
+    <main>
+      <h1 class="title">
+        
+        Syncbase
+      </h1>
+
+      <div class="toc"></div>
+
+      <p>Syncbase is a storage system for developers that makes it easy to synchronize
+app data between devices. It works even when devices are not connected to the
+Internet.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2cHzd8pBYmU" frameborder="0" allowfullscreen></iframe>
+
+<h1 id="why-use-syncbase-">Why use Syncbase?</h1>
+<ul>
+<li>Synchronization between one user&#39;s devices is trivial to configure; multiple
+users can synchronize specific data too<ul>
+<li>Low latency synchronization enables many apps to use storage for
+asynchronous communication</li>
+</ul>
+</li>
+<li>Internet connection not required<ul>
+<li>Local storage still works when not connected to the internet</li>
+<li>Synchronization protocol is peer-to-peer and works just as well over local
+WiFi or Bluetooth as the internet</li>
+</ul>
+</li>
+<li>Conflict resolution system merges data when devices have been working offline</li>
+<li>Unified storage model handles both structured data and blobs<ul>
+<li>Structured databases are easy to use and queryable</li>
+<li>Blob caching policies work well on resource-limited devices</li>
+</ul>
+</li>
+<li>Powerful management tools<ul>
+<li>Leverages the Vanadium namespace and security system</li>
+<li>Open source reference implementation of Syncbase for developers who want
+tight control over the data</li>
+</ul>
+</li>
+</ul>
+<p>The initial version of Syncbase is ready for testing and evaluation by early
+adopters - it is suitable for prototyping, but not for production applications.</p>
+<p>This document presents an overview of the system. It is very light on
+implementation details. Subsequent docs will contain those details.</p>
+<h1 id="background">Background</h1>
+<p>There are many storage systems that synchronize data between mobile devices, but
+most such systems are cloud-centric rather than peer-to-peer, and the few that
+are peer-to-peer typically focus on files rather than structured storage. In
+addition, very few systems have the fine-grained access control or powerful,
+configurable conflict resolution we want. In summary, we&#39;re trying to solve a
+bunch of problems simultaneously whereas those other systems each solve a subset
+of those problems.</p>
+
+    </main>
+  </body>
+</html>

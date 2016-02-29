@@ -4,6 +4,9 @@
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
 /* license that can be found in the LICENSE file. */
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
 /* https://www.google.com/design/spec/style/color.html */
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
@@ -53,14 +56,14 @@ pre .hljs {
           justify-content: flex-end;
 }
 .clipboard .status {
-  color: #0097a7;
+  color: #00796B;
   font-family: "Roboto", sans-serif;
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase;
 }
 .clipboard .icon {
-  color: #0097a7;
+  color: #00796B;
 }
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
@@ -135,7 +138,7 @@ h6 {
   font-weight: 500;
 }
 h1.title {
-  color: #0097a7;
+  color: #00796B;
   font-size: 45px;
   line-height: 48px;
 }
@@ -166,12 +169,12 @@ p {
   line-height: 1.7;
 }
 a {
-  color: #0097a7;
+  color: #00796B;
   text-decoration: none;
 }
 a:hover,
 a:active {
-  color: #00838f;
+  color: #00695C;
 }
 blockquote {
   background-color: #f5f5f5;
@@ -214,7 +217,8 @@ header {
   /* Copyright 2015 The Vanadium Authors. All rights reserved. */
   /* Use of this source code is governed by a BSD-style */
   /* license that can be found in the LICENSE file. */
-  background-color: #00838f;
+  color: #ffffff;
+  background-color: #00695C;
   /* Similar to .logo-row in sidebar.less. */
   position: fixed;
   top: 0;
@@ -381,7 +385,7 @@ main h6[id]:before {
   -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  background-color: #00838f;
+  background-color: #00695C;
 }
 .previous-next .previous .text-wrapper {
   -webkit-box-align: start;
@@ -394,7 +398,7 @@ main h6[id]:before {
   -webkit-justify-content: flex-end;
       -ms-flex-pack: end;
           justify-content: flex-end;
-  background-color: #0097a7;
+  background-color: #00796B;
 }
 .previous-next .next .text-wrapper {
   -webkit-box-align: end;
@@ -438,7 +442,7 @@ main h6[id]:before {
           align-items: center;
   padding: 0 32px;
   height: 64px;
-  color: #0097a7;
+  color: #00796B;
 }
 .sidebar .logo-row .icon {
   margin: 0 8px 0 calc(12px - 32px);
@@ -508,7 +512,7 @@ main h6[id]:before {
   font-weight: 400;
 }
 .toc .heading.active {
-  color: #0097a7;
+  color: #00796B;
   font-weight: 500;
 }
 @media (min-width: 1100px) {
@@ -554,3 +558,4 @@ main h6[id]:before {
 .note pre {
   width: inherit;
 }
+/* https://www.google.com/design/spec/style/color.html */
