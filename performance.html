@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Internal Tutorial Testing - Vanadium</title>
+    <title>Vanadium Performance - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -151,81 +151,55 @@
     <main>
       <h1 class="title">
         
-        Internal Tutorial Testing
+        Vanadium Performance
       </h1>
 
+      <div class="toc"></div>
 
-
-      
-      <p>This page explains how to <strong>test the tutorials</strong> against a local, development
-branch of Vanadium.</p>
-<p>In the overall external instruction sequence, this page replaces the external
-<a href="/installation/">installation instructions</a>, allowing a Vanadium team member to
-use their existing installation instead.</p>
-<p>To run the tests, <code>$JIRI_ROOT</code> needs a value, and the binaries need to be in
-place. Check your state:</p>
-<!-- @checkInstall -->
-<pre><code>[ -z &quot;${JIRI_ROOT:?&#39;Must define JIRI_ROOT&#39;}&quot; ]
-[ -x &quot;$JIRI_ROOT/devtools/bin/jiri&quot; ] || echo &#39;No jiri!&#39;
-[ -x &quot;$JIRI_ROOT/release/go/bin/principal&quot; ] || echo &#39;No bin!&#39;
-</code></pre><p>Development also requires Node.js. Install it as follows:</p>
-<pre><code># Adds node to $JIRI_ROOT/environment/cout/node/bin. The Makefile adds this to
-# $PATH automatically.
-jiri v23-profile install nodejs
-</code></pre><p>Since you&#39;re presumably considering a commit, be sure everything is up to date:</p>
-<pre><code>unset GOPATH
-jiri update
-jiri go install v.io/...
-</code></pre><p>If this builds cleanly, you can meaningfully test the tutorials.</p>
-<p>The tutorials don&#39;t use the <code>jiri</code> tool, so define the following
-<strong>tutorial environment</strong> to run the tests:</p>
-<!-- @defineLocalEnv @test @testui @buildjs -->
-<pre><code>export V23_RELEASE=${JIRI_ROOT}/release/go
-
-# Extract GOPATH from jiri utility.
-export V23_GOPATH=`jiri go env GOPATH`
-echo &quot;V23_GOPATH=$V23_GOPATH&quot;
-</code></pre><p>That&#39;s it for prep.</p>
-<p>Run all tutorial tests against your development branch like this:</p>
-<pre><code>cd ${JIRI_ROOT}/website
-make test-tutorials
-</code></pre><p>If those pass, you&#39;re good.</p>
-<h2 id="manual-execution">Manual execution</h2>
-<p>If you&#39;re having trouble, you can do tutorials manually to pinpoint a problem.</p>
-<p>Behave like a user following the instructions, but skip the Vanadium
-installation step and start the tutorials with the <a href="/tutorials/setup.html">setup
-page</a>. Due to the definitions above, the tutorial code
-will run using your local development branch.</p>
-<h2 id="purely-external-execution">Purely external execution</h2>
-<p>The command:</p>
-<pre><code>cd ${JIRI_ROOT}/website
-make test-tutorials-external
-</code></pre><p>This tests the tutorials <strong>against Vanadium code freshly downloaded from the
-external site to your <code>/tmp</code> directory</strong>. It&#39;s a production test behaving like
-an external user; <em>not</em> a local test running against local changes. If you&#39;re
-broken locally, this is a way to see if an external user is seeing a problem
-too.</p>
+      <p>Performance of the Vanadium APIs is measured with microbenchmarks.
+<a href="https://benchmarks.v.io">benchmarks.v.io</a> records these results at various snapshots of the codebase
+and on  multiple platforms. Since the total number of benchmarks served by
+<a href="https://benchmarks.v.io">benchmarks.v.io</a> is somewhat overwhelming, this page lists out a small subset
+that can be considered representative of Vanadium.</p>
+<p>The numbers below are for using the Go API. Benchmarks for other languages
+(Java in particular) are not integrated into the flow of continuous measurement
+yet, but are intended to be.</p>
+<p>All the numbers are currently one click away. We hope to restructure this page
+to embed live results to avoid that one click in the future.</p>
+<h1 id="rpc">RPC</h1>
+<p>In all the benchmarks here, network round-trip time is zero. Thus, when RPCs
+are executed &#39;in the wild&#39;, network round-trip time must be added.</p>
+<h2 id="connection-establishment">Connection Establishment</h2>
+<p>Results: <a href="https://benchmarks.v.io/?q=v.io%2Fx%2Fref%2Fruntime%2Finternal%2Frpc%2Fbenchmark.BenchmarkConnectionEstablishment+uploader%3Avlab#">v.io/x/ref/runtime/internal/rpc/benchmark.BenchmarkConnectionEstablishment</a></p>
+<p>Establishment of a mutually authenticated, confidential network connection
+between two processes. This includes the time it takes to establish a TCP
+connection and execute the <a href="/designdocs/authentication.html">Vanadium authentication protocol</a> over it.</p>
+<h2 id="echo">Echo</h2>
+<p>Results: <a href="https://benchmarks.v.io/?q=v.io%2Fx%2Fref%2Fruntime%2Finternal%2Frpc%2Fbenchmark.Benchmark____1B+uploader%3Avlab#">v.io/x/ref/runtime/internal/rpc/benchmark.Benchmark____1B</a></p>
+<p>Sending a 1 byte &quot;echo&quot; request and receiving the response over an established
+connection. The Vanadium RPC protocol multiplexes RPCs over a single
+established connection.</p>
+<h1 id="syncbase">Syncbase</h1>
+<h2 id="put">Put</h2>
+<p>Results: <a href="https://benchmarks.v.io/?q=v.io%2Fv23%2Fsyncbase%2Fnosql.BenchmarkTinyPut+uploader%3Avlab#">v.io/v23/sycnbase/nosql.BenchmarkTinyPut</a>.</p>
+<p>Writing a small piece of structured information to the syncbase daemon via the
+<a href="https://godoc.org/v.io/v23/syncbase/nosql#Table">Table</a> API.</p>
+<h2 id="get">Get</h2>
+<p>Results: <a href="https://benchmarks.v.io/?q=v.io%2Fv23%2Fsyncbase%2Fnosql.BenchmarkTinyGet+uploader%3Avlab#">v.io/v23/sycnbase/nosql.BenchmarkTinyGet</a>.</p>
+<p>Reading read a small piece of structured information from the syncbase daemon
+via the <a href="https://godoc.org/v.io/v23/syncbase/nosql#Table">Table</a> API.</p>
+<h2 id="sync">Sync</h2>
+<p>Results: <a href="https://benchmarks.v.io/?q=v.io%2Fv23%2Fsyncbase%2Ffeaturetests.BenchmarkPingPongPair+uploader%3Avlab#">v.io/v23/syncbase/featuretests.BenchmarkPingPongPair</a>.</p>
+<p>As of February 2016, this measures 500x the time it takes for peers in a
+syncgroup to notice updates made to each other. For example, on desktop/laptop
+class machines <a href="https://benchmarks.v.io">benchmarks.v.io</a> reported 1m40s, which means 100/500 seconds =
+200ms to sync an update. The 500x multiplier is an artifact of the benchmark
+implementation, not the sync protocol.</p>
+<p>This also includes any idle time between attempts to contact the peer syncbase
+instance for updates. Changes to the sync protocol (changing the polling
+interval or using a push-notification mechanism) were being iterated on at the
+time of this writing. These numbers are very sensitive to such changes.</p>
 
     </main>
-    <nav class="previous-next">
-      <a href="/performance.html" class="previous">
-        <div class="icon"><i class="material-icons">arrow_back</i></div>
-        <div class="text-wrapper">
-          <small>Previous</small>
-          <div class="text">
-            <span>Vanadium Performance</span>
-          </div>
-        </div>
-      </a>
-  <a href="/tos.html" class="next">
-        <div class="text-wrapper">
-          <small>Next</small>
-          <div class="text">
-            <span>Terms of Service</span>
-          </div>
-        </div>
-        <div class="icon"><i class="material-icons">arrow_forward</i></div>
-      </a>
-</nav>
   </body>
 </html>

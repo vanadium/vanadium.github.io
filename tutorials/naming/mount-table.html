@@ -198,7 +198,7 @@ TUT_PID_MT=$!
 </code></pre><p>A mount table happens to be a Vanadium service.  This means the <a href="/tutorials/basics.html#the-vrpc-client">vrpc</a>
 program can report its <a href="https://vanadium.googlesource.com/release.go.v23/+/master/services/mounttable/service.vdl">VDL interface</a>:</p>
 <!-- @queryMountTable @test -->
-<pre><code>$V_BIN/vrpc signature /localhost:$PORT_MT
+<pre><code>$V_BIN/vrpc signature -s /localhost:$PORT_MT
 </code></pre><p>It also means that the mount table has a <a href="/glossary.html#principal">principal</a> - it must run
 with credentials.  Since the <code>--v23.credentials</code> flag wasn&#39;t
 specified at startup, the Vanadium runtime consulted the environment
@@ -208,6 +208,8 @@ would have been used, and the problems reviewed at the
 <a href="/tutorials/basics.html#authorization">end of the basics tutorial</a> would happen below
 when processes start talking to each other.  Mount table security will
 be discussed in later tutorial.</p>
+<p>The <code>-s</code> option stands for &#39;shallow resolve&#39;.  It forces vprc to apply
+to mount table itself and not what might be mounted at its root.</p>
 <h1 id="the-namespace-client">The namespace client</h1>
 <p>The table is up, but empty.</p>
 <p>Start the existing fortune server binary, so we have a service to put

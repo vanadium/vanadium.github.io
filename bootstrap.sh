@@ -20,27 +20,6 @@ retry() {
   done
 }
 
-must() {
-  "$@"
-  if [[ "$?" -ne 0 ]]; then
-    exit 1
-  fi
-}
-
-run() {
-  echo ">> $@"
-  local OUTPUT
-  OUTPUT=$("$@" 2>&1)
-  if [[ "$?" -eq 0 ]]; then
-    echo ">> OK"
-    return 0
-  else
-    echo ">> FAILED"
-    echo "${OUTPUT}"
-    return 1
-  fi
-}
-
 check_environment() {
   # Check that the JIRI_ROOT environment variable is set.
   if [[ -z "${JIRI_ROOT}" ]]; then
@@ -130,9 +109,7 @@ main() {
   retry $JIRI_ROOT/.jiri_root/bin/jiri update
   popd
 
-  echo "Recommended for contributors:"
-  echo "Add ${JIRI_ROOT}/devtools/bin to your PATH."
-
+  echo "Recommended: Add ${JIRI_ROOT}/.jiri_root/scripts to your PATH."
   trap - EXIT
 }
 
