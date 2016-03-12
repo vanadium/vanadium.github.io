@@ -203,49 +203,35 @@ like the encoding to be as efficient as possible, both in terms of space and
 computational cost. We are not aware of any modern encoding format that meets
 these requirements.</p>
 <h1 id="are-there-benchmarks-for-the-vanadium-rpc-system-">Are there benchmarks for the Vanadium RPC system?</h1>
-<p>Benchmark details and code used to measure the performance of the Vanadium RPC
-stack are <a href="https://github.com/vanadium/go.ref/tree/master/profiles/internal/rpc/benchmark">available on GitHub</a>.</p>
-<p>As of April 20, 2015, the numbers are dismally low. We expect to make
-significant improvements to them over the coming months.</p>
+<p>Benchmark code used to measure the performance of the Vanadium RPC stack is
+<a href="https://github.com/vanadium/go.ref/blob/master/runtime/internal/rpc/benchmark/benchmark_test.go">available on GitHub</a>. Results from the latest version of the
+codebase are regularly measured and archived. Numbers from March, 2016 are
+summarized in this table, but for the latest numbers <a href="/performance.html">see this
+page</a>.</p>
 <table>
 <thead>
 <tr>
 <th>Benchmark</th>
-<th style="text-align:center">GCE<br><code>n1-standard-4</code></th>
-<th style="text-align:center">Raspberry Pi</th>
+<th style="text-align:center">Linux Desktop</th>
 <th style="text-align:center">Raspberry Pi 2</th>
+<th style="text-align:center">Nexus 5X Phone</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>RPC Connection</td>
-<td style="text-align:center">33.48<br>ms/rpc</td>
-<td style="text-align:center">1765.47 ms/rpc</td>
-<td style="text-align:center">847.41 ms/rpc</td>
+<td><a href="https://benchmarks.v.io/?q=v.io%2Fx%2Fref%2Fruntime%2Finternal%2Frpc%2Fbenchmark.BenchmarkConnectionEstablishment+uploader%3Adev.v.io%3Arole%3Avlab%3Aapp%3Abenchmarks%3A20160218">Connection</a></td>
+<td style="text-align:center">4 ms</td>
+<td style="text-align:center">130 ms</td>
+<td style="text-align:center">90 ms</td>
 </tr>
 <tr>
-<td>RPC (echo 1KB)</td>
-<td style="text-align:center">1.31<br>ms/rpc<br>(763.05<br>qps)</td>
-<td style="text-align:center">78.61 ms/rpc<br>(12.72 qps)</td>
-<td style="text-align:center">16.47 ms/rpc<br>(60.71 qps)</td>
-</tr>
-<tr>
-<td>RPC Streaming<br>(echo 1KB)</td>
-<td style="text-align:center">0.11<br>ms/rpc</td>
-<td style="text-align:center">23.85<br>ms/rpc</td>
-<td style="text-align:center">3.33 ms/rpc</td>
-</tr>
-<tr>
-<td>RPC Streaming Throughput<br>(echo 1MB)</td>
-<td style="text-align:center">313.91<br>MB/s</td>
-<td style="text-align:center">0.92 MB/s</td>
-<td style="text-align:center">2.31 MB/s</td>
+<td><a href="https://benchmarks.v.io/?q=v.io%2Fx%2Fref%2Fruntime%2Finternal%2Frpc%2Fbenchmark.Benchmark____1B+uploader%3Adev.v.io%3Arole%3Avlab%3Aapp%3Abenchmarks%3A20160218">RPC (echo 1B)</a></td>
+<td style="text-align:center">0.4 ms/rpc</td>
+<td style="text-align:center">5 ms/rpc</td>
+<td style="text-align:center">4 ms/rpc</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Note</strong>: <a href="https://cloud.google.com/compute/docs/machine-types">Google Compute Engine <code>n1-standard-4</code></a> has 15 GB of memory and 4
-virtual CPUs, each implemented as a single hyperthread on a 2.3 GHz Intel Xeon
-E5 v3 (Haswell).</p>
 
     </main>
   </body>

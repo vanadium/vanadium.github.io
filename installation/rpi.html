@@ -166,9 +166,8 @@ Advanced or adventurous users may want to install <a href="https://www.raspberry
 <p>You could use the <a href="https://www.raspberrypi.org/">RaspberryPi</a> as your complete development environment -
 write code, compile it and run it all on the Pi. To do that you will:</p>
 <ol>
-<li>Need the <a href="https://golang.org">Go</a> compiler. Unfortunately, there are no official Go compiler distributions for
-the processor architecture of the Pis. You could compile it from source, but might prefer
-<a href="http://dave.cheney.net/unofficial-arm-tarballs">Dave Cheney&#39;s unofficial distribution</a>.</li>
+<li>Need the <a href="https://golang.org">Go</a> compiler. Starting with Go 1.6, the official release includes
+binaries that work on the Pi (the armv6l architecture).</li>
 <li>Download the Vanadium sources:<pre><code>export GOPATH=$HOME/vanadium  # Or any other directory of your choosing
 go get v.io/x/ref/...
 </code></pre></li>
@@ -179,30 +178,22 @@ build them using <code>go build</code> or <code>go install</code>.</p>
 <p>Developing and building on the Pi is all great, but if you have a
 laptop/desktop that you prefer to use instead - which has all your editor
 customizations, screen size, keyboard you love etc., then you can also build
-binaries for the <a href="https://www.raspberrypi.org/">RaspberryPi</a> on it. The catch is that your laptop/desktop
-must be running Linux.</p>
-<p>Once Go 1.5 is released and we remove a few vestigal C code, these instructions
-should become much less onerous.  Furthermore, you will be able to build
-binaries for your Pi running Linux on your laptop/desktop running either Linux
-or Mac OS X, courtesy <a href="http://dave.cheney.net/2015/03/03/cross-compilation-just-got-a-whole-lot-better-in-go-1-5">significant improvements</a> in the Go
-compiler&#39;s support for cross-compilation.</p>
-<p>Till then:</p>
-<ol>
-<li>Install the <a href="/tools/jiri.html">jiri</a> tool as per the <a href="/community/contributing.html">contribution guidelines</a>.</li>
-<li>Setup the cross-compiler using <code>jiri v23-profile install arm</code></li>
-</ol>
-<p>Let&#39;s say you&#39;re building a binary (such as the <code>principal</code> command-line tool)
-for the machine you&#39;re developing on, you&#39;d likely do something like:</p>
-<pre><code>jiri go install v.io/x/ref/cmd/principal
-</code></pre><p>To build it for the Pi, use:</p>
-<pre><code>JIRI_PROFILE=arm jiri go install v.io/x/ref/cmd/principal
+binaries for the <a href="https://www.raspberrypi.org/">RaspberryPi</a> on it.</p>
+<p>The Vanadium codebase includes some C-code, and thus you need a cross-compiler
+that can compile C-code into a binary suitable for the ARM architecture. If you
+performed the setup steps described in the <a href="/community/contributing.html">contribution guidelines</a>, you can
+use the <a href="/tools/jiri.html">jiri</a> tool to install the required cross-compiler.</p>
+<pre><code># Install the cross-compiler
+jiri profile-v23 install --target=arm-linux v23:base
+
+# Compiling a binary for the Pi
+jiri go -target=arm-linux install v.io/x/ref/cmd/principal
 </code></pre><p>This will place the binary under
 <code>$JIRI_ROOT/release/go/bin/linux_arm/principal</code>.  You can then copy this binary
 using <code>scp</code> or some other mechanism to your Pi.</p>
 <h1 id="using-the-gpio-ports">Using the GPIO ports</h1>
 <p>Your RaspberryPi projects might involve some circuit manipulation using the
-available GPIO ports. <a href="https://www.google.com/search?q=golang+gpio+raspberry+pi">Search the
-web</a> to settle on
+available GPIO ports. <a href="https://www.google.com/search?q=golang+gpio+raspberry+pi">Search the web</a> to settle on
 which of a variety of Go libraries to manipulate the GPIO ports you&#39;d like to
 play with.</p>
 
