@@ -74,7 +74,7 @@ export PATH=$JIRI_ROOT/.jiri_root/scripts:$PATH
 #----------------------------------------------------------------------#  Start 7
 echo "Block 'installBaseProfile' (7/8 in test) of content/installation/step-by-step.md"
 ####
-jiri v23-profile install base
+jiri profile install v23:base
 #----------------------------------------------------------------------#  End 7
 
 #----------------------------------------------------------------------#  Start 8
