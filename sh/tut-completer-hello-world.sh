@@ -24,7 +24,7 @@ export V_BIN=${V23_RELEASE}/bin
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
 if [ -z "$V23_GOPATH" ]; then
-  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+  export V23_GOPATH=`${JIRI_ROOT}/.jiri_root/scripts/jiri go env GOPATH`
 fi
 export GOPATH=$V_TUT:${V23_GOPATH}
 
@@ -76,7 +76,7 @@ export V_BIN=${V23_RELEASE}/bin
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
 if [ -z "$V23_GOPATH" ]; then
-  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+  export V23_GOPATH=`${JIRI_ROOT}/.jiri_root/scripts/jiri go env GOPATH`
 fi
 export GOPATH=$V_TUT:${V23_GOPATH}
 

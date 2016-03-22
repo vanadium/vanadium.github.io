@@ -283,7 +283,7 @@ exactly by the name <code>alice:houseguest</code>.</p>
     --add &#39;Bob is awesome.&#39;
 </code></pre><p>Introduce Carol:</p>
 <!-- @createCarol @test @completer -->
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/carol carol
+<pre><code>$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/carol carol
 </code></pre><p>At this point no request from Carol will succeed because Carol is
 unknown to Alice.</p>
 <p>Suppose Carol is Alice&#39;s sister and Alice gives Carol the blessing

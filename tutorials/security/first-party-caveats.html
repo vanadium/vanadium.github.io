@@ -198,7 +198,7 @@ server (via <code>--perms</code>), this means Carol can invoke both <code>Add</c
 only invoke <code>Get</code>.</p>
 <p>Introduce Diane:</p>
 <!-- @createDiane @test -->
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/diane diane
+<pre><code>$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/diane diane
 </code></pre><p>As a new principal, Diane has no blessings (other than the default
 &#39;self&#39; blessings), so she cannot read from (or write to) Alice&#39;s server:</p>
 <!-- @dianeCannotRead -->

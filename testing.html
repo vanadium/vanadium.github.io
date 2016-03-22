@@ -166,7 +166,7 @@ use their existing installation instead.</p>
 place. Check your state:</p>
 <!-- @checkInstall -->
 <pre><code>[ -z &quot;${JIRI_ROOT:?&#39;Must define JIRI_ROOT&#39;}&quot; ]
-[ -x &quot;$JIRI_ROOT/devtools/bin/jiri&quot; ] || echo &#39;No jiri!&#39;
+[ -x &quot;$JIRI_ROOT/.jiri_root/scripts/jiri&quot; ] || echo &#39;No jiri!&#39;
 [ -x &quot;$JIRI_ROOT/release/go/bin/principal&quot; ] || echo &#39;No bin!&#39;
 </code></pre><p>Development also requires Node.js. Install it as follows:</p>
 <pre><code># Adds node to $JIRI_ROOT/environment/cout/node/bin. The Makefile adds this to

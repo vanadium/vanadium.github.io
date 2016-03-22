@@ -185,8 +185,8 @@ credentials</em>.</p>
 <p>To reiterate this, create two principals Alice and Bob with blessings
 <code>alice</code> and <code>bob</code> bound to them respectively:</p>
 <!-- @makeAliceAndBob @test @completer -->
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite $V_TUT/cred/bob bob
+<pre><code>$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/alice alice
+$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/bob bob
 </code></pre><p>Run the server with Alice&#39;s credentials (i.e, authenticate as <code>alice</code>):</p>
 <!-- @runServerAsAlice @test @sleep -->
 <pre><code>kill_tut_process TUT_PID_SERVER

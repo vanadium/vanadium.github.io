@@ -24,7 +24,7 @@ export V_BIN=${V23_RELEASE}/bin
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
 if [ -z "$V23_GOPATH" ]; then
-  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+  export V23_GOPATH=`${JIRI_ROOT}/.jiri_root/scripts/jiri go env GOPATH`
 fi
 export GOPATH=$V_TUT:${V23_GOPATH}
 
@@ -76,7 +76,7 @@ export V_BIN=${V23_RELEASE}/bin
 # accumulation, $GOPATH is intentionally omitted from the right hand side (any
 # existing value is ignored).
 if [ -z "$V23_GOPATH" ]; then
-  export V23_GOPATH=`${JIRI_ROOT}/devtools/bin/jiri go env GOPATH`
+  export V23_GOPATH=`${JIRI_ROOT}/.jiri_root/scripts/jiri go env GOPATH`
 fi
 export GOPATH=$V_TUT:${V23_GOPATH}
 
@@ -425,8 +425,8 @@ $V_BIN/principal create \
 #----------------------------------------------------------------------#  Start 1
 echo "Block 'makeAliceAndBob' (1/2 in completer) of content/tutorials/security/principals-and-blessings.md"
 ####
-$V_BIN/principal create --overwrite $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite $V_TUT/cred/bob bob
+$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/alice alice
+$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/bob bob
 #----------------------------------------------------------------------#  End 1
 
 #----------------------------------------------------------------------#  Start 2
@@ -504,7 +504,7 @@ go install fortune/server
 #----------------------------------------------------------------------#  Start 3
 echo "Block 'createCarol' (3/4 in completer) of content/tutorials/security/permissions-authorizer.md"
 ####
-$V_BIN/principal create --overwrite $V_TUT/cred/carol carol
+$V_BIN/principal create --with-passphrase=false --overwrite $V_TUT/cred/carol carol
 #----------------------------------------------------------------------#  End 3
 
 #----------------------------------------------------------------------#  Start 4
