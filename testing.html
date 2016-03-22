@@ -180,7 +180,7 @@ jiri go install v.io/...
 <p>The tutorials don&#39;t use the <code>jiri</code> tool, so define the following
 <strong>tutorial environment</strong> to run the tests:</p>
 <!-- @defineLocalEnv @test @testui @buildjs -->
-<pre><code>export V23_RELEASE=${JIRI_ROOT}/release/go
+<pre><code>export VANADIUM_RELEASE=${JIRI_ROOT}/release/go
 
 # Extract GOPATH from jiri utility.
 export V23_GOPATH=`jiri go env GOPATH`

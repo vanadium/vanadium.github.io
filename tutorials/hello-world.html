@@ -206,7 +206,7 @@ EOF
 <p>Use the <code>hello.vdl</code> file to generate Go code describing the hello
 interface.  It will soon be linked into a client and server.</p>
 <!-- @compileInterface @test @completer -->
-<pre><code>VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
+<pre><code>VDLROOT=$VANADIUM_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
     $V_BIN/vdl generate --lang go $V_TUT/src/hello/ifc
 </code></pre><p>You can see the newly generated file here:

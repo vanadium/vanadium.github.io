@@ -157,7 +157,7 @@
 
 
       
-      <p>A smoke test to see that <code>V23_RELEASE</code> is defined and provides access to crucial
+      <p>A smoke test to see that <code>VANADIUM_RELEASE</code> is defined and provides access to crucial
 Vanadium file assets.</p>
 <p>This isn&#39;t meant to be an exhaustive test, just a quick check. It&#39;s used in
 tests, tutorial preparation, etc.</p>
@@ -172,9 +172,9 @@ tests, tutorial preparation, etc.</p>
   exit 1;
 }
 
-[ -z &quot;$V23_RELEASE&quot; ] &amp;&amp; { echo &#39;The environment variable V23_RELEASE is not defined.&#39;; bad_vanadium; }
+[ -z &quot;$VANADIUM_RELEASE&quot; ] &amp;&amp; { echo &#39;The environment variable VANADIUM_RELEASE is not defined.&#39;; bad_vanadium; }
 
-[ -x &quot;$V23_RELEASE/bin/principal&quot; ] || { echo &#39;The file $V23_RELEASE/bin/principal does not exist or is not executable.&#39;; bad_vanadium; }
+[ -x &quot;$VANADIUM_RELEASE/bin/principal&quot; ] || { echo &#39;The file $VANADIUM_RELEASE/bin/principal does not exist or is not executable.&#39;; bad_vanadium; }
 </code></pre>
     </main>
     <nav class="previous-next">

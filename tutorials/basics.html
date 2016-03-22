@@ -241,7 +241,7 @@ namespace rules, making it easier to reason about code dependencies.</p>
 <code>fortune.vdl.go</code>.  This Go code provides stubbed attachment points
 that will soon be linked into a client and server.</p>
 <!-- @compileInterface @buildjs @test @testui @completer -->
-<pre><code>VDLROOT=$V23_RELEASE/src/v.io/v23/vdlroot \
+<pre><code>VDLROOT=$VANADIUM_RELEASE/src/v.io/v23/vdlroot \
     VDLPATH=$V_TUT/src \
     $V_BIN/vdl generate --lang go $V_TUT/src/fortune/ifc
 go build fortune/ifc

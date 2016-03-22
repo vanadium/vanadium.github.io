@@ -191,27 +191,34 @@ Use an absolute path to a non-existent directory on the local filesystem. The
 <code>bootstrap.sh</code> script will create this directory. (Remote filesystems such as
 NFS are discouraged for performance reasons and to avoid git ENOKEY errors.)
 <!-- @define_JIRI_ROOT @test --></p>
-<pre><code># Edit to taste.
-export JIRI_ROOT=${HOME}/v23_root
+<pre><code># Uses existing $JIRI_ROOT environment variable, defaults to ${HOME}/vanadium if
+# $JIRI_ROOT is not set.
+export JIRI_ROOT=${JIRI_ROOT:=${HOME}/vanadium}
 </code></pre><p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
-<h1 id="v23_release-environment-variable">V23_RELEASE environment variable</h1>
+<h1 id="vanadium_release-environment-variable">VANADIUM_RELEASE environment variable</h1>
 <p>The tutorials on this website use Go code from a particular subdirectory of
-<code>JIRI_ROOT</code>. Tutorial users should set the <code>V23_RELEASE</code> environment variable to
+<code>JIRI_ROOT</code>. Tutorial users should set the <code>VANADIUM_RELEASE</code> environment variable to
 this directory, as follows:
-<!-- @define_V23_RELEASE @test --></p>
+<!-- @define_VANADIUM_RELEASE @test --></p>
 <pre><code># Needed for tutorials only.
-export V23_RELEASE=${JIRI_ROOT}/release/go
-</code></pre><h1 id="start-from-a-clean-slate">Start from a clean slate</h1>
+export VANADIUM_RELEASE=${JIRI_ROOT}/release/go
+</code></pre><h1 id="prompt-for-a-clean-slate">Prompt for a clean slate</h1>
 <p>The <code>bootstrap.sh</code> script checks that the <code>JIRI_ROOT</code> directory does not yet
-exist, then creates it. So, let&#39;s blow away <code>JIRI_ROOT</code> if it exists.</p>
-<p><div class="note warning"><h2 id="danger-">Danger!</h2></p>
-<p><p>This will blow away your <code>JIRI_ROOT</code> directory, including any pending changes to
-repositories in that directory. Make sure you&#39;re not deleting something
-important.</p>
-</div>
-<!-- @define_rmrf_JIRI_ROOT @test --></p>
-<pre><code># WARNING: Make sure you&#39;re not deleting something important.
-rm -rf $JIRI_ROOT
+exist, then creates it. If it exists, warn the user with a clear message about
+trying to install over an existing path and provide instructions on how to
+correct.</p>
+<!-- @check_JIRI_ROOT @test -->
+<pre><code># Check that the JIRI_ROOT path does not exist.
+if [[ -e &quot;${JIRI_ROOT}&quot; ]]; then
+  echo &quot;&quot;
+  echo &quot;ERROR: The JIRI_ROOT path already exists: ${JIRI_ROOT}&quot;
+  echo &quot;To proceed with a fresh install remove the directory and re-run:&quot;
+  echo &quot;&quot;
+  echo &quot;    rm -rf ${JIRI_ROOT}&quot;
+  echo &quot;&quot;
+  echo &quot;Or set JIRI_ROOT to a different path.&quot;
+  exit 1
+fi
 </code></pre><h1 id="fetch-vanadium-repositories">Fetch Vanadium repositories</h1>
 <p>Run the <code>bootstrap.sh</code> script. This script will (1) install the <code>jiri</code> tool in
 your <code>JIRI_ROOT</code> directory, (2) <code>git clone</code> a Vanadium-specific manifest

@@ -10,15 +10,16 @@ set | grep BASH > /dev/null || echo "Vanadium installation requires Bash."
 #----------------------------------------------------------------------#  Start 2
 echo "Block 'define_JIRI_ROOT' (2/8 in test) of content/installation/step-by-step.md"
 ####
-# Edit to taste.
-export JIRI_ROOT=${HOME}/v23_root
+# Uses existing $JIRI_ROOT environment variable, defaults to ${HOME}/vanadium if
+# $JIRI_ROOT is not set.
+export JIRI_ROOT=${JIRI_ROOT:=${HOME}/vanadium}
 #----------------------------------------------------------------------#  End 2
 
 #----------------------------------------------------------------------#  Start 3
-echo "Block 'define_V23_RELEASE' (3/8 in test) of content/installation/step-by-step.md"
+echo "Block 'define_VANADIUM_RELEASE' (3/8 in test) of content/installation/step-by-step.md"
 ####
 # Needed for tutorials only.
-export V23_RELEASE=${JIRI_ROOT}/release/go
+export VANADIUM_RELEASE=${JIRI_ROOT}/release/go
 #----------------------------------------------------------------------#  End 3
 
  bash -euo pipefail <<'HANDLED_SCRIPT'
@@ -40,22 +41,32 @@ set | grep BASH > /dev/null || echo "Vanadium installation requires Bash."
 #----------------------------------------------------------------------#  Start 2
 echo "Block 'define_JIRI_ROOT' (2/8 in test) of content/installation/step-by-step.md"
 ####
-# Edit to taste.
-export JIRI_ROOT=${HOME}/v23_root
+# Uses existing $JIRI_ROOT environment variable, defaults to ${HOME}/vanadium if
+# $JIRI_ROOT is not set.
+export JIRI_ROOT=${JIRI_ROOT:=${HOME}/vanadium}
 #----------------------------------------------------------------------#  End 2
 
 #----------------------------------------------------------------------#  Start 3
-echo "Block 'define_V23_RELEASE' (3/8 in test) of content/installation/step-by-step.md"
+echo "Block 'define_VANADIUM_RELEASE' (3/8 in test) of content/installation/step-by-step.md"
 ####
 # Needed for tutorials only.
-export V23_RELEASE=${JIRI_ROOT}/release/go
+export VANADIUM_RELEASE=${JIRI_ROOT}/release/go
 #----------------------------------------------------------------------#  End 3
 
 #----------------------------------------------------------------------#  Start 4
-echo "Block 'define_rmrf_JIRI_ROOT' (4/8 in test) of content/installation/step-by-step.md"
+echo "Block 'check_JIRI_ROOT' (4/8 in test) of content/installation/step-by-step.md"
 ####
-# WARNING: Make sure you're not deleting something important.
-rm -rf $JIRI_ROOT
+# Check that the JIRI_ROOT path does not exist.
+if [[ -e "${JIRI_ROOT}" ]]; then
+  echo ""
+  echo "ERROR: The JIRI_ROOT path already exists: ${JIRI_ROOT}"
+  echo "To proceed with a fresh install remove the directory and re-run:"
+  echo ""
+  echo "    rm -rf ${JIRI_ROOT}"
+  echo ""
+  echo "Or set JIRI_ROOT to a different path."
+  exit 1
+fi
 #----------------------------------------------------------------------#  End 4
 
 #----------------------------------------------------------------------#  Start 5
