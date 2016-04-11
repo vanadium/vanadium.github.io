@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Vanadium Chrome Extension - Vanadium</title>
+    <title>Namespace Browser - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -132,8 +132,8 @@
       <nav>
         <a href="/tools/identity-service-faq.html">Vanadium Identity Service</a>
     <a href="/tools/jiri.html">Jiri</a>
+    <a href="/tools/namespace-browser.html">Namespace Browser</a>
     <a href="/tools/services.html">Vanadium Cloud Services</a>
-    <a href="/tools/vanadium-chrome-extension.html">Vanadium Chrome Extension</a>
   </nav>
     
       <a href="#" class="nav">Design Docs</a>
@@ -151,59 +151,33 @@
     <main>
       <h1 class="title">
         
-        Vanadium Chrome Extension
+        Namespace Browser
       </h1>
 
-      <div class="toc"></div>
 
-      <p>The <a href="https://chrome.google.com/webstore/detail/jcaelnibllfoobpedofhlaobfcoknpap" title="Vanadium Chrome extension">Vanadium Chrome extension</a> is a bridge between JavaScript web apps and
-the Vanadium runtime, libraries, and services.</p>
-<p>Support for web applications is a work-in-progress.  Currently, Vanadium web
-apps can run only in the Chrome desktop browser with the <a href="https://chrome.google.com/webstore/detail/jcaelnibllfoobpedofhlaobfcoknpap" title="Vanadium Chrome extension">Vanadium Chrome
-extension</a> installed.  Mobile browsers and non-Chrome browsers will be
-supported in the future.</p>
-<h1 id="overview">Overview</h1>
-<p>The Vanadium codebase is written mostly in <a href="http://golang.org/" title="The Go Programming Language">Go</a>.  In order to make the Go
-libraries accessible to a JavaScript web app, the Vanadium Go code is compiled
-into a <a href="https://developer.chrome.com/native-client" title="Native Client">Native Client</a> (NaCl) plugin and embedded in a Chrome extension.</p>
-<p><a href="https://developer.chrome.com/native-client" title="Native Client">Native Client</a> is a sandbox for running compiled binary code in
-the browser efficiently and securely, independent of the user&#39;s operating
-system type.  These plugins can make use of the <a href="https://developer.chrome.com/native-client/c-api" title="Pepper API">Pepper API</a>.</p>
-<p>Traditionally, NaCl has supported only C and C++ compilation, but the Vanadium
-team has extended the Go compiler to target NaCl and the Pepper API.</p>
-<p>The <a href="https://github.com/vanadium/js" title="Vanadium JavaScript">Vanadium JavaScript library</a> provides a set of JavaScript APIs for
-interacting with the Vanadium Go code running inside the NaCl plugin in the
-extension.</p>
-<p>Under the hood, the Vanadium JavaScript library sends messages to the Vanadium
-extension, which makes calls to other Vanadium devices in the cloud.  The
-extension sends messages back to the web app when those calls return, or when
-an external device initiates a call to the JavaScript client.</p>
-<p><img src="/images/chrome-extension-overview.svg" alt="Vanadium Chrome extension overview"></p>
-<p>Isolating the Vanadium libraries inside a NaCl plugin has the added benefit
-that no JavaScript web app ever sees any private keys.  All cryptographic
-operations are performed within the extension&#39;s NaCl sandbox.</p>
-<h1 id="vanadium-chrome-extension-details">Vanadium Chrome extension details</h1>
-<p>The Vanadium extension has two main components:</p>
-<ul>
-<li>a <a href="https://developer.chrome.com/extensions/content_scripts" title="Content Scripts">content script</a> that runs on each tab, and</li>
-<li>a <a href="https://developer.chrome.com/extensions/background_pages" title="Background Pages">background page</a> that runs once per browser and contains JavaScript code and a NaCl plugin.</li>
-</ul>
-<p>The following diagram depicts these components and the flow of messages between them.</p>
-<p><img src="/images/chrome-extension-detail.svg" alt="Vanadium Chrome extension details"></p>
-<p>When a web app makes an RPC to a device using the Vanadium JavaScript library,
-a message is sent to the content script, which then forwards that message to
-the JavaScript running in the background page, and from there the message is
-sent to the NaCl plugin.  The NaCl plugin handles incoming messages from
-JavaScript by calling Vanadium library code, written in Go.</p>
-<p>The NaCl plugin makes Vanadium RPCs to other Vanadium devices using WebSockets,
-which are a supported transport protocol of the Vanadium RPC protocol.  Within
-the NaCl plugin, each web app origin is associated with a unique <a href="/glossary.html#blessing">Vanadium
-blessing</a>, and RPCs are performed with the blessing associated with
-the origin of the web app making the request.</p>
-<p>The plugin sends messages back to web apps using the same message-passing
-system, but in reverse: a message is first sent from NaCl to the background
-page JavaScript, then to the content script running on the same tab as the web
-app, and finally to the web app.</p>
+      <p>The Vanadium Namespace Browser is an interactive tool to browse Vanadium
+namespaces, find services, and invoke methods on these services. Vanadium
+namespaces can be public, in that they are accessible (and thus browsable) to
+a large number of users and devices, or they can be private to an individual
+or an organization. The Namespace Browser is especially useful for exploring
+existing public namespaces, inspecting data in a Syncbase service,
+or developing of new Vanadium applications.</p>
+<p>The user can specify a mount table, browse through the graph of referenced
+mount tables, then see where services are mounted.
+The user can select any service to see more detailed information about it.
+The user can also interact with the service,
+invoking methods to examine or modify the state of the service.</p>
+<h1 id="running-the-namespace-browser">Running the Namespace Browser</h1>
+<p>To use the Namespace Browser, run:</p>
+<pre><code>$JIRI_ROOT/release/projects/browser/run.sh
+</code></pre><p>and navigate to <a href="http://localhost:9001/">http://localhost:9001/</a>.</p>
+<h1 id="getting-help">Getting help</h1>
+<p>Documentation is available by clicking on the menu icon in
+the upper left corner, then selecting &quot;Help&quot;.</p>
+<h1 id="github-repository">GitHub repository</h1>
+<p>The code repository for the Namespace Browser is on <a href="https://github.com/vanadium/browser">GitHub</a>.
+Bugs and other issues can be submitted to the
+<a href="https://github.com/vanadium/browser/issues">Issue Tracker</a>.</p>
 
     </main>
   </body>
