@@ -213,9 +213,12 @@ give her access without contacting Google.</p>
 <h1 id="seek-a-blessing">Seek a blessing</h1>
 <p>Set up some credentials:</p>
 <!-- @initializeCredentials @test -->
-<pre><code>$V_BIN/principal create --overwrite $V_TUT/cred/cheapDrive cheapDrive
-$V_BIN/principal create --overwrite $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite $V_TUT/cred/$USER $USER
+<pre><code>$V_BIN/principal create --with-passphrase=false --overwrite \
+    $V_TUT/cred/cheapDrive cheapDrive
+$V_BIN/principal create --with-passphrase=false --overwrite \
+    $V_TUT/cred/alice alice
+$V_BIN/principal create --with-passphrase=false --overwrite \
+    $V_TUT/cred/$USER $USER
 </code></pre><p>Now you (really you) will use your Google account to <em>seek a blessing</em>:</p>
 <!-- @seekBlessing -->
 <pre><code>$V_BIN/principal \

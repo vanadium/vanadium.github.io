@@ -418,6 +418,7 @@ go install fortune/client
 echo "Block 'principalTutorial' (9/9 in completer) of content/tutorials/basics.md"
 ####
 $V_BIN/principal create \
+    --with-passphrase=false \
     --overwrite $V_TUT/cred/basics tutorial
 #----------------------------------------------------------------------#  End 9
 

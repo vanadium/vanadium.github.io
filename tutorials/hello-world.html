@@ -308,6 +308,7 @@ then use it for <em>both</em> the client and server.</p>
 <p>Create a principal called <code>tutorial</code>:</p>
 <!-- @principalTutorial @test -->
 <pre><code>$V_BIN/principal create \
+    --with-passphrase=false \
     --overwrite $V_TUT/cred/basics tutorial
 </code></pre><h1 id="run-your-code">Run your code</h1>
 <p>Start the server:</p>

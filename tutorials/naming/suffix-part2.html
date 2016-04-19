@@ -285,15 +285,15 @@ the <code>Reader</code> annotation in the <a href="/tutorials/security/permissio
 <h2 id="new-principals">New principals</h2>
 <p>First, initialize some principals.
 <!-- @createProphIncPrincipal @test --></p>
-<pre><code>$V_BIN/principal create --overwrite \
+<pre><code>$V_BIN/principal create --with-passphrase=false --overwrite \
     $V_TUT/cred/prophInc prophInc
-$V_BIN/principal create --overwrite \
+$V_BIN/principal create --with-passphrase=false --overwrite \
     $V_TUT/cred/cassandra cassandra
-$V_BIN/principal create --overwrite \
+$V_BIN/principal create --with-passphrase=false --overwrite \
     $V_TUT/cred/nostradamus nostradamus
-$V_BIN/principal create --overwrite \
+$V_BIN/principal create --with-passphrase=false --overwrite \
     $V_TUT/cred/alice alice
-$V_BIN/principal create --overwrite \
+$V_BIN/principal create --with-passphrase=false --overwrite \
     $V_TUT/cred/bob bob
 </code></pre><h2 id="start-the-server">Start the server</h2>
 <p>Fire up the server with the new authorizer code, and mount it in a

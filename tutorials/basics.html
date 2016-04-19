@@ -565,6 +565,7 @@ writes credentials associated with the name <code>tutorial</code> into the
 <code>$V_TUT/cred/basics</code> directory:</p>
 <!-- @principalTutorial @test @testui @completer -->
 <pre><code>$V_BIN/principal create \
+    --with-passphrase=false \
     --overwrite $V_TUT/cred/basics tutorial
 </code></pre><p>The <code>--overwrite</code> flag is optional. Omit it if you want a warning if
 you attempt to overwrite an existing principal.</p>
