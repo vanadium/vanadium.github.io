@@ -1,0 +1,37 @@
+# The following is a script for generating a sequence diagram for the
+# authentication protocol. The script must simply be pasted into the tool
+# available at: https://x20web.corp.google.com/~mattr/vseq.html
+objects Client, Server
+
+time 0
+nline Client, Client generates a fresh NaCl/box public and private key pair, and initiates a NaCl/box handshake
+msg Client -> Server, NaCl/box public key
+
+time 1
+nline Server, Server generates a fresh NaCl/box public and private key pair, and continues the handshake
+msg Server -> Client, NaCl/box public key
+
+time 2
+nline Client, Client computes a shared key k based on NaCl/box handshake
+nline Client, Client determines channel bindings (C1, C2)
+nline Server, Server computes a shared key k based on NaCl/box handshake
+nline Server, Server determines channel bindings (C1, C2)
+msg Server -> Client, {ServerBlessings, C1 signed by ServerPrivateKey}k
+
+time 3
+nline Client, Client verifies the signatures in the certificate chains of ServerBlessings
+nline Client, Client verifies server's signature over the expected channel binding using the public key associated with ServerBlessings
+nline Client, [Authorization] Client validates caveats on ServerBlessings and validates the name associated with it against an authorization policy
+nline Client, Client aborts if any of the above fail
+msg Client -> Server, {ClientPublicKey, C2 signed by ClientPrivateKey}k
+
+time 4
+nline Server, Server verifies client's signature over the expected channel binding using ClientPublicKey
+nline Server, Server aborts if this fails
+msg Client -> Server, {RPC request, ClientBlessings}k
+
+time 5
+nline Server, Server verifies the signatures in the certificate chains of ClientBlessings
+nline Server, Server verifies the public key associated with ClientBlessings is ClientPublicKey
+nline Server, [Authorization] Server validates caveats on ClientBlessings and validates the name associated with it against an authorization policy
+msg Server -> Client, {RPC response}k
