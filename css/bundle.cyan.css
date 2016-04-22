@@ -193,6 +193,9 @@ blockquote:after {
 figure {
   margin: 0;
 }
+figure img {
+  max-width: 100%;
+}
 figcaption {
   margin: 8px 0;
   color: #607d8b;
