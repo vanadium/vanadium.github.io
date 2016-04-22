@@ -157,38 +157,63 @@
       <div class="toc"></div>
 
       <p>The <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd">Vanadium Identity Service</a> generates <a href="/glossary.html#blessing">blessings</a>.
-It uses an <a href="http://oauth.net/2/">OAuth2</a> identity provider to get the email address of a user and
-then issues a blessing with that email address. For example, after determining
-that the user is <code>alice@university.edu</code> (using OAuth2), this service will issue
-the blessing <code>dev.v.io:u:alice@university.edu</code> (where <code>dev.v.io</code> is
-the namespace for which the public key of the identity service is considered
-authoritative).  The blessing may also contain specific caveats per the user&#39;s
-request.</p>
-<p>Broadly, this identity service consists of two main components:</p>
+It uses an <a href="http://oauth.net/2/">OAuth2</a> identity provider to get the email address of the user on
+whose behalf the request is made and then issues a blessing for that email
+address. Blessings issued by this service are of two kinds:</p>
 <ul>
-<li><strong>HTTPS Authentication Service</strong>: This service authenticates the user using
+<li><strong>User-Blessing</strong>: A user-blessing authorizes the (blessed) principal to act on
+behalf of the user. The blessing is  namespaced under the user&#39;s email address
+and is of the form <code>dev.v.io:u:&lt;email&gt;</code> (where <code>dev.v.io</code> is
+the namespace for which the public key of the identity service is considered
+authoritative on). For example, if <code>alice@university.edu</code> is the email
+address obtained for the user (using OAuth2) then the issued blessing has the name
+<code>dev.v.io:u:alice@university.edu</code>. These blessings are very powerful as they
+allow the principal to act on behalf of the user while making requests to any
+service. Thus the flow for obtaining these blessings involves selecting caveats
+that must be placed on the blessing in order to limit its scope.</li>
+<li><strong>Application-Blessing</strong>: An app blessing authorizes the (blessed) principal to act on
+behalf of the user in the context of a specific application. The blessing is
+namespaced under the application identified in the request, and is of the form
+<code>dev.v.io:o:&lt;appid&gt;:&lt;email&gt;</code>. The
+application identifier and email address are obtained using OAuth2. Specifically,
+the applicaiton identifier is the <code>audience</code> field in the token&#39;s
+decription. For example, if  <code>alice@university.edu</code> is the email
+address obtained for the user and <code>xyz123</code> is an identifier for the requesting
+application then the issued blessing has the name <code>dev.v.io:o:xyz123:alice@university.edu</code>.
+An application-blessing is relatively less priveleged than a user-blessing as it
+does not allow the principal to arbitrarily act on behalf of the user.</li>
+</ul>
+<p>Broadly, the identity service has three main components:</p>
+<ul>
+<li><strong>HTTPS Authentication Service</strong>: Authenticates the user using
 an OAuth2 Identity Provider, and securely hands out a token (henceforth
 called a macaroon) that encapsulates the user&#39;s authenticated identity and
 any caveats that the user may have requested to be added to the blessing. The
 cryptographic construction of macaroons ensures that their contents cannot be
 tampered with.</li>
-<li><strong>Vanadium Blessing Service</strong>: This is a Vanadium RPC service with a method
-that exchanges the macaroon for a blessing. The principal invoking this RPC
-is blessed with a name and caveats extracted from the presented macaroon.</li>
+<li><strong>Vanadium User-Blessing Service</strong>: Exchanges the macaroon for a user-blessing
+via a Vanadium RPC. The blessing is bound to the principal invoking the RPC
+and has the name and caveats specified in the presented macaroon.</li>
+<li><strong>HTTPS Application-Blessing Service</strong>: Exchanges an OAuth2 token
+and a public key for an application-blessing for the provided public key.
+The email address and application identifier specified in the blessing are
+determined using the provided OAuth2 token.</li>
 </ul>
-<p>One additional service enables revocation of the blessings granted by the
-blessing service:</p>
+<p>One additional service enables revocation of the granted blessings:</p>
 <ul>
-<li><strong>Vanadium Discharge Service</strong>: This is a Vanadium RPC service that enables
-revocation. The service issues <a href="/glossary.html#discharge">discharges</a> for a revocation
+<li><strong>Vanadium Discharge Service</strong>: Issues <a href="/glossary.html#discharge">discharges</a> for a revocation
 <a href="/glossary.html#caveat">caveat</a> if the blessing has not been revoked by the user. The discharges are
 valid for 15 minutes.</li>
 </ul>
-<p>All three services are exposed by a single binary - <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd"><code>identityd</code></a>.  In order to
-save users from talking to two different services (the HTTP service and the
-Blessing service) and managing macaroons, we also provide a command-line tool -
-<a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> - that talks to both of the services and obtains a blessing for
-the principal that the tool is running as.</p>
+<p>All services are exposed by a single binary - <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd"><code>identityd</code></a>.  Since
+user-blessings are quite powerful, it is important to limit their scope
+using caveats. This complicates the flow for obtaining these blessings
+and involves a sequence of interactions with the authentication service
+and the Vanadium blessing service. In order to save users from interacting
+with multiple services and exchanging credentials betweeen them, we also
+provide a command-line tool - <a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> - that carries out the work of
+communicating with the services and obtaining a user-blessing for the
+principal that the tool is running as.</p>
 <h1 id="preliminaries">Preliminaries</h1>
 <p>Before diving into the details of <a href="https://github.com/vanadium/go.ref/tree/master/services/identity/identityd"><code>identityd</code></a>&#39;s design, some prerequisites:</p>
 <ul>
@@ -226,7 +251,7 @@ supports the following routes:</p>
 <tbody>
 <tr>
 <td><code>/google/seekblessings</code></td>
-<td>Receive blessing requests</td>
+<td>Receive user-blessing requests</td>
 </tr>
 <tr>
 <td><code>/google/caveats</code></td>
@@ -244,6 +269,10 @@ supports the following routes:</p>
 <td><code>/google/revoke</code></td>
 <td>Receive revocation requests</td>
 </tr>
+<tr>
+<td><code>/google/bless</code></td>
+<td>Receive application-blessing requests</td>
+</tr>
 </tbody>
 </table>
 <p>The blessing service is a Vanadium RPC service reachable via the name
@@ -253,19 +282,19 @@ supports the following routes:</p>
   // to return a blessing for the client.
   Bless(macaroon string) (blessing security.WireBlessings | error)
 }
-</code></pre><h1 id="blessing-flow">Blessing flow</h1>
+</code></pre><h1 id="user-blessing-flow">User-Blessing flow</h1>
 <p>The <a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> command-line tool is used to orchestrate the process of
 obtaining a macaroon from the HTTPS Authentication Service and exchanging it
-for a blessing from the Vanadium Blessing Service. The following sequence
+for a user-blessing from the Vanadium Blessing Service. The following sequence
 diagram lists the network requests involved in this process:</p>
 <p><img src="/images/blessing-flow.svg" alt="Blessing flow diagram"></p>
 <ul>
 <li>Solid-line arrows represent HTTPS requests (except one HTTP to localhost).</li>
 <li>Dotted-line arrows represent Vanadium RPC requests.</li>
 </ul>
-<p>Steps 1 thru 4 in the sequence diagram above result in the <a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> tool
+<p>Steps 1 through  4 in the sequence diagram above result in the <a href="https://github.com/vanadium/go.ref/tree/master/cmd/principal"><code>principal</code></a> tool
 invocation obtaining a macaroon.</p>
-<p>Steps 5 and 6 exchange that macaroon for a blessing.</p>
+<p>Steps 5 and 6 exchange that macaroon for a user-blessing.</p>
 <ol>
 <li><p>The tool generates a random state parameter <code>toolState</code> and starts an HTTP
 server on <code>localhost</code> for receiving the macaroon. <code>toolURI</code> denotes the URI
@@ -337,7 +366,7 @@ the principal tool that requested it in the first place. It protects against
 impersonation attacks wherein an attacker steals the macaroon handed out in
 step 5 and then tries to obtain a blessing for the email address encapsulated
 in the macaroon.</li>
-<li>Generates a <a href="/glossary.html#blessing">blessing</a> with the name <code>dev.v.io:u:&lt;email&gt;</code> and the
+<li>Generates a user-blessing with the name <code>dev.v.io:u:&lt;email&gt;</code> and the
 caveats extracted from the macaroon. This blessing is bound to the public
 key of the principal making the RPC request (i.e., <code>toolPublicKey</code>).</li>
 <li>Records the creation of this blessing in a database which can be queried via
@@ -345,6 +374,39 @@ key of the principal making the RPC request (i.e., <code>toolPublicKey</code>).<
 </ul>
 </li>
 </ol>
+<h1 id="application-blessing-flow">Application-Blessing flow</h1>
+<p>Any application that possesses an OAuth2 token can make
+a request for an application-blessing. Such a request is made via GET request to
+the HTTPS Application-Blessing Service. The request must include the following
+parameters:</p>
+<ul>
+<li><code>public_key</code>: Base64URL DER encoded PKIX representation of the public key to
+be blessed.</li>
+<li><code>token</code>: Google OAuth2 access token</li>
+<li><code>caveats</code>: Base64URL VOM encoded list of caveats. This parameter is optional.</li>
+<li><code>output_format</code>: The encoding format for the returned blessings. The following
+formats are supported:<ul>
+<li><code>base64vom</code>: Base64URL encoding of VOM-encoded blessings [Default]</li>
+<li><code>json</code>: JSON-encoded blessings.</li>
+</ul>
+</li>
+</ul>
+<p>For example, the request URL may be:
+<code>https://dev.v.io/auth/google/bless?public_key=&lt;publicKey&gt;&amp;token=&lt;token&gt;</code></p>
+<p>The token provided must be a Google OAuth2 access token but may be bound to any
+OAuth2 Client ID. The Vanadium identity service may not have a pre-existing
+relationship with the application that the ClientID has been registered for.</p>
+<p>When the service receives a request for an application-blessing, its presents the
+provided token to Google&#39;s <a href="https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken"><code>tokeninfo</code></a> endpoint, and among other things,
+obtains the email address and the ClientID that the token is bound to. (In particular,
+the ClientID is obtained from the <code>aud</code> field of the <a href="https://developers.google.com/identity/protocols/OAuth2UserAgent#validatetoken"><code>tokeninfo</code></a> struct.)
+The service then generates an application-blessing for the provided public key. By
+default, the application identifier is set to the ClientID obtained from the access
+token. In some cases, the application corresponding to the ClientID may have
+<a href="https://vanadium-review.googlesource.com/#/c/19913/">registered</a>
+a specific name with the Vanadium identity service, in which case, that name is used
+as the application identifier. The generated blessing carries any caveats provided
+during the request.</p>
 <h1 id="supported-caveats">Supported caveats</h1>
 <p>The caveat addition form presented to the user in step 4 supports a few types
 of caveats:</p>
