@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Internal Tutorial Cleanup - Vanadium</title>
+    <title>Syncbase Example Apps - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -152,37 +152,24 @@
     <main>
       <h1 class="title">
         
-        Internal Tutorial Cleanup
+        Syncbase Example Apps
       </h1>
 
+      <div class="toc"></div>
 
+      <h1 id="overview">Overview</h1>
+<p>To validate the Syncbase data model, we wrote design docs for a wide variety
+of apps.  These docs focused on the interactions with Syncbase and the schema
+they would use for storage and synchronization.  There are many variations on
+the features in the apps and many ways to implement those features, so these
+docs are not intended to represent the only way to build these apps.  Instead,
+these docs are intended to provide inspiration while designing your own apps.</p>
+<h2 id="coffee-catalog">Coffee Catalog</h2>
+<p>Allows a user to browse and place orders from a catalog containing coffee and
+related paraphernalia.</p>
+<p><a href="/designdocs/syncbase-examples/coffee-catalog.html">Design Doc</a></p>
+<h1 id="todo-kash-convert-the-other-15-docs-to-markdown">TODO(kash): Convert the other 15+ docs to markdown</h1>
 
-      
-      <p>Delete the tutorial workspace directory.</p>
-<p>Might be used in tests, tutorial preparation, etc.</p>
-<!-- @deleteTutdirContent @test @completer -->
-<pre><code>if [ -z &quot;${V_TUT}&quot; ]; then
-  echo &quot;V_TUT not defined, nothing to do.&quot;
-else
-  if [ -d &quot;${V_TUT}&quot; ]; then
-    /bin/rm -rf $V_TUT
-    echo &quot;Removed $V_TUT&quot;
-  else
-    echo &quot;Not a directory: V_TUT=\&quot;$V_TUT\&quot;&quot;
-  fi
-fi
-</code></pre>
     </main>
-    <nav class="previous-next">
-      <a href="/tutorials/hello-world.html" class="next">
-        <div class="text-wrapper">
-          <small>Next</small>
-          <div class="text">
-            <span>Hello World</span>
-          </div>
-        </div>
-        <div class="icon"><i class="material-icons">arrow_forward</i></div>
-      </a>
-</nav>
   </body>
 </html>

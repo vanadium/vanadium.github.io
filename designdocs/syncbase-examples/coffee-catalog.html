@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Internal Tutorial Cleanup - Vanadium</title>
+    <title>Coffee Catalog - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -152,37 +152,135 @@
     <main>
       <h1 class="title">
         
-        Internal Tutorial Cleanup
+        Coffee Catalog
       </h1>
 
 
+      <h1 id="functionality">Functionality</h1>
+<p>Allows a user to order coffee and related paraphernalia.</p>
+<h2 id="key-behaviors">Key Behaviors</h2>
+<ul>
+<li>Browse catalog<ul>
+<li>Each item in catalog has image, description, price, etc.</li>
+<li>Catalog has ~100 entries, so it fits entirely on any device</li>
+<li>Show &quot;frequently ordered&quot; items at the top</li>
+</ul>
+</li>
+<li>Place orders for items in the catalog<ul>
+<li>User’s address, credit card, etc. saved by app (and synced
+across user’s devices) for future use</li>
+</ul>
+</li>
+<li>Review order history</li>
+<li>All of above should work while offline<ul>
+<li>Notification if order is not processed within 1 day</li>
+</ul>
+</li>
+</ul>
+<h1 id="schema">Schema</h1>
+<h2 id="data-types">Data Types</h2>
+<pre><code class="lang-Go">type Item struct {
+  Id    string // UUID
+  Image BlobRef
+  Desc  string
+  Price float
+}
 
-      
-      <p>Delete the tutorial workspace directory.</p>
-<p>Might be used in tests, tutorial preparation, etc.</p>
-<!-- @deleteTutdirContent @test @completer -->
-<pre><code>if [ -z &quot;${V_TUT}&quot; ]; then
-  echo &quot;V_TUT not defined, nothing to do.&quot;
-else
-  if [ -d &quot;${V_TUT}&quot; ]; then
-    /bin/rm -rf $V_TUT
-    echo &quot;Removed $V_TUT&quot;
-  else
-    echo &quot;Not a directory: V_TUT=\&quot;$V_TUT\&quot;&quot;
-  fi
-fi
+type User struct {
+  Id         string // UUID
+  // In reality we might define structs for some of the values below.
+  Name       string // full name of user
+  Email      string
+  Address    string
+  CreditCard string // should instead use a more secure API (token per order?)
+}
+
+type OrderItem struct {
+  ItemId string
+  Count  int
+}
+
+type Order struct {
+  Id           string // UUID
+  CreatedTime  time.Time
+  PlacedTime   time.Time // zero value if not yet placed
+  ReceivedTime time.Time // zero value if not yet received
+  // We’d probably have more fields here, e.g. to specify
+  // gift-wrapping options, track order status, etc.
+}
 </code></pre>
+<h2 id="organization">Organization</h2>
+<pre><code>&lt;app-blessing&gt;-catalog Collection
+  &lt;Item.Id&gt;: Item
+
+&lt;user-blessing&gt;-user Collection
+  &lt;User.Id&gt;: User
+  // possibly also include per-user catalog metadata, e.g. favorites
+
+&lt;user-blessing&gt;-draftOrders Collection
+  &lt;Order.Id&gt;: Order
+  &lt;Order.Id&gt;/items/
+    &lt;Item.Id&gt;: OrderItem
+
+&lt;user-blessing&gt;-placedOrders Collection - same layout as draftOrders
+&lt;user-blessing&gt;-processedOrders Collection - same layout as draftOrders
+</code></pre><p>Note: We might keep user records in a &quot;users&quot; table and order records in an
+“orders” table in order to enforce schema, but this is orthogonal to
+collection layout.</p>
+<p>When a user &quot;places&quot; an order, all data for the order is moved (copy + delete)
+atomically from the “draftOrders” to the “placedOrders” collection.</p>
+<p>The app cloud backend (order processor) watches for changes to &quot;placedOrders&quot;
+and processes these orders. After processing an order, it sets
+Order.ReceivedTime and atomically moves the order record from the
+“placedOrders” to the “processedOrders” collection. Whenever watch stops for
+any reason, it is restarted including the initial state to prevent skipping
+any orders. Order processing must also be either atomic with the move to
+“processedOrders”, or idempotent to allow safely retrying without executing
+more than once in case commit fails. It might need to snapshot orders in
+processing to its own local storage as an extra safeguard (e.g. in case a
+malicious user changes an order after it’s accepted for processing).</p>
+<p>The client app periodically queries &quot;placedOrders&quot; and notifies users of any
+orders that have not yet been received.</p>
+<p>To aid in frontend development, the app would likely implement some ORM-like
+wrappers and helper functions, e.g. an &quot;order&quot; object that directly contains a
+list of items (to simplify view rendering) and functions to add, remove, or
+update items in a draft order (to simplify writing back to the store).</p>
+<h2 id="syncing-and-permissions">Syncing and permissions</h2>
+<p>Let &quot;bluebottle&quot; be the blessing for the administrator/owner of the store.</p>
+<ul>
+<li>All users are readers (preferably anonymized) in a syncgroup on &quot;catalog&quot;,
+with “bluebottle” as RWA. “bluebottle” is also a syncgroup admin (sgA),
+other users may be as well for more flexible distribution to new
+users/devices.</li>
+<li>The remaining collections all have per-user syncgroups, where members are
+the user (all of the user’s devices) and &quot;bluebottle&quot;:<ul>
+<li>&quot;users&quot; - user RWA, “bluebottle” R (this may have to be relaxed to RW
+for signatures to work correctly)</li>
+<li>&quot;draftOrders&quot; - user RWA, “bluebottle” no access (this can be relaxed
+if needed for cloud sync functionality, at the expense of privacy)</li>
+<li>&quot;placedOrders&quot; - user RW, “bluebottle” RWA (user writes when placing
+an order, “bluebottle” deletes when marking order as processed)</li>
+<li>&quot;processedOrders&quot; - user R, “bluebottle” RWA</li>
+</ul>
+</li>
+</ul>
+<p>In all cases, both &quot;bluebottle&quot; and user can have syncgroup admin (sgA)
+permissions to make adding new devices more flexible.</p>
+<h2 id="conflicts">Conflicts</h2>
+<ul>
+<li>Items in catalog: last-writer-wins. (Per-field last-writer-wins would be better.)
+Conflicts should be rare since users can’t write this data, but are possible
+if multiple admins modify catalog items concurrently.</li>
+<li>User records: last-one-wins. (Per-field last-one-wins would be better.)</li>
+<li>Order records: should never have conflicts, given the fields. Delete (i.e.
+as part of placing an order) trumps item-level edits. This would be achieved
+by having item-level edits &quot;touch&quot; the Order object, thus triggering a
+conflict. Hints make it easy to implement the CR callback for this.
+Alternatively, leaving orphaned items and periodically garbage collecting
+them may be simpler.</li>
+<li>OrderItem records: last-one-wins.</li>
+</ul>
+
     </main>
-    <nav class="previous-next">
-      <a href="/tutorials/hello-world.html" class="next">
-        <div class="text-wrapper">
-          <small>Next</small>
-          <div class="text">
-            <span>Hello World</span>
-          </div>
-        </div>
-        <div class="icon"><i class="material-icons">arrow_forward</i></div>
-      </a>
-</nav>
   </body>
 </html>
