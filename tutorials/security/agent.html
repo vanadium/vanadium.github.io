@@ -210,7 +210,7 @@ use of a POSIX <a href="http://en.wikipedia.org/wiki/File_descriptor">file descr
 the necessary crypto with the keys it holds, passing the result back
 to the client.</p>
 <p>Launching an agent to serve credentials in a given directory (by
-invoking <code>v23agentd {directory}</code>) sets up a socket file in the
+invoking <code>v23agentd --credentials={directory}</code>) sets up a socket file in the
 directory, which the client connects to when using <code>--v23.credentials
 {directory}</code>.  This happens in the Vanadium runtime - no new client
 code required.</p>
@@ -238,7 +238,7 @@ kill_tut_process TUT_PID_SERVER
 /bin/rm -f $V_TUT/server.txt
 
 # Run an agent for server credentials.
-$V_BIN/v23agentd $V_TUT/cred/alice
+$V_BIN/v23agentd --credentials=$V_TUT/cred/alice
 $V_TUT/bin/server \
     --v23.credentials $V_TUT/cred/alice \
     --endpoint-file-name $V_TUT/server.txt \
@@ -251,15 +251,15 @@ TUT_PID_SERVER=$!
 sleep 2s
 
 # Run an agent for client credentials.
-$V_BIN/v23agentd $V_TUT/cred/bob
+$V_BIN/v23agentd --credentials=$V_TUT/cred/bob
 $V_TUT/bin/client \
     --v23.credentials $V_TUT/cred/bob \
     --server `cat $V_TUT/server.txt`
 
 # All done, kill the server and agents
 kill_tut_process TUT_PID_SERVER
-$V_BIN/v23agentd --stop $V_TUT/cred/alice
-$V_BIN/v23agentd --stop $V_TUT/cred/bob
+$V_BIN/v23agentd stop --credentials=$V_TUT/cred/alice
+$V_BIN/v23agentd stop --credentials=$V_TUT/cred/bob
 </code></pre><p>The above should run without errors, i.e. the client should report a
 fortune.</p>
 <p>The crucial new behavior here is that <em>neither the server nor client
