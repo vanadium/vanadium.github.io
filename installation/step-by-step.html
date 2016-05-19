@@ -235,11 +235,16 @@ curl -f https://vanadium.github.io/bootstrap.sh | bash
 </code></pre><p>Recommended for contributors: Add the line above to your <code>~/.bashrc</code> or similar.</p>
 <h1 id="additional-prerequisites">Additional prerequisites</h1>
 <p>Some components of Vanadium (e.g. Syncbase) have additional prerequisites,
-including Snappy, LevelDB, and Node.js.</p>
-<p>We recommend using the <code>jiri profile</code> command to install all such
-prerequisites. This command uses <code>apt-get</code> on Linux and <code>brew</code> on OS X. Note,
-the <code>jiri</code> tool and its various plugins are located in
-<code>$JIRI_ROOT/.jiri_root/scripts</code>.
+including Snappy and LevelDB.</p>
+<p>We recommend using the <code>jiri profile</code> command to install the v23:base profile,
+which includes all such prerequisites.</p>
+<p>First, install any os packages that the v23:base profile needs.  The following
+line will inspect your currently installed packages, and if any additional
+packages need to be installed, it will print a command that will install them.
+Note that the printed command may need to be run as root.</p>
+<!-- @packagesBaseProfile @test -->
+<pre><code>jiri profile os-packages v23:base
+</code></pre><p>Then install the prerequisites themselves.
 <!-- @installBaseProfile @test --></p>
 <pre><code>jiri profile install v23:base
 </code></pre><p>The <code>jiri profile install</code> command only writes to files under <code>JIRI_ROOT</code>,

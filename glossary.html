@@ -441,16 +441,6 @@ arguments and return types.  These interfaces are described in <code>.vdl</code>
 encoding and decoding of typed values across different programming languages,
 e.g. Go and Java.</p>
 <p>See also: <a href="/designdocs/vom-spec.html">VOM specification</a>.</p>
-<h1 id="websocket-proxy-wspr-">WebSocket Proxy (WSPR)</h1>
-<p>A server (usually called WSPR, pronounced <em>whisper</em>) allows JavaScript
-running in a web browser or Node.js to communicate with a Vanadium system.
-WSPR proxies the Vanadium world behind a WebSocket interface.</p>
-<p>A JavaScript app uses a Node.js module that implements a WebSocket front-end
-to WSPR. WSPR accepts requests from the app over the WebSocket, sends them on
-as conventional Vanadium RPCs, and returns the responses to the JavaScript app
-via WebSocket.</p>
-<p>WSPR as a concept will move from a freestanding server into a browser
-extension, and ultimately become native to browsers.</p>
 
     </main>
   </body>

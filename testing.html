@@ -170,8 +170,8 @@ place. Check your state:</p>
 [ -x &quot;$JIRI_ROOT/.jiri_root/scripts/jiri&quot; ] || echo &#39;No jiri!&#39;
 [ -x &quot;$JIRI_ROOT/release/go/bin/principal&quot; ] || echo &#39;No bin!&#39;
 </code></pre><p>Development also requires Node.js. Install it as follows:</p>
-<pre><code># Adds node to $JIRI_ROOT/environment/cout/node/bin. The Makefile adds this to
-# $PATH automatically.
+<pre><code># Install the Node.js profile. The Makefile adds the nodejs binary to $PATH
+# automatically.
 jiri profile install v23:nodejs
 </code></pre><p>Since you&#39;re presumably considering a commit, be sure everything is up to date:</p>
 <pre><code>unset GOPATH
