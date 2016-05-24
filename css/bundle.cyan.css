@@ -7,6 +7,36 @@
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
 /* license that can be found in the LICENSE file. */
+.button,
+.button-passive,
+.button-primary {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  outline: 0;
+}
+.button-passive {
+  color: #0097a7;
+  background-color: transparent;
+  border: 1px solid #0097a7;
+  -webkit-transition: background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: background-color 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.button-passive:hover,
+.button-passive:active {
+  color: #ffffff;
+  background-color: #0097a7;
+  border: 1px solid #0097a7;
+}
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
 /* https://www.google.com/design/spec/style/color.html */
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
@@ -61,6 +91,27 @@ pre .hljs {
 }
 .clipboard .icon {
   color: #0097a7;
+}
+/* Copyright 2015 The Vanadium Authors. All rights reserved. */
+/* Use of this source code is governed by a BSD-style */
+/* license that can be found in the LICENSE file. */
+.intro-detail {
+  margin: 28px 0;
+  padding-left: 80px;
+  background-repeat: no-repeat;
+  background-size: 60px;
+}
+.intro-detail-offline {
+  background-image: url(/images/offline.svg);
+}
+.intro-detail-security {
+  background-image: url(/images/security.svg);
+}
+.intro-detail-codebase {
+  background-image: url(/images/codebase.svg);
+}
+.intro-detail-discovery {
+  background-image: url(/images/discovery.svg);
 }
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
