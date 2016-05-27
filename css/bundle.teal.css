@@ -46,6 +46,21 @@ code {
   font-family: "Source Code Pro", monospace;
   font-size: 12px;
 }
+pre .hljs-code-dim,
+code .hljs-code-dim {
+  opacity: 0.35;
+  visibility: hidden;
+  font-size: 0px;
+}
+pre .hljs-code-dim .hljs-code-dim-children,
+code .hljs-code-dim .hljs-code-dim-children {
+  visibility: visible;
+  font-size: 12px;
+}
+pre:hover .hljs-code-dim,
+code:hover .hljs-code-dim {
+  opacity: 0.1;
+}
 code {
   background-color: #f5f5f5;
   padding: 0 4px;
@@ -586,5 +601,19 @@ main h6[id]:before {
 }
 .note pre {
   width: inherit;
+}
+.rows {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 16px;
+  margin-left: 16px;
+}
+.rows > * {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-right: 16px;
+  margin-left: 16px;
 }
 /* https://www.google.com/design/spec/style/color.html */

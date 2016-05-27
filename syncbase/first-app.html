@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1,
+                                   minimum-scale=1,
+                                   maximum-scale=1,
+                                   user-scalable=no,
+                                   minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+    <title>Your First App - Vanadium</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
+  
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+    <script src="/js/react-0.14.3.min.js"></script>
+    <script src="/js/react-dom-0.14.3.min.js"></script>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/favicons/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+  
+    <link rel="stylesheet" href="/css/bundle.cyan.css">
+    <script src="/js/bundle.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+      ga('create', 'UA-59720824-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header class="mdl-shadow--2dp">
+      <div class="row">
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><a href="/"><img src="/images/v-icon-white.svg"></a></div>
+        <div class="logo"><a href="/syncbase">Syncbase</a></div>
+        <div class="spacer"></div>
+        <nav>
+          <a href="/syncbase">Overview</a>
+          <a href="/syncbase/quickstart.html">Quick Start</a>
+          <a href="/syncbase/tutorial/introduction.html">Tutorial</a>
+        </nav>
+      </div>
+    </header>
+    <div class="sidebar"></div>
+    <div class="sidebar-data">
+      <a href="/syncbase/">Overview</a>
+      <a href="/syncbase/quickstart.html">Quick Start</a>
+      <a href="/syncbase/first-app.html">Your First App</a>
+      <a href="/syncbase/tutorial/introduction.html" class="nav">Tutorial</a>
+       <nav>
+        <a href="/syncbase/tutorial/introduction.html">Introduction</a>
+    <a href="/syncbase/tutorial/step1.html">Setup</a>
+    <a href="/syncbase/tutorial/step2.html">Creating Todo Lists</a>
+    <a href="/syncbase/tutorial/step3.html">Sharing Todo Lists</a>
+    <a href="/syncbase/tutorial/step4.html">Additional Features</a>
+   </nav>
+    
+      <a href="#" class="nav">Guides</a>
+      <nav>
+        <a href="/syncbase/guides/data-model.html">Data Model</a>
+    <a href="/syncbase/guides/data-flow.html">Data Flow</a>
+    <a href="/syncbase/guides/synchronization.html">Sharing Data</a>
+    <a href="/syncbase/guides/batches.html">Batches</a>
+    <a href="/syncbase/guides/debugging.html">Debugging</a>
+    <a href="/syncbase/guides/cloud.html">Cloud Syncbase</a>
+  </nav>
+    
+      <a href="/syncbase/my-cloud-syncbase.html">My Cloud Syncbase</a>
+    
+      <a href="/syncbase/example-apps.html">Example Apps</a>
+      <a href="/syncbase/api-reference.html">API Reference</a>
+    </div>
+    <main>
+      <h1 class="title">
+        
+        Your First App
+      </h1>
+
+      <div class="toc"></div>
+
+      <h1 id="introduction">Introduction</h1>
+<p>In this quick tutorial, we will build a <em>Dice Roller</em> Android app where
+one can simply generate a random number between 1-6 and have it sync
+across multiple devices peer-to-peer, even with Wi-Fi turned off!</p>
+<div class="rows">
+  <img src="/images/syncbase-dice-device-1.gif">
+  <img src="/images/syncbase-dice-device-2.gif">
+</div>
+
+<h1 id="setup">Setup</h1>
+<p>This tutorial uses Android Studio, but feel free to use your IDE of choice.</p>
+<h2 id="create-the-project">Create the Project</h2>
+<p>We will start by creating an empty project in Android Studio
+<code>File -&gt; New -&gt; Project</code>.
+Select <code>API 21</code> or above for the Minimum SDK and pick <code>Empty Activity</code> as the
+template.</p>
+<h2 id="install-syncbase">Install Syncbase</h2>
+<p>Add the following to your <code>build.gradle</code> file.</p>
+<pre><code>dependencies {
+  compile &#39;io.v:vanadium-android:2.1.3+&#39;
+}
+</code></pre><h2 id="setup-cloud-syncbase">Setup Cloud Syncbase</h2>
+<p>Head to <a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> to setup a free
+developer cloud Syncbase instance or access your existing one.</p>
+<p>Make note of the Syncbase <strong>Address</strong> and the <strong>Blessing</strong> for your cloud
+instance, they are required by the Syncbase API during initialization.</p>
+<div class="note info"><h2 id="please-note">Please note</h2>
+<p>Requiring a cloud Syncbase is temporary. We are planning to allow the API to be
+used without a cloud Syncbase very soon.</p>
+</div>
+
+<h2 id="initialize-syncbase">Initialize Syncbase</h2>
+<p><strong>MainActivity.java</strong></p>
+<pre><code>&lt;dim&gt;&lt;dim-children&gt;package io.v.myfirstsyncbaseapp;
+
+import android.support.v7.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;&lt;/dim-children&gt;&lt;/dim&gt;
+import io.v.syncbase.*;
+
+&lt;dim&gt;&lt;dim-children&gt;public class MainActivity extends AppCompatActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+
+    super.onCreate(savedInstanceState);&lt;/dim-children&gt;&lt;/dim&gt;
+    User currUser = Users.loginWithDefaultAccount();
+
+    DatabaseOptions dbOpt = new DatabaseOptions();
+    dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;
+    dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;
+
+    Database db = Syncbase.getDatabase();
+
+    Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
+&lt;dim&gt;&lt;dim-children&gt;    setContentView(R.layout.activity_main);
+  }
+}&lt;/dim-children&gt;&lt;/dim&gt;
+</code></pre><p>Now, let&#39;s run the app to make sure login and Syncbase initialization are working.
+After running, you should see <code>Welcome &lt;email&gt;</code> in logcat under Android Monitor
+or in the console.</p>
+<h1 id="ui-code">UI Code</h1>
+<p>The user interface is just a <code>TextView</code> to display the dice roll
+result and a <code>Button</code>s to roll the dice.
+Here is the UI code</p>
+<p><strong>activity_main.xml</strong></p>
+<pre><code>&lt;dim&gt;&lt;dim-children&gt;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+  xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+  android:layout_width=&quot;match_parent&quot;
+  android:layout_height=&quot;match_parent&quot;
+  android:paddingBottom=&quot;@dimen/activity_vertical_margin&quot;
+  android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
+  android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
+  android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
+  tools:context=&quot;io.v.myfirstsyncbaseapp.MainActivity&quot;&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+  &lt;TextView
+&lt;dim&gt;&lt;dim-children&gt;    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;&lt;/dim-children&gt;&lt;/dim&gt;
+    android:text=&quot;Dice Not Rolled yet&quot;
+    android:id=&quot;@+id/textViewResult&quot;
+&lt;dim&gt;&lt;dim-children&gt;    android:layout_marginTop=&quot;36dp&quot;
+    android:textSize=&quot;30dp&quot;
+    android:layout_alignParentTop=&quot;true&quot;
+    android:layout_centerHorizontal=&quot;true&quot; /&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+  &lt;Button
+&lt;dim&gt;&lt;dim-children&gt;    style=&quot;?android:attr/buttonStyleSmall&quot;
+    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;&lt;/dim-children&gt;&lt;/dim&gt;
+    android:text=&quot;Roll the Dice!&quot;
+    android:id=&quot;@+id/buttonRoll&quot;
+&lt;dim&gt;&lt;dim-children&gt;    android:layout_marginTop=&quot;40dp&quot;
+    android:layout_below=&quot;@+id/textViewResult&quot;
+    android:layout_centerHorizontal=&quot;true&quot; /&gt;
+&lt;/RelativeLayout&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+</code></pre><p>Running the project at this point should result in the following UI:</p>
+<p><img style="width:250px" src="/images/syncbase-dice-1.png" alt="Screenshot of the Dice Roll app"></p>
+<h1 id="data-binding">Data Binding</h1>
+<p>The data model for this app is simple. We just need a single collection (<code>dice</code>)
+and a single key/value pair (<code>&#39;result&#39;</code>, <code>int</code>) to store the result of the dice
+roll.</p>
+<p>To bind Syncbase data with the UI, we will create a unidirectional data flow
+using Syncbase&#39;s Watch API to handle both local and synced mutation.</p>
+<p>With this model, on a dice roll we can change the value in the local Syncbase
+without updating the UI at all. The local mutation will propagate back
+through the Watch handler with very low latency enabling us to only update the
+UI in a single place, regardless of whether the new value is local or was synced
+from a remote device.</p>
+<p><img src="/images/syncbase-dice-data-flow.png" alt="Unidirectioanl Data Flow using Watch API"></p>
+<p>Now let&#39;s hook up this model to our code.</p>
+<pre><code>&lt;dim&gt;&lt;dim-children&gt;package io.v.myfirstsyncbaseapp;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Iterator;
+import java.util.Random;
+
+import io.v.syncbase.*;
+
+public class MainActivity extends AppCompatActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+
+    User currUser = Users.loginWithDefaultAccount();
+
+    DatabaseOptions dbOpt = new DatabaseOptions();
+    dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;
+    dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;
+
+    Database db = Syncbase.getDatabase();
+
+    Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
+
+    setContentView(R.layout.activity_main);&lt;/dim-children&gt;&lt;/dim&gt;
+
+    // On dice roll, put a new random number under key &quot;result&quot;
+    // in the &quot;dice&quot; collection.
+    final Button button = (Button) findViewById(R.id.buttonRoll);
+    button.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        int randomNumber =  new Random().nextInt(6) + 1;
+
+        Collection diceCollection = db.collection(&quot;dice&quot;);
+        diceCollection.put(&quot;result&quot;, randomNumber);
+      }
+    });
+
+    // Watch the database and update the UI whenever a new value
+    // is encountered.
+    db.removeWatchChangeHandler(new Database.WatchChangeHandler() {
+
+      void onInitialState(Iterator&lt;WatchChange&gt; values) {
+        // onInitialState is called with any existing data in Syncbase.
+        // Since we only have a single collection, single key/value,
+        // there can only be 0 or 1 values.
+        if (values.hasNext()) {
+          int result = (int) values.next().getValue(int.class);
+          updateResult(result);
+        }
+      }
+
+      void onChangeBatch(Iterator&lt;WatchChange&gt; changes) {
+        // onChangeBatch is called with any updates to the data.
+        // Since we only have a single collection, single key/value.
+        // there can only be 1 WatchChange whenever the value is mutated
+        // and the type of change would always be `put` in our case.
+        int result = (int) changes.next().getValue(int.class);
+        updateResult(result);
+      }
+
+      void onError(Exception e) {
+        // Something went wrong. Watch is no longer active.
+      }
+    });
+  }
+
+  private void updateResult(int newValue) {
+    final TextView result = (TextView) findViewById(R.id.textViewResult);
+    result.setText(String.valueOf(newValue));
+  }
+&lt;dim&gt;&lt;dim-children&gt;}&lt;/dim-children&gt;&lt;/dim&gt;
+</code></pre><h1 id="running-the-app">Running The App</h1>
+<p>To see the data sync between user&#39;s devices in a peer-to-peer fashion, we can
+run the app on two different devices and then turn off Wi-Fi and see it still
+sync using Bluetooth.</p>
+<p>When running the app from Android Studio, you can select multiple devices in
+the <code>Select a Deployment Target</code>. If you prefer to use the command line
+<a href="https://github.com/vanadium/madb">Multi-Device ADB (madb)</a> is an open-source
+tool that makes it easy to run Android apps on multiple devices.</p>
+<div class="note info"><h2 id="please-note">Please note</h2>
+<p>Internet connectivity is required the first time the app is run to authenticate
+the user and generate an offline auth certificate.
+Subsequence runs do not require Internet connectivity.</p>
+</div>
+
+<p>After running the application on 2 or more devices with Internet connectivity,
+ensure Bluetooth is enabled on both devices and turn off Wi-Fi, the dice rolls
+should still sync between the devices just fine!</p>
+<div class="rows">
+  <img src="/images/syncbase-dice-device-1.gif">
+  <img src="/images/syncbase-dice-device-2.gif">
+</div>
+
+<h1 id="want-to-dive-deeper-">Want to dive deeper?</h1>
+<p>Checkout the <a href="/syncbase/tutorial/introduction.html">Tutorial</a> to build a full-fledged Todo app and learn more Syncbase
+features such as sharing, batches and discovery.</p>
+<p><a href="/syncbase/tutorial/introduction.html" class="button-passive">
+Build a collaborative Todo app
+</a></p>
+
+    </main>
+  </body>
+</html>
