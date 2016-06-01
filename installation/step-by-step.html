@@ -243,7 +243,11 @@ line will inspect your currently installed packages, and if any additional
 packages need to be installed, it will print a command that will install them.
 Note that the printed command may need to be run as root.</p>
 <!-- @packagesBaseProfile @test -->
-<pre><code>jiri profile os-packages v23:base
+<pre><code># Print the package installation command.
+jiri profile os-packages v23:base
+
+# Run the package installation command as root.
+sudo $(jiri profile os-packages v23:base)
 </code></pre><p>Then install the prerequisites themselves.
 <!-- @installBaseProfile @test --></p>
 <pre><code>jiri profile install v23:base

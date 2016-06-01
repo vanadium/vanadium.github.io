@@ -85,7 +85,11 @@ export PATH=$JIRI_ROOT/.jiri_root/scripts:$PATH
 #----------------------------------------------------------------------#  Start 7
 echo "Block 'packagesBaseProfile' (7/9 in test) of content/installation/step-by-step.md"
 ####
+# Print the package installation command.
 jiri profile os-packages v23:base
+
+# Run the package installation command as root.
+sudo $(jiri profile os-packages v23:base)
 #----------------------------------------------------------------------#  End 7
 
 #----------------------------------------------------------------------#  Start 8
