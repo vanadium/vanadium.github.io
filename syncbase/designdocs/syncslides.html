@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Quick Start - Vanadium</title>
+    <title>SyncSlides - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -99,60 +99,129 @@
     <main>
       <h1 class="title">
         
-        Quick Start
+        SyncSlides
       </h1>
 
-      <div class="toc"></div>
 
-      <h1 id="install-syncbase">Install Syncbase</h1>
-<p>Syncbase&#39;s Android library is published to both <a href="https://bintray.com/vanadium/io.v/vanadium-android">JCenter</a> and <a href="http://repo1.maven.org/maven2/io/v/vanadium-android">MavenCentral</a>.
-To install the library, add the following to your <code>build.gradle</code> file.</p>
-<pre><code>dependencies {
-  compile &#39;io.v:vanadium-android:2.1.3+&#39;
+      <h1 id="functionality">Functionality</h1>
+<p>Peer-to-peer slide presentation.  Allows audience to ask questions.
+Presenter can delegate control of the presentation to an audience member temporarily.</p>
+<h2 id="key-behaviors">Key Behaviors</h2>
+<ul>
+<li>Distribute slide content to audience</li>
+<li>Slide images are blobs</li>
+<li>Presenter’s location gets synced to audience</li>
+<li>Audience can explore slides independently of presenter</li>
+<li>Audience can ask questions</li>
+<li>Presenter can delegate control of the presentation to an audience member</li>
+<li>Presenter and audience can take notes that are shared only with that user’s devices</li>
+</ul>
+<h1 id="schema">Schema</h1>
+<h2 id="data-types">Data Types</h2>
+<pre><code class="lang-Go">// VDeck is the metadata for a set of slides.
+type VDeck struct {
+  Title string
+  Thumbnail []byte
 }
-</code></pre><h1 id="setup-cloud-syncbase">Setup Cloud Syncbase</h1>
-<p>Head to <a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> to setup a free
-developer cloud Syncbase instance.</p>
-<p>Make note of the Syncbase <strong>Address</strong> and the <strong>Blessing</strong> for your cloud
-instance, they are required by the Syncbase API during initialization.</p>
-<div class="note info"><h2 id="please-note">Please note</h2>
-<p>Requiring a cloud Syncbase is temporary. We are planning to allow the API to be
-used without a cloud Syncbase soon.</p>
-</div>
 
-<h1 id="use-syncbase">Use Syncbase</h1>
-<p>In your <code>MainActivity</code>, import Syncbase and read/write some data!</p>
-<pre><code>&lt;dim&gt;&lt;dim-children&gt;import android.util.Log;&lt;/dim-children&gt;&lt;/dim&gt;
-import io.v.syncbase.*;
+// VSlide contains the image content for the slide.
+type VSlide struct {
+  // A low-res version of the image stored as JPG.
+  Thumbnail []byte
+  // A high-res version of the image stored as JPG.
+  Fullsize Blobref
+}
 
-&lt;dim&gt;&lt;dim-children&gt;@Override
-public void onCreate() {
-    super.onCreate();&lt;/dim-children&gt;&lt;/dim&gt;
+// VNote contains private-to-the-user notes for a specific slide.
+type VNote struct {
+  Text string
+}
 
-  Users.loginWithDefaultAccount();
+// VPresentation represents a live display of a VDeck.
+type VPresentation struct {
+  // The unique ID of the deck used in this presentation
+  DeckId String
+  // Owner is responsible for advertising the presentation and has full
+  // control of it.
+  Owner VPerson
+  // Driver represents who has control of the presentation.  Usually, it is
+  // the presenter, but the presenter can give control to an audience member
+  // by changing this field.
+  Driver VPerson
+}
 
-  DatabaseOptions dbOpt = new DatabaseOptions();
-  dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;;
-  dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;;
+// VPerson represents either an audience member or the presenter.
+type VPerson struct {
+  Blessing string
+  // The person&#39;s full name.
+  Name string
+}
 
-  Database database = Syncbase.getDatabase(dbOpt);
+// VCurrentSlide contains state for the live presentation.  It is separate
+// from the VPresentation so that the presenter can temporarily delegate
+// control of the VCurrentSlide without giving up control of the entire
+// presentation.
+type VCurrentSlide struct {
+  // The number of the slide that the presenter is talking about.
+  SlideNum int32
+  // In the future, we could add markup/doodles here.  That markup would be
+  // transient if stored here.  Maybe better to put it in a separate row...
+}
 
-  Collection collection = database.collection(&#39;myCollection&#39;);
+// VQuestion represents a member of the audience asking a question of the
+// presenter. TODO(kash): Add support for the user to type in their question.
+// Right now, they need to ask their question verbally.
+type VQuestion struct {
+  // The person who asked the question.
+  Questioner VPerson
+  // Time when the question was asked in milliseconds since the epoch.
+  Time int64
+  // Track whether this question has been answered.
+  Answered bool
+}
 
-  collection.put(&quot;myKey&quot;, &quot;myValue&quot;);
+// VSession represents UI state that most apps would consider to be ephemeral.
+// By storing it in Syncbase, we can resume a session on another device.
+// It also simplifies the Android implementation because we don&#39;t have to store
+// all of this state in a Bundle for each Activity/Fragment.
+type VSession struct {
+  DeckId string
+  PresentationId string
+  // When the user is not driving the presentation, he can go forward/back in
+  // the deck on his own.  A value of -1 means the user is following the
+  // driver of the presentation.
+  LocalSlide int32
+  // The time that this session was last used in milliseconds since the epoch.
+  // This field allows us to find the most recently used session and prompt
+  // the user to resume it.
+  LastTouched int64
+}
+</code></pre>
+<h2 id="organization">Organization</h2>
+<pre><code>Collection &lt;deckId&gt;
+  deck → VDeck
+  slides/1 → VSlide
+  slides/2 → VSlide
+  …
 
-  String value = collection.get(&#39;myKey&#39;, String.class);
+Collection &lt;presentationId&gt;
+  presentation → VPresentation
+  questions/&lt;uuid&gt; → VQuestion
+  questions/&lt;uuid&gt; → VQuestion
 
-  // Prints &quot;Value is: myValue&quot;
-  Log.i(&quot;info&quot;, &quot;Value is: &quot; + value);
-
-&lt;dim&gt;&lt;dim-children&gt;}&lt;/dim-children&gt;&lt;/dim&gt;
-</code></pre><p><strong>That&#39;s all!</strong> You are now using Syncbase!</p>
-<h1 id="got-10-more-minutes-">Got 10 more minutes?</h1>
-<p>Let&#39;s create a simple <em>Dice Roller</em> app and see it sync peer-to-peer in action!</p>
-<p><a href="/syncbase/first-app.html" class="button-passive">
-Create your first app
-</a></p>
+Collection &lt;presentationId + “control”&gt;
+  currentSlides → VCurrentSlide
+  Collection &lt;userblessing + “ui”&gt;
+  &lt;sessionId&gt; → VSession
+</code></pre><h1 id="syncing-and-permissions">Syncing and permissions</h1>
+<ul>
+<li>There is a separate collection for the deck so that it can be used in multiple presentations.</li>
+<li>The presentation collection is writable by the presenter and read-only for the audience.</li>
+<li>The <presentationId + “control”> collection is read-write for the presenter and read-only for the audience.  When the presenter wants to give control to an audience member, the presenter changes the ACL on this collection appropriately.</li>
+<li>Without fine-grained ACLs, it is difficult to use sync to ask questions.  Either we fully trust the audience and allow complete access to all questions or we use RPCs to send the questions to the presenter.  Seems like RPCs is the better way to go</li>
+</ul>
+<h1 id="conflicts">Conflicts</h1>
+<p>No conflicts expected, but last-one-wins would probably work.</p>
 
     </main>
   </body>

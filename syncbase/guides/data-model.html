@@ -89,7 +89,6 @@
     <a href="/syncbase/guides/synchronization.html">Sharing Data</a>
     <a href="/syncbase/guides/batches.html">Batches</a>
     <a href="/syncbase/guides/debugging.html">Debugging</a>
-    <a href="/syncbase/guides/cloud.html">Cloud Syncbase</a>
   </nav>
     
       <a href="/syncbase/my-cloud-syncbase.html">My Cloud Syncbase</a>
@@ -105,7 +104,160 @@
 
       <div class="toc"></div>
 
-      
+      <h1 id="introduction">Introduction</h1>
+<p>Syncbase is a key-value storage system that handles both structured data and
+blobs. The data is organized by the following hierarchy:</p>
+<ul>
+<li><a href="#database">Database</a>: An app is pre-configured to have a single database
+which may contain any number of collections.</li>
+<li><a href="#collections">Collection</a>: A collection is a set of key-value pairs
+(rows). Collections are the unit of access control and sharing.</li>
+<li><a href="#rows">Row</a>: Each row contains a single key-value pair. Keys are strings and
+the values can be both <a href="#structured-data">structured data</a> and <a href="#blobs">blobs</a>.
+Values in the rows of a collection can be heterogeneous or based on a
+pre-defined <a href="#schema">schema</a>.</li>
+</ul>
+<h1 id="database">Database</h1>
+<p>Database is the entry point to the Syncbase API and provides functionality to
+create, watch and share collections, and to perform batch operations.</p>
+<p>There is a pre-configured database for each app. <code>Syncbase.getDatabase()</code> is
+used to initialize Syncbase and get a reference to the app&#39;s database.</p>
+<pre><code>DatabaseOptions dbOpt = new DatabaseOptions();
+
+dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;;
+dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;;
+
+Database db = Syncbase.getDatabase();
+</code></pre><p>Other database options include ability to set the directory where data files
+are stored and whether collections should automatically sync across a user&#39;s
+devices or not (true by default).</p>
+<p><a href="/syncbase/api-reference.html#database">Database API reference</a></p>
+<h1 id="collections">Collections</h1>
+<p>Collections in Syncbase are used to group related rows together and are the
+unit of access control and sharing.</p>
+<p>By default, collection data is synced among the creator&#39;s devices. Collections
+can also be shared with other users.</p>
+<p>The sharing mechanism is based on <em>Syncgroups</em>. Each collection has a default
+Syncgroup that is used to sync data to the user&#39;s other devices. By inviting
+other users to join this pre-defined Syncgroup, one can share the collection
+with others. When inviting others to join a collection&#39;s Syncgroup, one can
+specify different levels of access such as <code>Read</code>, <code>ReadWrite</code> or <code>ReadWriteAdmin</code>.</p>
+<p>Collections created by all users live in the same namespace. To avoid collisions,
+the system automatically prepends the user&#39;s identity (blessing) to the
+Collection ID. The developer still needs to think about collisions, however.
+The user might use one device while offline and then switch to another device
+while still offline. When those two devices sync with each other, should the
+Collections merge or stay separate? If the developer wants them to stay separate,
+the collection IDs should include a UUID. If the developer wants them to merge,
+they should use a predictable name (example: &quot;preferences&quot;). Collection names are
+restricted to alphanumeric characters plus underscore and can have a maximum
+length of 64 bytes.</p>
+<pre><code>UUID collectionName = Syncbase.getUUID();
+Collection collection = db.collection(collectionName);
+
+UUID rowKey = Syncbase.getUUID();
+collection.put(rowKey, &quot;myValue&quot;);
+
+String myValue = collection.get(rowKey, String.class);
+
+collection.delete(rowKey);
+</code></pre><p>As mentioned earlier, collections are synced across user&#39;s devices by default
+but one can set <code>withoutSyncgroup</code> to <code>false</code> on
+<code>CollectionOptions</code> to make a local-only collection that will not sync with
+any other peer.</p>
+<p><a href="/syncbase/api-reference.html#collection">Collection API reference</a></p>
+<h1 id="rows">Rows</h1>
+<p>A row refers to a key-value pair in a collection.</p>
+<h2 id="keys">Keys</h2>
+<p>Keys are strings and normally UUIDs, however there are no restrictions on what
+keys can be. All UTF-8 strings are valid and there is no limit on key length.</p>
+<p>It can be beneficial to use hierarchical keys to facilitate prefix-matching
+and/or filtering. This can be done by using a known separator such as <code>/</code>.
+For example, data model for a folder/file storage system may design a key space
+such as:</p>
+<pre><code class="noclipboard">folder1
+folder1/doc1
+folder1/folder2
+folder1/folder2/doc2</code></pre>
+
+<h2 id="structured-data">Structured Data</h2>
+<p>Syncbase supports <a href="https://en.wikipedia.org/wiki/Plain_Old_Java_Object">POJO</a>
+as values and takes case of serialization. POJO classes must have an empty
+constructor.</p>
+<pre><code>public class MyPojo {
+    String foo;
+    Integer bar;
+    List&lt;MyPojo&gt; baz;
+
+    public MyPojo() {
+        foo = null;
+        bar = null;
+        baz = Lists.newArrayList();
+    }
+}
+
+MyPojo pojoIn = new MyPojo();
+collection.put(&#39;myKey&#39;, pojo);
+MyPojo pojoOut = collection.get(&#39;myKey&#39;, MyPojo.class);
+</code></pre><div class="note info"><h3 id="query-support-is-an-upcoming-feature">Query support is an upcoming feature</h3>
+<p>Syncbase has support for querying values in structured data. For
+example, one could find all the <code>MyPojo</code> objects that have the value <code>bar &gt; 10</code>.
+This feature is currently not exposed in the API, but might be in the
+future.</p>
+</div>
+
+<h2 id="blobs">Blobs</h2>
+<div class="note info"><h3 id="blob-support-is-an-upcoming-feature">Blob support is an upcoming feature</h3>
+<p>This feature is currently not exposed in the API, but will be in the
+future.</p>
+</div>
+
+<p>Syncbase has strong support for blobs. Blobs support a streaming upload/download
+API rather than the all-at-once operations of the structured data. Syncbase
+understands references to blobs in the structured data, making it possible to
+implement automatic caching and garbage collection of the blobs. Blob references
+implicitly grant access to blobs in a manner similar to a
+<a href="https://en.wikipedia.org/wiki/Capability-based_security">capability</a>.</p>
+<p>Blob references can be stored as values in the key-value store. There is an API
+for apps to specify per-device caching policies so that not all blobs need to be
+in all devices. It is the responsibility of Syncbase to watch for BlobRefs in
+the structured storage and cache the right blobs on each device.</p>
+<h1 id="schema">Schema</h1>
+<div class="note info"><h3 id="schema-support-is-an-upcoming-feature">Schema support is an upcoming feature</h3>
+<p>This feature is currently not exposed in the API, but will be in the
+future.</p>
+</div>
+
+<p>To support stronger data integrity, collections can be tied to a data schema, and
+Syncbase will ensure all written values match that schema or write will fail.</p>
+<h1 id="example-models">Example Models</h1>
+<p>To validate the Syncbase data model, we wrote design docs for a wide variety of
+apps. These docs focused on the interactions with Syncbase and the schema they
+would use for storage and synchronization. There are many variations on the
+features in the apps and many ways to implement those features, so these docs
+are not intended to represent the only way to build these apps. Instead, these
+docs are intended to provide inspiration while designing your own apps.</p>
+<h2 id="coffee-catalog">Coffee Catalog</h2>
+<p>Allows a user to browse and place orders from a catalog containing coffee and
+related paraphernalia.</p>
+<p><a href="/syncbase/designdocs/coffee-catalog.html">Design Doc</a></p>
+<h2 id="croupier">Croupier</h2>
+<p>Allows users to organize and play peer-to-peer card games together.
+The Syncbase schema supports general card games, and it is up to each
+application to support games (e.g., Hearts, Solitaire, etc.).</p>
+<p><a href="/syncbase/designdocs/croupier.html">Design Doc</a></p>
+<h2 id="syncslides">SyncSlides</h2>
+<p>Peer-to-peer slide presentation.  Allows audience to ask questions.
+Presenter can delegate control of the presentation to an audience member temporarily.</p>
+<p><a href="/syncbase/designdocs/syncslides.html">Design Doc</a></p>
+<h2 id="brokerage">Brokerage</h2>
+<p>The Brokerage app allows a user to invest in the stock market and monitor the
+performance of the portfolio.  Security is of utmost importance.
+The portfolio can be browsed while offline.  Some non-critical data
+(e.g., stock watchlist) may be shared in read-only mode with other apps.
+There is no sharing between user accounts.</p>
+<p><a href="/syncbase/designdocs/brokerage.html">Design Doc</a></p>
+
     </main>
   </body>
 </html>
