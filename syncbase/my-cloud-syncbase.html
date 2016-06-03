@@ -104,7 +104,45 @@
 
       <div class="toc"></div>
 
-      
+      <h1 id="introduction">Introduction</h1>
+<p>The Syncbase Allocator service at
+<a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> (log in with Google
+required) allows you to create and manage up to 3 free cloud Syncbase instances.</p>
+<p>Each instance is running in a dedicated container, isolated from all the other
+instances.  Access is restricted to the creator of the instance.</p>
+<div class="note warning"><h2 id="please-note">Please note</h2>
+<p>The instances are meant to be used for development.  There are no guarantees
+about availability or performance.  Data stored in the instances can be lost at
+any time.  No sensitive or personal data should be stored in the instances.</p>
+</div>
+
+<h1 id="usage">Usage</h1>
+<h2 id="viewing-your-instances">Viewing your Instances</h2>
+<p>After logging in, you&#39;ll see a list of all your instances (sorted in reverse
+chronological order by creation time).  Each instance displays its address and
+blessing patterns.  You can manage your instances from this view.</p>
+<h2 id="creating-an-instance">Creating an Instance</h2>
+<p>The <code>CREATE NEW</code> button spins up a new syncbase instance.  It takes about 25
+seconds, after which you&#39;ll see your newly created instance.  The instance is
+assigned a stable address that makes reachable from clients and peers.</p>
+<h2 id="destroying-an-instance">Destroying an Instance</h2>
+<p>The <code>DESTROY</code> button removes the instance.  Note, all data in the instance is
+lost; this operation cannot be undone.</p>
+<h2 id="suspending-resuming-an-instance">Suspending/Resuming an Instance</h2>
+<p>The <code>SUSPEND</code> button allows you to stop your instance.  <code>RESUME</code> restarts it.
+The data in the instance is preserved.</p>
+<h2 id="resetting-an-instance">Resetting an Instance</h2>
+<p>The <code>RESET</code> button re-creates the instance&#39;s persisted storage.  Note, all data
+in the instance is lost; this operation cannot be undone.  Resetting preserves
+the instance&#39;s address and blessing patterns, which makes it a suitable
+alternative to destroying and recreating an instance when stability of the
+address and blessing patterns is desired.</p>
+<h2 id="inspecting-an-instance">Inspecting an Instance</h2>
+<p>The <code>DASHBOARD</code> button opens a page showing load and resource utilization for
+the instance.  The <code>DEBUG</code> button opens a page showing details about the
+instance like its blessings, stats, and a browse view of the databases.  See
+<a href="/syncbase/guides/debugging.html">Debugging</a> for more details.</p>
+
     </main>
   </body>
 </html>
