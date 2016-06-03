@@ -86,7 +86,7 @@
       <nav>
         <a href="/syncbase/guides/data-model.html">Data Model</a>
     <a href="/syncbase/guides/data-flow.html">Data Flow</a>
-    <a href="/syncbase/guides/synchronization.html">Sharing Data</a>
+    <a href="/syncbase/guides/synchronization.html">Syncing Data</a>
     <a href="/syncbase/guides/batches.html">Batches</a>
     <a href="/syncbase/guides/debugging.html">Debugging</a>
   </nav>
@@ -104,7 +104,137 @@
 
       <div class="toc"></div>
 
-      
+      <h1 id="introduction">Introduction</h1>
+<p>A batch is a group of read and write operations that are logically related.
+When an app uses Syncbase without synchronization, a batch is equivalent to an
+ACID transaction.</p>
+<ul>
+<li><em>Atomic:</em> All writes that are part of the batch are committed together.</li>
+<li><em>Consistent:</em> Any batches started in the future necessarily see the effects of
+batches committed in the past.</li>
+<li><em>Isolated:</em> The concurrent execution of batches results in a state that would be
+equivalent to the batches executing serially in some order.</li>
+<li><em>Durable:</em> Once a batch has been committed, it will remain committed in the face
+of power loss or crashes.</li>
+</ul>
+<p>When an app uses Syncbase with synchronization, a batch no
+longer provides ACID semantics. Syncbase is a loosely coupled, decentralized,
+distributed storage system, so the guarantees of batches are appropriate for
+that environment.</p>
+<ul>
+<li><em>Atomic:</em> All read and write operations that are part of the batch are
+synchronized as an atomic unit. However, a conflict resolver may merge two
+batches by taking part of one batch and another part of the other batch.</li>
+<li><em>Consistent:</em> Consistency is impossible to provide when devices are allowed
+to work offline. A user could perform an operation on one device and then
+attempt to perform an operation on a second device before the two devices have
+synced with each other.</li>
+<li><em>Isolated:</em> Conflict resolvers could violate isolation guarantees by
+improperly merging two batches.</li>
+<li><em>Durable:</em> While batches are durable in the common case, there are two exceptions:<ul>
+<li>The batch is committed on a device while partitioned from other devices.
+The device never syncs with other devices (e.g. dropped in the river).</li>
+<li>A poorly written conflict resolver erroneously discards the conflicting batch
+rather than merging it.</li>
+</ul>
+</li>
+</ul>
+<p>While the edge cases prevent us from claiming ACID semantics, we believe that
+the behavior above strikes a good balance between implementable semantics and
+useful behavior for the developer and user.</p>
+<p>Batches are not limited to the data within a collection. If a batch contains
+data from multiple collections, peers will receive only the parts of the batch
+they are allowed to see.</p>
+<h1 id="using-batches">Using Batches</h1>
+<p><code>BatchDatabase</code> is the entry point to the batch API. <code>BatchDatabase</code> is similar to
+<code>Database</code> except it provides <code>commit</code> and <code>abort</code> methods and all
+operations on collection references obtained from a <code>BatchDatabase</code> would be
+part of the batch.</p>
+<h3 id="runinbatch">RunInBatch</h3>
+<p><code>RunInBatch</code> is the recommended way of doing batch operations.
+It detects <em>concurrent batch</em> errors and handles retries and commit/aborts
+automatically.</p>
+<pre><code class="lang-Java">db.runInBatch(new Database.BatchOperation() {
+    @Override
+    public void run(BatchDatabase batchDb) {
+        Collection c1 = batchDb.collection(&quot;collection1&quot;);
+        Collection c2 = batchDb.collection(&quot;collection2&quot;);
+
+        c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
+        c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+
+        // No need to commit. RunInBatch will commit and retry if necessary.
+    }
+});
+</code></pre>
+<div class="note warning"><h2 id="warning">Warning</h2>
+<p>Using collection references previously obtained from <code>Database</code> will have no
+atomicity effect when used in <code>RunInBatch</code>. New collection references must be
+obtained from <code>BatchDatabase</code>.</p>
+<p><strong>The following code snippet demonstrates the <em>WRONG</em> way of using batches.</strong></p>
+</div>
+
+<pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
+Collection c1 = db.collection(&quot;collection1&quot;);
+&lt;dim&gt;&lt;dim-children&gt;db.runInBatch(new Database.BatchOperation() {
+    @Override
+    public void run(BatchDatabase batchDb) {
+
+        Collection c2 = batchDb.collection(&quot;collection2&quot;);&lt;/dim-children&gt;&lt;/dim&gt;
+        // WRONG: Only mutations on c2 are atomic since c1 reference
+        // was obtained from Database and not BatchDatabase.
+        c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
+        c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+&lt;dim&gt;&lt;dim-children&gt;        // No need to commit. RunInBatch will commit and retry if necessary.
+    }
+});&lt;/dim-children&gt;&lt;/dim&gt;
+</code></pre>
+<h3 id="beginbatch">BeginBatch</h3>
+<p><code>BeginBatch</code> is an alternative approach to starting a batch operation. Unlike
+<code>RunInBatch</code>, it does not manage retries and commit/aborts. They are left
+to the developers to manage themselves.</p>
+<pre><code class="lang-Java">BatchDatabase batchDb = db.beginBatch();
+
+Collection c1 = batchDb.collection(&quot;collection1&quot;);
+Collection c2 = batchDb.collection(&quot;collection2&quot;);
+
+c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
+c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+
+batchDb.commit();
+</code></pre>
+<div class="note warning"><h2 id="warning">Warning</h2>
+<p>Using collection references obtained from a <code>BatchDatabase</code> after the batch is
+committed or aborted will throw exceptions.</p>
+<p><strong>The following code snippet demonstrates the <em>WRONG</em> way of using batches.</strong></p>
+</div>
+
+<pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
+Collection c1 = db.collection(&quot;collection1&quot;);
+&lt;dim&gt;&lt;dim-children&gt;BatchDatabase batchDb = db.beginBatch();
+
+// c2 is part of the batch.
+Collection c2 = batchDb.collection(&quot;collection2&quot;);&lt;/dim-children&gt;&lt;/dim&gt;
+
+// WRONG: Only mutations on c2 are atomic since c1 reference was obtained
+// from Database and not BatchDatabase.
+c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
+c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+
+batchDb.commit();
+
+// WRONG: Throws exception since c2 is from an already committed batch.
+c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+</code></pre>
+<h1 id="summary">Summary</h1>
+<ul>
+<li>Use batches to group operations that are logically related.</li>
+<li>Use the recommended <code>runInBatch</code> method to perform batch operations to
+get the added benefit of automatic retries and commit/abort.</li>
+<li>Ensure all collection references are obtained from <code>BatchDatabase</code> otherwise
+mutations may not be part of a batch.</li>
+</ul>
+
     </main>
   </body>
 </html>

@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Sharing Data - Vanadium</title>
+    <title>Syncing Data - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -86,7 +86,7 @@
       <nav>
         <a href="/syncbase/guides/data-model.html">Data Model</a>
     <a href="/syncbase/guides/data-flow.html">Data Flow</a>
-    <a href="/syncbase/guides/synchronization.html">Sharing Data</a>
+    <a href="/syncbase/guides/synchronization.html">Syncing Data</a>
     <a href="/syncbase/guides/batches.html">Batches</a>
     <a href="/syncbase/guides/debugging.html">Debugging</a>
   </nav>
@@ -99,12 +99,111 @@
     <main>
       <h1 class="title">
         
-        Sharing Data
+        Syncing Data
       </h1>
 
       <div class="toc"></div>
 
-      
+      <h1 id="introduction">Introduction</h1>
+<p>Syncbase&#39;s sync protocol is peer-to-peer whereas most other sync systems require
+a centralized server. We believe that despite internet connectivity becoming
+more and more prevalent, there will always be times when an internet connection
+is not available. You should be able to sync with your peer, with very low
+latency, when you are physically close. For example, you shouldn&#39;t need an
+internet connection to set the temperature on your thermostat. Syncbase uses the
+cloud as another, very durable peer, but the cloud is not required for any two
+peers to interact. Because the cloud is not in the critical path for synchronization,
+apps can use Syncbase as for asynchronous, relatively low latency communication.</p>
+<p>Peer-to-peer sync, however, introduces problems not present in client-server sync:</p>
+<ul>
+<li>Sub-groups of devices can collaborate independently, leading to substantial
+data conflicts.</li>
+<li>Malicious peers can perform man-in-the-middle attacks. The system should
+prevent them.</li>
+</ul>
+<p>Syncbase internally handles both of these issues by providing:</p>
+<ul>
+<li>Automatic conflict resolution policies such as last-one-wins and an upcoming
+extensive conflict resolution API for custom conflict resolution.</li>
+<li>Strong security and access control. To prevent read-only peers
+from performing a man-in-the-middle attack, Syncbase will sign the mutations
+on behalf of the writer. The receivers automatically verify the signatures.</li>
+</ul>
+<h1 id="using-syncgroups">Using Syncgroups</h1>
+<p>A syncgroup is a set of of collections that are synchronized amongst a set of
+users (and with the cloud, if available).</p>
+<p>By default, creating a collection creates an associated syncgroup, initially
+synced amongst the creator’s devices but other users can also be added to this
+syncgroup to allow sharing.</p>
+<h2 id="sharing-collections">Sharing collections</h2>
+<p>Sharing collections involves <strong>inviting</strong> other users to <strong>join</strong> a collection&#39;s
+syncgroup. Upon inviting a user, the invitee <strong>receives an invite event</strong>. When
+an invite is <strong>accepted</strong>, the inviter&#39;s syncgroup will be joined and shared data
+will start syncing.
+When inviting a user, an access level can be specified:</p>
+<ul>
+<li><em>read-only</em>: Invitee can only read the shared data rows.</li>
+<li><em>read-write</em>: Invitee can read, put and delete data rows and mutations will
+sync with anyone else who is part of the syncgroup.</li>
+<li><em>read-write-admin</em>: In addition to read-write, can invite others to join the
+syncgroup, eject existing members of the syncgroup or change their access level.</li>
+</ul>
+<p>On the inviter side, we just need to invite a user to join the collection&#39;s
+syncgroup:</p>
+<pre><code>Collection collectionToShare = db.collection(&quot;myCollection&quot;);
+
+User userToInvite = new User(&quot;&lt;email-address&gt;&quot;);
+
+collectionToShare.getSyncgroup().inviteUser(userToInvite, AccessLevel.READ);
+</code></pre><p>On the invitee side, we need to handle invite requests by registering a handler:</p>
+<pre><code>db.addSyncgroupInviteHandler(new Database.SyncgroupInviteHandler() {
+    @Override
+    public void onInvite(SyncgroupInvite invite) {
+        // Prompt the user if desired then accept or reject the invite.
+        db.acceptSyncgroupInvite(invite);
+    }
+});
+</code></pre><div class="note info"><h3 id="tip">Tip</h3>
+<p><code>db.removeAllSyncgroupInviteHandlers()</code> can be used in activity&#39;s <code>onDestroy</code>
+to remove all registered invite handlers.</p>
+</div>
+
+<p>When an invitation is accepted, Syncbase automatically joins the inviter&#39;s
+syncgroup and the associated collection and its data will start
+syncing into the invitee&#39;s database. As the collection syncs, data will be
+surfaced through the <em>Watch API</em>. See <a href="/syncbase/guides/data-flow.html">Data Flow</a> guide for details on how
+to model your app&#39;s data flow.</p>
+<h2 id="unsharing-collections">Unsharing collections</h2>
+<p>Ejecting a user from a collection&#39;s syncgroup will unshare the collection. If
+the target user has not accepted the invitation yet, the invite will simply
+disappear. Otherwise, the shared collection on target user&#39;s database will
+become read-only and will no longer sync and receive updates.</p>
+<pre><code>Collection sharedCollection = db.collection(&quot;myCollection&quot;);
+
+User userToRemove = new User(&quot;&lt;email-address&gt;&quot;);
+
+sharedCollection.getSyncgroup().ejectUser(userToRemove);
+</code></pre><h2 id="updating-access-level">Updating Access Level</h2>
+<p>Simply re-inviting an already invited user with a different access level will
+update their access without triggering a new invitation.</p>
+<h2 id="listing-all-syncgroups">Listing All Syncgroups</h2>
+<p><code>db.getSyncgroups()</code> can be used to list all syncgroups. This list includes
+pre-created syncgroups for collections and other syncgroups created or joined.</p>
+<pre><code class="lang-Java">Iterator&lt;Syncgroup&gt; allSyncgroups = db.getSyncgroups();
+while(allSyncgroups.hasNext()) {
+    Syncgroup sg = allSyncgroups.next();
+}
+</code></pre>
+<h1 id="summary">Summary</h1>
+<ul>
+<li>Syncbase&#39;s sync protocol is peer-to-peer.</li>
+<li>By default, creating a collection creates an associated syncgroup, initially
+synced amongst the creator’s devices.</li>
+<li>Sharing collections is done by inviting other users to join a collection&#39;s
+syncgroup.</li>
+<li>Access-level can be one of read-only, read-write, or read-write-admin.</li>
+</ul>
+
     </main>
   </body>
 </html>
