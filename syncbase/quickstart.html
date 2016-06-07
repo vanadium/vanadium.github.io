@@ -111,7 +111,7 @@ template.</p>
 <p>Syncbase&#39;s Android library is published to both <a href="https://bintray.com/vanadium/io.v/vanadium-android">JCenter</a> and <a href="http://repo1.maven.org/maven2/io/v/vanadium-android">MavenCentral</a>.
 To install the library, add the following to your <code>build.gradle</code> file.</p>
 <div class="hide-cat-eof-lines"><!-- @addSyncbaseDependency @test -->
-<pre><code>cat &lt;&lt;EOF &gt;&gt; app/build.gradle
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/build.gradle
 dependencies {
   compile &#39;io.v:syncbase:0.1.4&#39;
 }
@@ -131,7 +131,7 @@ used without a cloud Syncbase soon.</p>
 <h1 id="use-syncbase">Use Syncbase</h1>
 <p>In your <code>MainActivity</code>, import Syncbase and read/write some data!</p>
 <div class="hide-cat-eof-lines"><!-- @generateMainActivity @test -->
-<pre><code>cat &lt;&lt;EOF | sed &#39;s///&#39; &gt; app/src/main/java/syncbase/io/v/quickstart/MainActivity.java
+<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/syncbase/io/v/quickstart/MainActivity.java
 {#dim}{#dim-children}package syncbase.io.v.quickstart;
 
 import android.support.v7.app.AppCompatActivity;
