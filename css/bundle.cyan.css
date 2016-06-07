@@ -107,6 +107,10 @@ pre .hljs {
 .clipboard .icon {
   color: #0097a7;
 }
+.hide-cat-eof-lines .hljs-catline,
+.hide-cat-eof-lines .hljs-eofline {
+  display: none;
+}
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
 /* license that can be found in the LICENSE file. */

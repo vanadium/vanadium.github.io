@@ -110,10 +110,15 @@ template.</p>
 <h1 id="install-syncbase">Install Syncbase</h1>
 <p>Syncbase&#39;s Android library is published to both <a href="https://bintray.com/vanadium/io.v/vanadium-android">JCenter</a> and <a href="http://repo1.maven.org/maven2/io/v/vanadium-android">MavenCentral</a>.
 To install the library, add the following to your <code>build.gradle</code> file.</p>
-<pre><code>dependencies {
-  compile &#39;io.v:vanadium-android:2.1.3+&#39;
+<div class="hide-cat-eof-lines"><!-- @addSyncbaseDependency @test -->
+<pre><code>cat &lt;&lt;EOF &gt;&gt; app/build.gradle
+dependencies {
+  compile &#39;io.v:syncbase:0.1.4&#39;
 }
-</code></pre><h1 id="setup-cloud-syncbase">Setup Cloud Syncbase</h1>
+EOF
+</code></pre></div>
+
+<h1 id="setup-cloud-syncbase">Setup Cloud Syncbase</h1>
 <p>Head to <a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> to setup a free
 developer cloud Syncbase instance.</p>
 <p>Make note of the Syncbase <strong>Address</strong> and the <strong>Blessing</strong> for your cloud
@@ -125,32 +130,39 @@ used without a cloud Syncbase soon.</p>
 
 <h1 id="use-syncbase">Use Syncbase</h1>
 <p>In your <code>MainActivity</code>, import Syncbase and read/write some data!</p>
-<pre><code>&lt;dim&gt;&lt;dim-children&gt;import android.util.Log;&lt;/dim-children&gt;&lt;/dim&gt;
+<div class="hide-cat-eof-lines"><!-- @generateMainActivity @test -->
+<pre><code>cat &lt;&lt;EOF | sed &#39;s///&#39; &gt; app/src/main/java/syncbase/io/v/quickstart/MainActivity.java
+{#dim}{#dim-children}package syncbase.io.v.quickstart;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;{/dim-children}{/dim}
 import io.v.syncbase.*;
 
-&lt;dim&gt;&lt;dim-children&gt;@Override
-public void onCreate() {
-    super.onCreate();&lt;/dim-children&gt;&lt;/dim&gt;
+{#dim}{#dim-children}public class MainActivity extends AppCompatActivity {
 
-  Users.loginWithDefaultAccount();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);{/dim-children}{/dim}
+        Syncbase.database(new Syncbase.DatabaseCallback() {
+            @Override
+            public void onSuccess(Database db) {
 
-  DatabaseOptions dbOpt = new DatabaseOptions();
-  dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;;
-  dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;;
+                // Use database to interact with Syncbase.
 
-  Database database = Syncbase.getDatabase(dbOpt);
+                Collection collection = db.collection(&quot;myCollection&quot;);
 
-  Collection collection = database.collection(&#39;myCollection&#39;);
+                collection.put(&quot;myKey&quot;, &quot;myValue&quot;);
 
-  collection.put(&quot;myKey&quot;, &quot;myValue&quot;);
+                String value = collection.get(&quot;myKey&quot;, String.class);
+            }
+        }, new Syncbase.DatabaseOptions());
+{#dim}{#dim-children}        setContentView(R.layout.activity_main);
+    }
+}{/dim-children}{/dim}
+EOF
+</code></pre></div>
 
-  String value = collection.get(&#39;myKey&#39;, String.class);
-
-  // Prints &quot;Value is: myValue&quot;
-  Log.i(&quot;info&quot;, &quot;Value is: &quot; + value);
-
-&lt;dim&gt;&lt;dim-children&gt;}&lt;/dim-children&gt;&lt;/dim&gt;
-</code></pre><p><strong>That&#39;s all!</strong> You are now using Syncbase!</p>
+<p><strong>That&#39;s all!</strong> You are now using Syncbase!</p>
 <h1 id="got-10-more-minutes-">Got 10 more minutes?</h1>
 <p>Let&#39;s create a simple <em>Dice Roller</em> app and see it sync peer-to-peer in action!</p>
 <p><a href="/syncbase/first-app.html" class="button-passive">

@@ -172,18 +172,18 @@ obtained from <code>BatchDatabase</code>.</p>
 
 <pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
 Collection c1 = db.collection(&quot;collection1&quot;);
-&lt;dim&gt;&lt;dim-children&gt;db.runInBatch(new Database.BatchOperation() {
+{#dim}{#dim-children}db.runInBatch(new Database.BatchOperation() {
     @Override
     public void run(BatchDatabase batchDb) {
 
-        Collection c2 = batchDb.collection(&quot;collection2&quot;);&lt;/dim-children&gt;&lt;/dim&gt;
+        Collection c2 = batchDb.collection(&quot;collection2&quot;);{/dim-children}{/dim}
         // WRONG: Only mutations on c2 are atomic since c1 reference
         // was obtained from Database and not BatchDatabase.
         c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
         c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
-&lt;dim&gt;&lt;dim-children&gt;        // No need to commit. RunInBatch will commit and retry if necessary.
+{#dim}{#dim-children}        // No need to commit. RunInBatch will commit and retry if necessary.
     }
-});&lt;/dim-children&gt;&lt;/dim&gt;
+});{/dim-children}{/dim}
 </code></pre>
 <h3 id="beginbatch">BeginBatch</h3>
 <p><code>BeginBatch</code> is an alternative approach to starting a batch operation. Unlike
@@ -207,10 +207,10 @@ committed or aborted will throw exceptions.</p>
 
 <pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
 Collection c1 = db.collection(&quot;collection1&quot;);
-&lt;dim&gt;&lt;dim-children&gt;BatchDatabase batchDb = db.beginBatch();
+{#dim}{#dim-children}BatchDatabase batchDb = db.beginBatch();
 
 // c2 is part of the batch.
-Collection c2 = batchDb.collection(&quot;collection2&quot;);&lt;/dim-children&gt;&lt;/dim&gt;
+Collection c2 = batchDb.collection(&quot;collection2&quot;);{/dim-children}{/dim}
 
 // WRONG: Only mutations on c2 are atomic since c1 reference was obtained
 // from Database and not BatchDatabase.

@@ -133,20 +133,20 @@ used without a cloud Syncbase very soon.</p>
 
 <h2 id="initialize-syncbase">Initialize Syncbase</h2>
 <p><strong>MainActivity.java</strong></p>
-<pre><code>&lt;dim&gt;&lt;dim-children&gt;package io.v.myfirstsyncbaseapp;
+<pre><code>{#dim}{#dim-children}package io.v.myfirstsyncbaseapp;
 
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;&lt;/dim-children&gt;&lt;/dim&gt;
+import android.util.Log;{/dim-children}{/dim}
 import io.v.syncbase.*;
 
-&lt;dim&gt;&lt;dim-children&gt;public class MainActivity extends AppCompatActivity {
+{#dim}{#dim-children}public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
-    super.onCreate(savedInstanceState);&lt;/dim-children&gt;&lt;/dim&gt;
+    super.onCreate(savedInstanceState);{/dim-children}{/dim}
     User currUser = Users.loginWithDefaultAccount();
 
     DatabaseOptions dbOpt = new DatabaseOptions();
@@ -156,9 +156,9 @@ import io.v.syncbase.*;
     Database db = Syncbase.getDatabase();
 
     Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
-&lt;dim&gt;&lt;dim-children&gt;    setContentView(R.layout.activity_main);
+{#dim}{#dim-children}    setContentView(R.layout.activity_main);
   }
-}&lt;/dim-children&gt;&lt;/dim&gt;
+}{/dim-children}{/dim}
 </code></pre><p>Now, let&#39;s run the app to make sure login and Syncbase initialization are working.
 After running, you should see <code>Welcome &lt;email&gt;</code> in logcat under Android Monitor
 or in the console.</p>
@@ -167,7 +167,7 @@ or in the console.</p>
 result and a <code>Button</code>s to roll the dice.
 Here is the UI code</p>
 <p><strong>activity_main.xml</strong></p>
-<pre><code>&lt;dim&gt;&lt;dim-children&gt;&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+<pre><code>{#dim}{#dim-children}&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
   xmlns:tools=&quot;http://schemas.android.com/tools&quot;
   android:layout_width=&quot;match_parent&quot;
@@ -176,26 +176,26 @@ Here is the UI code</p>
   android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
   android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
   android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
-  tools:context=&quot;io.v.myfirstsyncbaseapp.MainActivity&quot;&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+  tools:context=&quot;io.v.myfirstsyncbaseapp.MainActivity&quot;&gt;{/dim-children}{/dim}
   &lt;TextView
-&lt;dim&gt;&lt;dim-children&gt;    android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;&lt;/dim-children&gt;&lt;/dim&gt;
+{#dim}{#dim-children}    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;{/dim-children}{/dim}
     android:text=&quot;Dice Not Rolled yet&quot;
     android:id=&quot;@+id/textViewResult&quot;
-&lt;dim&gt;&lt;dim-children&gt;    android:layout_marginTop=&quot;36dp&quot;
+{#dim}{#dim-children}    android:layout_marginTop=&quot;36dp&quot;
     android:textSize=&quot;30dp&quot;
     android:layout_alignParentTop=&quot;true&quot;
-    android:layout_centerHorizontal=&quot;true&quot; /&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+    android:layout_centerHorizontal=&quot;true&quot; /&gt;{/dim-children}{/dim}
   &lt;Button
-&lt;dim&gt;&lt;dim-children&gt;    style=&quot;?android:attr/buttonStyleSmall&quot;
+{#dim}{#dim-children}    style=&quot;?android:attr/buttonStyleSmall&quot;
     android:layout_width=&quot;wrap_content&quot;
-    android:layout_height=&quot;wrap_content&quot;&lt;/dim-children&gt;&lt;/dim&gt;
+    android:layout_height=&quot;wrap_content&quot;{/dim-children}{/dim}
     android:text=&quot;Roll the Dice!&quot;
     android:id=&quot;@+id/buttonRoll&quot;
-&lt;dim&gt;&lt;dim-children&gt;    android:layout_marginTop=&quot;40dp&quot;
+{#dim}{#dim-children}    android:layout_marginTop=&quot;40dp&quot;
     android:layout_below=&quot;@+id/textViewResult&quot;
     android:layout_centerHorizontal=&quot;true&quot; /&gt;
-&lt;/RelativeLayout&gt;&lt;/dim-children&gt;&lt;/dim&gt;
+&lt;/RelativeLayout&gt;{/dim-children}{/dim}
 </code></pre><p>Running the project at this point should result in the following UI:</p>
 <p><img style="width:250px" src="/images/syncbase-dice-1.png" alt="Screenshot of the Dice Roll app"></p>
 <h1 id="data-binding">Data Binding</h1>
@@ -211,7 +211,7 @@ UI in a single place, regardless of whether the new value is local or was synced
 from a remote device.</p>
 <p><img src="/images/syncbase-dice-data-flow.png" alt="Unidirectional Data Flow using Watch API"></p>
 <p>Now let&#39;s hook up this model to our code.</p>
-<pre><code>&lt;dim&gt;&lt;dim-children&gt;package io.v.myfirstsyncbaseapp;
+<pre><code>{#dim}{#dim-children}package io.v.myfirstsyncbaseapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
     Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
 
-    setContentView(R.layout.activity_main);&lt;/dim-children&gt;&lt;/dim&gt;
+    setContentView(R.layout.activity_main);{/dim-children}{/dim}
 
     // On dice roll, put a new random number under key &quot;result&quot;
     // in the &quot;dice&quot; collection.
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity {
     final TextView result = (TextView) findViewById(R.id.textViewResult);
     result.setText(String.valueOf(newValue));
   }
-&lt;dim&gt;&lt;dim-children&gt;}&lt;/dim-children&gt;&lt;/dim&gt;
+{#dim}{#dim-children}}{/dim-children}{/dim}
 </code></pre><h1 id="running-the-app">Running The App</h1>
 <p>To see the data sync between user&#39;s devices in a peer-to-peer fashion, we can
 run the app on two different devices and then turn off Wi-Fi and see it still
