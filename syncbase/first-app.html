@@ -84,7 +84,6 @@
     <a href="/syncbase/guides/data-flow.html">Data Flow</a>
     <a href="/syncbase/guides/synchronization.html">Syncing Data</a>
     <a href="/syncbase/guides/batches.html">Batches</a>
-    <a href="/syncbase/guides/debugging.html">Debugging</a>
   </nav>
     
       <a href="/syncbase/my-cloud-syncbase.html">My Cloud Syncbase</a>
@@ -100,13 +99,18 @@
 
       <div class="toc"></div>
 
-      <h1 id="introduction">Introduction</h1>
+      <div class="note warning"><h2 id="work-in-progress-">Work in Progress!</h2>
+<p>We&#39;re actively working on finishing up the Syncbase API and implementation.
+The code below compiles, but may not execute successfully.
+If you&#39;d like to actually run this code, please check back with us in a few weeks.</p>
+</div>
+
+<h1 id="introduction">Introduction</h1>
 <p>In this quick tutorial, we will build a <em>Dice Roller</em> Android app where
 one can simply generate a random number between 1-6 and have it sync
 across multiple devices peer-to-peer, even with Wi-Fi turned off!</p>
 <div class="rows">
-  <img src="/images/syncbase-dice-device-1.gif">
-  <img src="/images/syncbase-dice-device-2.gif">
+  <img style="width:250px" src="/images/syncbase-dice-device-1.gif">
 </div>
 
 <h1 id="setup">Setup</h1>
@@ -307,8 +311,7 @@ Subsequence runs do not require Internet connectivity.</p>
 ensure Bluetooth is enabled on both devices and turn off Wi-Fi, the dice rolls
 should still sync between the devices just fine!</p>
 <div class="rows">
-  <img src="/images/syncbase-dice-device-1.gif">
-  <img src="/images/syncbase-dice-device-2.gif">
+  <img style="width:250px" src="/images/syncbase-dice-device-1.gif">
 </div>
 
 <h1 id="want-to-dive-deeper-">Want to dive deeper?</h1>
