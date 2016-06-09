@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Syncbase Example Apps - Vanadium</title>
+    <title>Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -58,11 +58,11 @@
     <header class="mdl-shadow--2dp">
       <div class="row">
         <div class="icon menu"><i class="material-icons">menu</i></div>
-        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
-        <div class="logo"><a href="/">Vanadium</a></div>
+        <div class="icon v-icon"><a href="/"><img src="/images/v-icon-white.svg"></a></div>
+        <div class="logo"><a href="/core.html">Vanadium Core</a></div>
         <div class="spacer"></div>
         <nav>
-          <a href="/">Overview</a>
+          <a href="/core.html">Overview</a>
           <a href="/installation/">Installation</a>
           <a href="/tutorials/hello-world.html">Tutorials</a>
         </nav>
@@ -70,7 +70,7 @@
     </header>
     <div class="sidebar"></div>
     <div class="sidebar-data">
-      <a href="/">Overview</a>
+      <a href="/core.html">Overview</a>
       <a href="/installation/">Installation</a>
     
       <a href="#" class="nav">Tutorials</a>
@@ -114,8 +114,6 @@
         <a href="/concepts/rpc.html">RPC System</a>
     <a href="/concepts/naming.html">Naming</a>
     <a href="/concepts/security.html">Security</a>
-    <a href="/concepts/device-management.html">Device Management</a>
-    <a href="/concepts/syncbase-overview.html">Syncbase</a>
   </nav>
     
       <a href="/example-apps.html">Example Apps</a>
@@ -140,7 +138,6 @@
       <nav>
         <a href="/designdocs/authentication.html">Authentication Protocol</a>
     <a href="/designdocs/identity-service.html">Identity Service</a>
-    <a href="/designdocs/syncbase-examples.html">Syncbase Example Apps</a>
     <a href="/designdocs/vdl-spec.html">VDL Specification</a>
     <a href="/designdocs/vom-spec.html">VOM Specification</a>
   </nav>
@@ -151,24 +148,56 @@
     </div>
     <main>
       <h1 class="title">
+        Vanadium Core
         
-        Syncbase Example Apps
       </h1>
 
-      <div class="toc"></div>
 
-      <h1 id="overview">Overview</h1>
-<p>To validate the Syncbase data model, we wrote design docs for a wide variety
-of apps.  These docs focused on the interactions with Syncbase and the schema
-they would use for storage and synchronization.  There are many variations on
-the features in the apps and many ways to implement those features, so these
-docs are not intended to represent the only way to build these apps.  Instead,
-these docs are intended to provide inspiration while designing your own apps.</p>
-<h2 id="coffee-catalog">Coffee Catalog</h2>
-<p>Allows a user to browse and place orders from a catalog containing coffee and
-related paraphernalia.</p>
-<p><a href="/syncbase/designdocs/coffee-catalog.html">Design Doc</a></p>
-<h1 id="todo-kash-convert-the-other-15-docs-to-markdown">TODO(kash): Convert the other 15+ docs to markdown</h1>
+      <p>Vanadium Core is the discovery, RPC, and security layer underlying Syncbase.
+It enables building secure, distributed applications that can run anywhere.
+It provides:</p>
+<div class="intro-detail intro-detail-security">
+   <p>
+      <strong>Complete security model</strong><br>
+      Vanadium&#39;s security model is based on public-key cryptography, that supports
+      fine-grained permissions and delegation. The combination of traditional ACLs
+      and &quot;blessings with caveats&quot; supports a broad set of practical requirements.
+      <p><a href="/concepts/security.html">Learn more about Security</a></p>
+   </p>
+</div>
+<div class="intro-detail intro-detail-codebase">
+   <p>
+      <strong>Symmetrically authenticated and encrypted RPC</strong><br>
+      Vanadium Core provides symmetrically authenticated and encrypted RPC, with
+      support for bi-directional
+      messaging, streaming and proxying, that works on a variety of network
+      protocols, including TCP and Bluetooth. The result is a secure communications
+      infrastructure that can be used for large-scale datacenter applications as
+      well as for smaller-scale enterprise and consumer applications, including
+      those needing to cross NAT boundaries.
+      All data on the wire is encoded using Vanadium Object Marshalling (VOM),
+      which is a performant, self-describing encoding format.
+      <p><a href="/concepts/rpc.html">Learn more about RPC System</a></p>
+   </p>
+</div>
+<div class="intro-detail intro-detail-discovery">
+   <p>
+      <strong>Distributed naming and discovery</strong><br>
+      Vanadium provides a global naming service that offers the convenience of
+      urls but allows for federation and multi-level resolution. The
+      &#39;programming model&#39; consists of nothing more than invoking methods on
+      names, subject to security checks. Vanadium also provides a discovery API
+      for advertising and scanning for services over a variety of protocols,
+      including BLE and mDNS (Bonjour).
+      <p><a href="/concepts/naming.html">Learn more about Naming</a></p>
+   </p>
+</div>
+
+<h1 id="ready-to-get-started-">Ready to get started?</h1>
+<p><p>Vanadium is an open source effort, and we welcome your contributions.
+Get started now by exploring the tutorials.</p>
+<a href="/tutorials/hello-world.html" class="button-passive">
+Start the tutorial</a></p>
 
     </main>
   </body>

@@ -9,17 +9,32 @@
 /* license that can be found in the LICENSE file. */
 .button,
 .button-passive,
-.button-primary {
+.button-secondary,
+.button-disabled {
   display: inline-block;
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 16px;
   font-weight: 500;
   font-family: inherit;
   text-transform: uppercase;
-  padding: 10px;
+  padding: 16px;
   border-radius: 4px;
   text-decoration: none;
   outline: 0;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 2px 0px;
+}
+.buttons {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  padding: 16px;
 }
 .button-passive {
   color: #00796B;
@@ -33,6 +48,42 @@
   color: #ffffff;
   background-color: #00796B;
   border: 1px solid #00796B;
+}
+.button-secondary {
+  background-color: #00796B;
+}
+.button-secondary,
+.button-secondary:hover,
+.button-secondary:active {
+  color: #ffffff;
+}
+.button-disabled,
+.button-disabled:hover,
+.button-disabled:active {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+  box-shadow: none;
+  cursor: default;
+}
+.build-android,
+.build-core,
+.build-ios {
+  background-repeat: no-repeat;
+  padding-left: 40px;
+  margin: 0px 8px;
+  background-position-y: center;
+  background-position-x: 8px;
+  background-size: 24px;
+  text-transform: none;
+}
+.build-android {
+  background-image: url(/images/android-icon-green.svg);
+}
+.build-ios {
+  background-image: url(/images/ios-icon.svg);
+}
+.build-core {
+  background-image: url(/images/go.png);
 }
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
@@ -67,7 +118,7 @@ code {
 }
 pre {
   margin: 0 -16px;
-  width: 48em;
+  width: inherit;
   /* Include <pre> because clipboard buttons are in <pre>, not <code>. */
 }
 @media (max-width: 800px) {
@@ -114,6 +165,117 @@ pre .hljs {
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
 /* license that can be found in the LICENSE file. */
+.not-scrolled header {
+  background-color: transparent;
+  box-shadow: none;
+}
+.home-layout {
+  background-image: url(/images/background.svg);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-color: #eceff1;
+}
+@media (max-width: 800px) {
+  .home-layout {
+    background-size: cover;
+  }
+}
+.home-layout header {
+  -webkit-transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+          transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  opacity: 0.99;
+}
+.home-layout main {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0px;
+  padding: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.home-layout section {
+  max-width: 100%;
+  width: 100%;
+  padding: 32px;
+}
+.home-layout .menu {
+  display: none !important;
+}
+.home-layout .v-icon {
+  display: block !important;
+}
+.home-layout .section-container {
+  max-width: 800px;
+  margin: auto;
+}
+.home-layout h1,
+.home-layout h2,
+.home-layout h3 {
+  font-weight: 100;
+  margin: 16px 0px;
+}
+.home-layout h1 {
+  color: #ffffff;
+  font-size: 32px;
+}
+.home-layout h2 {
+  color: #00796B;
+  font-size: 38px;
+}
+.home-layout h3 {
+  color: #607d8b;
+  font-size: 22px;
+}
+.home-layout .intro {
+  text-align: center;
+}
+.home-layout .mobile {
+  background: #ffffff;
+}
+.home-layout .core {
+  background: #eceff1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.home-layout footer {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #cfd8dc;
+  padding: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.home-layout footer .main {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.home-layout footer .main a {
+  display: inline-block;
+  margin-right: 16px;
+  color: #607d8b;
+  text-transform: uppercase;
+  line-height: 24px;
+}
+.home-layout footer .social a {
+  margin-left: 32px;
+}
+.home-layout .icon-github {
+  background-image: url(/images/github-grey.svg);
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: block;
+  background-size: 24px auto;
+}
 .intro-detail {
   margin: 28px 0;
   padding-left: 80px;
@@ -131,6 +293,21 @@ pre .hljs {
 }
 .intro-detail-discovery {
   background-image: url(/images/discovery.svg);
+}
+.embed-container {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  padding-bottom: 56.25%;
+  /* YouTube aspect ratio */
+}
+.embed-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 /* Copyright 2015 The Vanadium Authors. All rights reserved. */
 /* Use of this source code is governed by a BSD-style */
@@ -344,10 +521,21 @@ header nav a {
     display: none;
   }
 }
+header::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #ff6e40;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 1px 8px;
+  border-bottom-left-radius: 4px;
+  content: "Developer Preview";
+}
 /* Adjust for sidebar. */
 main,
 .previous-next {
-  margin-left: 16em;
+  margin-left: 200px;
 }
 @media (max-width: 800px) {
   main,
@@ -362,7 +550,7 @@ main {
           flex: 1;
   margin-top: 64px;
   padding: 0 calc(32px + 16px) 32px;
-  max-width: 40em;
+  max-width: 800px;
   /* Prevent headings from being obscured by the <header> for #heading urls. */
 }
 @media (max-width: 800px) {
@@ -477,7 +665,7 @@ main h6[id]:before {
   top: 0;
   bottom: 0;
   left: 0;
-  width: 16em;
+  width: 200px;
   z-index: 2;
   /* below header */
 }
@@ -529,8 +717,8 @@ main h6[id]:before {
     top: 0;
     z-index: 5;
     /* above mdl-layout__obfuscator */
-    -webkit-transform: translateX(-16em);
-            transform: translateX(-16em);
+    -webkit-transform: translateX(-200px);
+            transform: translateX(-200px);
     -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -563,13 +751,13 @@ main h6[id]:before {
   color: #00796B;
   font-weight: 500;
 }
-@media (min-width: 1100px) {
+@media (min-width: 1200px) {
   .toc {
     position: fixed;
     top: 64px;
     right: 0;
     bottom: 0;
-    width: 16em;
+    width: 200px;
   }
 }
 .sidebar-data {
@@ -597,11 +785,6 @@ main h6[id]:before {
 .note h3,
 .note h4 {
   margin: 16px 0;
-}
-.note p,
-.note ul,
-.note li {
-  font-size: 12px;
 }
 .note pre {
   width: inherit;

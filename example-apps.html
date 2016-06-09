@@ -58,11 +58,11 @@
     <header class="mdl-shadow--2dp">
       <div class="row">
         <div class="icon menu"><i class="material-icons">menu</i></div>
-        <div class="icon v-icon"><img src="/images/v-icon-white.svg"></div>
-        <div class="logo"><a href="/">Vanadium</a></div>
+        <div class="icon v-icon"><a href="/"><img src="/images/v-icon-white.svg"></a></div>
+        <div class="logo"><a href="/core.html">Vanadium Core</a></div>
         <div class="spacer"></div>
         <nav>
-          <a href="/">Overview</a>
+          <a href="/core.html">Overview</a>
           <a href="/installation/">Installation</a>
           <a href="/tutorials/hello-world.html">Tutorials</a>
         </nav>
@@ -70,7 +70,7 @@
     </header>
     <div class="sidebar"></div>
     <div class="sidebar-data">
-      <a href="/">Overview</a>
+      <a href="/core.html">Overview</a>
       <a href="/installation/">Installation</a>
     
       <a href="#" class="nav">Tutorials</a>
@@ -114,8 +114,6 @@
         <a href="/concepts/rpc.html">RPC System</a>
     <a href="/concepts/naming.html">Naming</a>
     <a href="/concepts/security.html">Security</a>
-    <a href="/concepts/device-management.html">Device Management</a>
-    <a href="/concepts/syncbase-overview.html">Syncbase</a>
   </nav>
     
       <a href="/example-apps.html">Example Apps</a>
@@ -140,7 +138,6 @@
       <nav>
         <a href="/designdocs/authentication.html">Authentication Protocol</a>
     <a href="/designdocs/identity-service.html">Identity Service</a>
-    <a href="/designdocs/syncbase-examples.html">Syncbase Example Apps</a>
     <a href="/designdocs/vdl-spec.html">VDL Specification</a>
     <a href="/designdocs/vom-spec.html">VOM Specification</a>
   </nav>
@@ -157,33 +154,31 @@
 
       <div class="toc"></div>
 
-      <h1 id="vanadium-chat">Vanadium Chat</h1>
+      <h1 id="physical-lock">Physical Lock</h1>
 <ul>
-<li>Repo: <a href="https://github.com/vanadium/chat">https://github.com/vanadium/chat</a></li>
-<li>Issues: <a href="https://github.com/vanadium/chat/issues">https://github.com/vanadium/chat/issues</a></li>
+<li>Repo: <a href="https://github.com/vanadium/physical-lock">https://github.com/vanadium/physical-lock</a></li>
 </ul>
-<p><a href="https://github.com/vanadium/chat">Vanadium Chat</a> is a peer-to-peer chat application that demonstrates
-common usage patterns for the Vanadium libraries.</p>
-<p>There are currently two clients: a <a href="https://chat.v.io">web client</a> and a Go-based shell client.</p>
-<p>For more information, see the <a href="https://github.com/vanadium/chat/blob/master/README.md">README</a>.</p>
-<h1 id="pipetobrowser">PipeToBrowser</h1>
+<p><a href="https://github.com/vanadium/physical-lock">Physical Lock</a> defines the software for building a secure physical lock
+using the Vanadium stack, along with a commmand-line tool for interacting with
+the lock.
+The software runs on a Raspberry Pi and interacts with the locks&#39;s switches and
+sensors using GPIO. It runs a Vanadium RPC service that allows clients to send
+lock and unlock requests.</p>
+<p>Key distinguishing aspects:</p>
 <ul>
-<li>Repo: <a href="https://github.com/vanadium/pipe2browser">https://github.com/vanadium/pipe2browser</a></li>
-<li>Issues: <a href="https://github.com/vanadium/pipe2browser/issues">https://github.com/vanadium/pipe2browser/issues</a></li>
+<li><em>Decentralized:</em> There is no single authority on all the locks, no cloud server
+that controls access to all locks from a particular manufacturer. All secrets and
+credentials pertaining to a particular lock are solely held by the lock and its
+clients. Huge compute farms run by hackers all over the world have no single
+point of attack that can compromise the security of multiple locks.</li>
+<li><em>No Internet Connectivity Required:</em> The lock does not require internet
+connectivity to function. When you’re right in front of the device, you can
+communicate with it directly without going through the cloud or a third-party
+service.</li>
+<li><em>Audited:</em> The lock can keep track of who opened the door, when and how they
+got access.</li>
 </ul>
-<p><a href="https://github.com/vanadium/pipe2browser">PipeToBrowser</a> (P2B) is a Vanadium application that allows users to pipe
-anything from a shell to the browser using regular shell piping functionality.
-Piped data is displayed in a formatted way by a graphical viewer. Users can also
-send or redirect pipes to other users of P2B.</p>
-<p>For example, one can pipe a text log file and view it in a sortable, filterable,
-paged DataGrid in the browser:</p>
-<pre><code>$ tail -n 100 logfile.txt | p2b google/p2b/myInstance/vlog
-</code></pre><p>As another example, one can pipe an image to someone else&#39;s browser:</p>
-<pre><code>$ cat cat.png | p2b google/p2b/myFriendsInstance/image
-</code></pre><p>P2B supports several built-in plugins such as console, image viewer, log viewer,
-git status viewer, and <code>dev/null</code>. Users can create their own plugins as well.</p>
-<p>For more information, see the <a href="https://github.com/vanadium/pipe2browser/blob/master/README.md">README</a> as well as the help page
-inside a running instance of the P2B application.</p>
+<p>For more information, see the <a href="https://github.com/vanadium/physical-lock/blob/master/README.md">README</a>.</p>
 
     </main>
   </body>

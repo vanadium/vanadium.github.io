@@ -154,8 +154,8 @@ import io.v.syncbase.*;
     User currUser = Users.loginWithDefaultAccount();
 
     DatabaseOptions dbOpt = new DatabaseOptions();
-    dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;
-    dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;
+    dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;
+    dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;
 
     Database db = Syncbase.getDatabase();
 
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity {
     User currUser = Users.loginWithDefaultAccount();
 
     DatabaseOptions dbOpt = new DatabaseOptions();
-    dbOpt.cloudSyncbaseAddress = &#39;&lt;Your Cloud Syncbase Address&gt;&#39;
-    dbOpt.cloudSyncbaseBlessing = &#39;&lt;Your Cloud Syncbase Blessing&gt;&#39;
+    dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;
+    dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;
 
     Database db = Syncbase.getDatabase();
 
@@ -304,7 +304,9 @@ tool that makes it easy to run Android apps on multiple devices.</p>
 <div class="note info"><h2 id="please-note">Please note</h2>
 <p>Internet connectivity is required the first time the app is run to authenticate
 the user and generate an offline auth certificate.
-Subsequence runs do not require Internet connectivity.</p>
+Subsequence runs do not require Internet connectivity for 24 hours. (Auth protocol
+starts trying to refresh the certificate after 12 hours and it would expire in
+24 hours if all tries are unsuccessful).</p>
 </div>
 
 <p>After running the application on 2 or more devices with Internet connectivity,
