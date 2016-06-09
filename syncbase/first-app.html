@@ -68,7 +68,7 @@
         </nav>
       </div>
     </header>
-    <div class="sidebar"></div>
+    <div data-subsite="syncbase" class="sidebar"></div>
     <div class="sidebar-data">
       <a href="/syncbase/">Overview</a>
       <a href="/syncbase/quickstart.html">Quick Start</a>
@@ -131,7 +131,7 @@ EOF
 developer cloud Syncbase instance or access your existing one.</p>
 <p>Make note of the Syncbase <strong>Address</strong> and the <strong>Blessing</strong> for your cloud
 instance, they are required by the Syncbase API during initialization.</p>
-<div class="note info"><h2 id="please-note">Please note</h2>
+<div class="note info"><h2 id="note">Note</h2>
 <p>Requiring a cloud Syncbase is temporary. We are planning to allow the API to be
 used without a cloud Syncbase very soon.</p>
 </div>
@@ -323,19 +323,19 @@ sync using Bluetooth.</p>
 the <code>Select a Deployment Target</code>. If you prefer to use the command line
 <a href="https://github.com/vanadium/madb">Multi-Device ADB (madb)</a> is an open-source
 tool that makes it easy to run Android apps on multiple devices.</p>
-<div class="note info"><h2 id="please-note">Please note</h2>
+<div class="note info"><h2 id="note">Note</h2>
 <p>Internet connectivity is required the first time the app is run to authenticate
 the user and generate an offline auth certificate.
-Subsequence runs do not require Internet connectivity for 24 hours. (Auth protocol
-starts trying to refresh the certificate after 12 hours and it would expire in
-24 hours if all tries are unsuccessful).</p>
+Subsequent runs generally do not require Internet connectivity. The auth
+protocol refreshes its certificate automatically after 12 hours, but the
+certificate will expire if a device is offline for more than 24 hours.</p>
 </div>
 
 <p>After running the application on 2 or more devices with Internet connectivity,
 ensure Bluetooth is enabled on both devices and turn off Wi-Fi, the dice rolls
 should still sync between the devices just fine!</p>
 <p><img style="width:250px" src="/images/syncbase-dice-device-1.gif"></p>
-<h1 id="want-to-dive-deeper-">Want to dive deeper?</h1>
+<h1 id="want-to-dive-deeper-">Want to Dive Deeper?</h1>
 <p>Checkout the <a href="/syncbase/tutorial/introduction.html">Tutorial</a> to build a full-fledged Todo app and learn more Syncbase
 features such as sharing, batches and discovery.</p>
 <p><a href="/syncbase/tutorial/introduction.html" class="button-passive">

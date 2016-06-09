@@ -68,7 +68,7 @@
         </nav>
       </div>
     </header>
-    <div class="sidebar"></div>
+    <div data-subsite="syncbase" class="sidebar"></div>
     <div class="sidebar-data">
       <a href="/syncbase/">Overview</a>
       <a href="/syncbase/quickstart.html">Quick Start</a>
@@ -130,7 +130,7 @@ users (and with the cloud, if available).</p>
 <p>By default, creating a collection creates an associated syncgroup, initially
 synced amongst the creator’s devices but other users can also be added to this
 syncgroup to allow sharing.</p>
-<h2 id="sharing-collections">Sharing collections</h2>
+<h2 id="sharing-collections">Sharing Collections</h2>
 <p>Sharing collections involves <strong>inviting</strong> other users to <strong>join</strong> a collection&#39;s
 syncgroup. Upon inviting a user, the invitee <strong>receives an invite event</strong>. When
 an invite is <strong>accepted</strong>, the inviter&#39;s syncgroup will be joined and shared data
@@ -168,7 +168,7 @@ syncgroup and the associated collection and its data will start
 syncing into the invitee&#39;s database. As the collection syncs, data will be
 surfaced through the <em>Watch API</em>. See <a href="/syncbase/guides/data-flow.html">Data Flow</a> guide for details on how
 to model your app&#39;s data flow.</p>
-<h2 id="unsharing-collections">Unsharing collections</h2>
+<h2 id="unsharing-collections">Unsharing Collections</h2>
 <p>Ejecting a user from a collection&#39;s syncgroup will unshare the collection. If
 the target user has not accepted the invitation yet, the invite will simply
 disappear. Otherwise, the shared collection on target user&#39;s database will

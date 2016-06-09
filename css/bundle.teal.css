@@ -201,13 +201,15 @@ pre .hljs {
 .home-layout section {
   max-width: 100%;
   width: 100%;
-  padding: 32px;
+  padding: 64px 32px;
 }
 .home-layout .menu {
   display: none !important;
 }
 .home-layout .v-icon {
-  display: block !important;
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
 }
 .home-layout .section-container {
   max-width: 800px;
@@ -216,20 +218,22 @@ pre .hljs {
 .home-layout h1,
 .home-layout h2,
 .home-layout h3 {
-  font-weight: 100;
   margin: 16px 0px;
 }
 .home-layout h1 {
   color: #ffffff;
   font-size: 32px;
+  font-weight: 400;
 }
 .home-layout h2 {
   color: #00796B;
   font-size: 38px;
+  font-weight: 100;
 }
 .home-layout h3 {
   color: #607d8b;
   font-size: 22px;
+  font-weight: 100;
 }
 .home-layout .intro {
   text-align: center;
@@ -690,26 +694,26 @@ main h6[id]:before {
 .sidebar .items {
   padding: 16px 0;
 }
-.sidebar a {
+.sidebar .items a {
   display: block;
   padding: 8px 16px;
   color: rgba(0, 0, 0, 0.87);
   font-size: 14px;
   font-weight: 400;
 }
-.sidebar a.active {
+.sidebar .items a.active {
   background-color: #cfd8dc;
   font-weight: 500;
 }
-.sidebar nav {
+.sidebar .items nav {
   overflow: hidden;
 }
-.sidebar nav a {
+.sidebar .items nav a {
   padding: 6px;
   padding-left: 32px;
   font-size: 13px;
 }
-.sidebar nav nav a {
+.sidebar .items nav nav a {
   padding-left: calc(32px + 16px);
 }
 @media (max-width: 800px) {

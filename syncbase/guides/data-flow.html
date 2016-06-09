@@ -68,7 +68,7 @@
         </nav>
       </div>
     </header>
-    <div class="sidebar"></div>
+    <div data-subsite="syncbase" class="sidebar"></div>
     <div class="sidebar-data">
       <a href="/syncbase/">Overview</a>
       <a href="/syncbase/quickstart.html">Quick Start</a>
@@ -174,11 +174,12 @@ void updateState(WatchChange change) {
             break;
     }
 }
-&lt;div class=&quot;note info&quot;&gt;&lt;h3 id=&quot;tip&quot;&gt;Tip&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;db.removeAllWatchChangeHandlers()&lt;/code&gt; can be used in activity&amp;#39;s &lt;code&gt;onDestroy&lt;/code&gt;
-to remove all registered watch handlers.&lt;/p&gt;
-&lt;/div&gt;
 </code></pre>
+<div class="note info"><h3 id="tip">Tip</h3>
+<p><code>db.removeAllWatchChangeHandlers()</code> can be used in activity&#39;s <code>onDestroy</code>
+to remove all registered watch handlers.</p>
+</div>
+
 <p>In most cases, source of a change should be irrelevant to the application.
 However <code>watchChange.isFromSync()</code> can tell you if a change is due to a local
 mutation or is synced from a remote Syncbase.</p>
