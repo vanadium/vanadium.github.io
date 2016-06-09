@@ -91,7 +91,7 @@
       <a href="/syncbase/example-apps.html">Example Apps</a>
       <a href="/syncbase/api-reference.html">API Reference</a>
     </div>
-    <main>
+    <main class="hide-cat-eof-lines">
       <h1 class="title">
         
         Quick Start
@@ -116,15 +116,13 @@ template.</p>
 <h1 id="install-syncbase">Install Syncbase</h1>
 <p>Syncbase&#39;s Android library is published to both <a href="https://bintray.com/vanadium/io.v/vanadium-android">JCenter</a> and <a href="http://repo1.maven.org/maven2/io/v/vanadium-android">MavenCentral</a>.
 To install the library, add the following to your <code>build.gradle</code> file.</p>
-<div class="hide-cat-eof-lines"><!-- @addSyncbaseDependency @test -->
+<!-- @addSyncbaseDependency @test -->
 <pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/build.gradle
 dependencies {
   compile &#39;io.v:syncbase:0.1.4&#39;
 }
 EOF
-</code></pre></div>
-
-<h1 id="setup-cloud-syncbase">Setup Cloud Syncbase</h1>
+</code></pre><h1 id="setup-cloud-syncbase">Setup Cloud Syncbase</h1>
 <p>Head to <a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> to setup a free
 developer cloud Syncbase instance.</p>
 <p>Make note of the Syncbase <strong>Address</strong> and the <strong>Blessing</strong> for your cloud
@@ -136,9 +134,9 @@ used without a cloud Syncbase soon.</p>
 
 <h1 id="use-syncbase">Use Syncbase</h1>
 <p>In your <code>MainActivity</code>, import Syncbase and read/write some data!</p>
-<div class="hide-cat-eof-lines"><!-- @generateMainActivity @test -->
-<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/syncbase/io/v/quickstart/MainActivity.java
-{#dim}{#dim-children}package syncbase.io.v.quickstart;
+<!-- @generateMainActivity @test -->
+<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/MainActivity.java
+{#dim}{#dim-children}package io.v.syncbase.example;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;{/dim-children}{/dim}
@@ -155,7 +153,7 @@ import io.v.syncbase.*;
 
         Syncbase.database(new Syncbase.DatabaseCallback() {
             @Override
-            public void onSuccess(Database db) {
+            public void onSuccess(final Database db) {
 
                 // Use database to interact with Syncbase.
 
@@ -170,9 +168,7 @@ import io.v.syncbase.*;
     }
 }{/dim-children}{/dim}
 EOF
-</code></pre></div>
-
-<p><strong>That&#39;s all!</strong> You are now using Syncbase!</p>
+</code></pre><p><strong>That&#39;s all!</strong> You are now using Syncbase!</p>
 <h1 id="got-10-more-minutes-">Got 10 more minutes?</h1>
 <p>Let&#39;s create a simple <em>Dice Roller</em> app and see it sync peer-to-peer in action!</p>
 <p><a href="/syncbase/first-app.html" class="button-passive">

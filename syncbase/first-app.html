@@ -91,7 +91,7 @@
       <a href="/syncbase/example-apps.html">Example Apps</a>
       <a href="/syncbase/api-reference.html">API Reference</a>
     </div>
-    <main>
+    <main class="hide-cat-eof-lines">
       <h1 class="title">
         
         Your First App
@@ -105,14 +105,12 @@ The code below compiles, but may not execute successfully. Please join
 our <a href="/community/mailing-lists.html">mailing list</a> for updates.</p>
 </div>
 
+
 <h1 id="introduction">Introduction</h1>
 <p>In this quick tutorial, we will build a <em>Dice Roller</em> Android app where
 one can simply generate a random number between 1-6 and have it sync
 across multiple devices peer-to-peer, even with Wi-Fi turned off!</p>
-<div class="rows">
-  <img style="width:250px" src="/images/syncbase-dice-device-1.gif">
-</div>
-
+<p><img style="width:250px" src="/images/syncbase-dice-device-1.gif"></p>
 <h1 id="setup">Setup</h1>
 <p>This tutorial uses Android Studio, but feel free to use your IDE of choice.</p>
 <h2 id="create-the-project">Create the Project</h2>
@@ -122,9 +120,12 @@ Select <code>API 21</code> or above for the Minimum SDK and pick <code>Empty Act
 template.</p>
 <h2 id="install-syncbase">Install Syncbase</h2>
 <p>Add the following to your <code>build.gradle</code> file.</p>
-<pre><code>dependencies {
-  compile &#39;io.v:vanadium-android:2.1.3+&#39;
+<!-- @addSyncbaseDependency @test -->
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/build.gradle
+dependencies {
+  compile &#39;io.v:syncbase:0.1.4&#39;
 }
+EOF
 </code></pre><h2 id="setup-cloud-syncbase">Setup Cloud Syncbase</h2>
 <p>Head to <a href="https://sb-allocator.v.io/">https://sb-allocator.v.io/</a> to setup a free
 developer cloud Syncbase instance or access your existing one.</p>
@@ -136,8 +137,10 @@ used without a cloud Syncbase very soon.</p>
 </div>
 
 <h2 id="initialize-syncbase">Initialize Syncbase</h2>
-<p><strong>MainActivity.java</strong></p>
-<pre><code>{#dim}{#dim-children}package io.v.myfirstsyncbaseapp;
+<p><strong>MainActivity.java</strong>
+<!-- @generateMainActivity @test --></p>
+<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/MainActivity.java
+{#dim}{#dim-children}package io.v.syncbase.example;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -151,27 +154,36 @@ import io.v.syncbase.*;
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);{/dim-children}{/dim}
-    User currUser = Users.loginWithDefaultAccount();
 
-    DatabaseOptions dbOpt = new DatabaseOptions();
-    dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;
-    dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;
+    Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
+    // dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
+    // dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
 
-    Database db = Syncbase.getDatabase();
+    Syncbase.database(new Syncbase.DatabaseCallback() {
+        @Override
+        public void onSuccess(final Database db) {
 
-    Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
+           // Use database to interact with Syncbase.
+
+           Log.i(&quot;info&quot;, &quot;Syncbase is ready&quot;);
+        }
+    }, options);
+
 {#dim}{#dim-children}    setContentView(R.layout.activity_main);
   }
 }{/dim-children}{/dim}
+EOF
 </code></pre><p>Now, let&#39;s run the app to make sure login and Syncbase initialization are working.
-After running, you should see <code>Welcome &lt;email&gt;</code> in logcat under Android Monitor
+After running, you should see <code>Syncbase is ready</code> in logcat under Android Monitor
 or in the console.</p>
 <h1 id="ui-code">UI Code</h1>
 <p>The user interface is just a <code>TextView</code> to display the dice roll
 result and a <code>Button</code>s to roll the dice.
 Here is the UI code</p>
 <p><strong>activity_main.xml</strong></p>
-<pre><code>{#dim}{#dim-children}&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+<!-- @generateMainActivityXML @test -->
+<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/res/layout/activity_main.xml
+{#dim}{#dim-children}&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
 &lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
   xmlns:tools=&quot;http://schemas.android.com/tools&quot;
   android:layout_width=&quot;match_parent&quot;
@@ -180,7 +192,7 @@ Here is the UI code</p>
   android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
   android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
   android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
-  tools:context=&quot;io.v.myfirstsyncbaseapp.MainActivity&quot;&gt;{/dim-children}{/dim}
+  tools:context=&quot;io.v.syncbase.example.MainActivity&quot;&gt;{/dim-children}{/dim}
   &lt;TextView
 {#dim}{#dim-children}    android:layout_width=&quot;wrap_content&quot;
     android:layout_height=&quot;wrap_content&quot;{/dim-children}{/dim}
@@ -200,6 +212,7 @@ Here is the UI code</p>
     android:layout_below=&quot;@+id/textViewResult&quot;
     android:layout_centerHorizontal=&quot;true&quot; /&gt;
 &lt;/RelativeLayout&gt;{/dim-children}{/dim}
+EOF
 </code></pre><p>Running the project at this point should result in the following UI:</p>
 <p><img style="width:250px" src="/images/syncbase-dice-1.png" alt="Screenshot of the Dice Roll app"></p>
 <h1 id="data-binding">Data Binding</h1>
@@ -215,7 +228,9 @@ UI in a single place, regardless of whether the new value is local or was synced
 from a remote device.</p>
 <p><img src="/images/syncbase-dice-data-flow.png" alt="Unidirectional Data Flow using Watch API"></p>
 <p>Now let&#39;s hook up this model to our code.</p>
-<pre><code>{#dim}{#dim-children}package io.v.myfirstsyncbaseapp;
+<!-- @updateMainActivity @test -->
+<pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/MainActivity.java
+{#dim}{#dim-children}package io.v.syncbase.example;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -233,66 +248,73 @@ public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+
     super.onCreate(savedInstanceState);
 
-    User currUser = Users.loginWithDefaultAccount();
+    Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
+    // dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
+    // dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
 
-    DatabaseOptions dbOpt = new DatabaseOptions();
-    dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;
-    dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;
+    Syncbase.database(new Syncbase.DatabaseCallback() {
+      @Override
+      public void onSuccess(final Database db) {
 
-    Database db = Syncbase.getDatabase();
+        // Use database to interact with Syncbase.
 
-    Log.i(&quot;info&quot;, &quot;Welcome: &quot; + currUser.getEmail());
+        Log.i(&quot;info&quot;, &quot;Syncbase is ready&quot;);{/dim-children}{/dim}
 
-    setContentView(R.layout.activity_main);{/dim-children}{/dim}
+        // On dice roll, put a new random number under key &quot;result&quot;
+        // in the &quot;dice&quot; collection.
+        final Button button = (Button) findViewById(R.id.buttonRoll);
+        button.setOnClickListener(new View.OnClickListener() {
+          public void onClick(View v) {
+            int randomNumber =  new Random().nextInt(6) + 1;
 
-    // On dice roll, put a new random number under key &quot;result&quot;
-    // in the &quot;dice&quot; collection.
-    final Button button = (Button) findViewById(R.id.buttonRoll);
-    button.setOnClickListener(new View.OnClickListener() {
-      public void onClick(View v) {
-        int randomNumber =  new Random().nextInt(6) + 1;
+            Collection diceCollection = db.collection(&quot;dice&quot;);
+            diceCollection.put(&quot;result&quot;, randomNumber);
+          }
+        });
 
-        Collection diceCollection = db.collection(&quot;dice&quot;);
-        diceCollection.put(&quot;result&quot;, randomNumber);
-      }
-    });
+        // Watch the database and update the UI whenever a new value
+        // is encountered.
+        db.addWatchChangeHandler(new Database.WatchChangeHandler() {
+          @Override
+          public void onInitialState(Iterator&lt;WatchChange&gt; values) {
+            // onInitialState is called with any existing data in Syncbase.
+            // Since we only have a single collection, single key/value,
+            // there can only be 0 or 1 values.
+            if (values.hasNext()) {
+              int result = (int) values.next().getValue();
+              updateResult(result);
+            }
+          }
 
-    // Watch the database and update the UI whenever a new value
-    // is encountered.
-    db.removeWatchChangeHandler(new Database.WatchChangeHandler() {
+          @Override
+          public void onChangeBatch(Iterator&lt;WatchChange&gt; changes) {
+            // onChangeBatch is called with any updates to the data.
+            // Since we only have a single collection, single key/value.
+            // there can only be 1 WatchChange whenever the value is mutated
+            // and the type of change would always be `put` in our case.
+            int result = (int) changes.next().getValue();
+            updateResult(result);
+          }
 
-      void onInitialState(Iterator&lt;WatchChange&gt; values) {
-        // onInitialState is called with any existing data in Syncbase.
-        // Since we only have a single collection, single key/value,
-        // there can only be 0 or 1 values.
-        if (values.hasNext()) {
-          int result = (int) values.next().getValue(int.class);
-          updateResult(result);
-        }
-      }
+          @Override
+          public void onError(Throwable e) {
+            // Something went wrong. Watch is no longer active.
+          }
+        }, new Database.AddWatchChangeHandlerOptions());
+{#dim}{#dim-children}      }
+    }, new Syncbase.DatabaseOptions());
 
-      void onChangeBatch(Iterator&lt;WatchChange&gt; changes) {
-        // onChangeBatch is called with any updates to the data.
-        // Since we only have a single collection, single key/value.
-        // there can only be 1 WatchChange whenever the value is mutated
-        // and the type of change would always be `put` in our case.
-        int result = (int) changes.next().getValue(int.class);
-        updateResult(result);
-      }
-
-      void onError(Exception e) {
-        // Something went wrong. Watch is no longer active.
-      }
-    });
-  }
-
+    setContentView(R.layout.activity_main);
+  }{/dim-children}{/dim}
   private void updateResult(int newValue) {
     final TextView result = (TextView) findViewById(R.id.textViewResult);
     result.setText(String.valueOf(newValue));
   }
-{#dim}{#dim-children}}{/dim-children}{/dim}
+}
+EOF
 </code></pre><h1 id="running-the-app">Running The App</h1>
 <p>To see the data sync between user&#39;s devices in a peer-to-peer fashion, we can
 run the app on two different devices and then turn off Wi-Fi and see it still
@@ -312,10 +334,7 @@ starts trying to refresh the certificate after 12 hours and it would expire in
 <p>After running the application on 2 or more devices with Internet connectivity,
 ensure Bluetooth is enabled on both devices and turn off Wi-Fi, the dice rolls
 should still sync between the devices just fine!</p>
-<div class="rows">
-  <img style="width:250px" src="/images/syncbase-dice-device-1.gif">
-</div>
-
+<p><img style="width:250px" src="/images/syncbase-dice-device-1.gif"></p>
 <h1 id="want-to-dive-deeper-">Want to dive deeper?</h1>
 <p>Checkout the <a href="/syncbase/tutorial/introduction.html">Tutorial</a> to build a full-fledged Todo app and learn more Syncbase
 features such as sharing, batches and discovery.</p>
