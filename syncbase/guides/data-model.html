@@ -117,12 +117,19 @@ pre-defined <a href="#schema">schema</a>.</li>
 create, watch and share collections, and to perform batch operations.</p>
 <p>There is a pre-configured database for each app. <code>Syncbase.getDatabase()</code> is
 used to initialize Syncbase and get a reference to the app&#39;s database.</p>
-<pre><code>DatabaseOptions dbOpt = new DatabaseOptions();
+<!-- @createDatabase @test -->
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
+// dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
+// dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
 
-dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
-dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
-
-Database db = Syncbase.getDatabase();
+Syncbase.database(new Syncbase.DatabaseCallback() {
+  @Override
+  public void onSuccess(final Database db) {
+    // Use database to interact with Syncbase.
+  }
+}, options);
+EOF
 </code></pre><p>Other database options include ability to set the directory where data files
 are stored and whether collections should automatically sync across a user&#39;s
 devices or not (true by default).</p>
@@ -147,15 +154,18 @@ the collection IDs should include a UUID. If the developer wants them to merge,
 they should use a predictable name (example: &quot;preferences&quot;). Collection names are
 restricted to alphanumeric characters plus underscore and can have a maximum
 length of 64 bytes.</p>
-<pre><code>UUID collectionName = Syncbase.getUUID();
+<!-- @createCollection @test -->
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+String collectionName = UUID.randomUUID().toString();
 Collection collection = db.collection(collectionName);
 
-UUID rowKey = Syncbase.getUUID();
+String rowKey = UUID.randomUUID().toString();
 collection.put(rowKey, &quot;myValue&quot;);
 
 String myValue = collection.get(rowKey, String.class);
 
 collection.delete(rowKey);
+EOF
 </code></pre><p>As mentioned earlier, collections are synced across user&#39;s devices by default
 but one can set <code>withoutSyncgroup</code> to <code>false</code> on
 <code>CollectionOptions</code> to make a local-only collection that will not sync with
@@ -179,21 +189,24 @@ folder1/folder2/doc2</code></pre>
 <p>Syncbase supports <a href="https://en.wikipedia.org/wiki/Plain_Old_Java_Object">POJO</a>
 as values and takes case of serialization. POJO classes must have an empty
 constructor.</p>
-<pre><code>public class MyPojo {
-    String foo;
-    Integer bar;
-    List&lt;MyPojo&gt; baz;
+<!-- @addPojoToCollection @test -->
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+class MyPojo {
+  String foo;
+  Integer bar;
+  List&lt;MyPojo&gt; baz;
 
-    public MyPojo() {
-        foo = null;
-        bar = null;
-        baz = Lists.newArrayList();
-    }
+  public MyPojo() {
+    foo = null;
+    bar = null;
+    baz = new ArrayList&lt;MyPojo&gt;();
+  }
 }
 
 MyPojo pojoIn = new MyPojo();
-collection.put(&#39;myKey&#39;, pojo);
-MyPojo pojoOut = collection.get(&#39;myKey&#39;, MyPojo.class);
+collection.put(&quot;myKey&quot;, pojoIn);
+MyPojo pojoOut = collection.get(&quot;myKey&quot;, MyPojo.class);
+EOF
 </code></pre><div class="note info"><h3 id="query-support-is-an-upcoming-feature">Query support is an upcoming feature</h3>
 <p>Syncbase has support for querying values in structured data. For
 example, one could find all the <code>MyPojo</code> objects that have the value <code>bar &gt; 10</code>.
