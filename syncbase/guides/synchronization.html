@@ -144,20 +144,29 @@ sync with anyone else who is part of the syncgroup.</li>
 syncgroup, eject existing members of the syncgroup or change their access level.</li>
 </ul>
 <p>On the inviter side, we just need to invite a user to join the collection&#39;s
-syncgroup:</p>
-<pre><code>Collection collectionToShare = db.collection(&quot;myCollection&quot;);
+syncgroup:
+<!-- @inviteUser @test --></p>
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+Collection collectionToShare = db.collection(&quot;myCollection&quot;);
 
-User userToInvite = new User(&quot;&lt;email-address&gt;&quot;);
-
-collectionToShare.getSyncgroup().inviteUser(userToInvite, AccessLevel.READ);
-</code></pre><p>On the invitee side, we need to handle invite requests by registering a handler:</p>
-<pre><code>db.addSyncgroupInviteHandler(new Database.SyncgroupInviteHandler() {
-    @Override
-    public void onInvite(SyncgroupInvite invite) {
-        // Prompt the user if desired then accept or reject the invite.
-        db.acceptSyncgroupInvite(invite);
-    }
-});
+collectionToShare.getSyncgroup().inviteUser(userToInvite, AccessList.AccessLevel.READ);
+EOF
+</code></pre><p>On the invitee side, we need to handle invite requests by registering a handler:
+<!-- @addInviteHandler @test --></p>
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+db.addSyncgroupInviteHandler(new Database.SyncgroupInviteHandler() {
+  @Override
+  public void onInvite(SyncgroupInvite invite) {
+    // Prompt the user if desired then accept or reject the invite.
+    db.acceptSyncgroupInvite(invite, new Database.AcceptSyncgroupInviteCallback() {
+      @Override
+      public void onSuccess(Syncgroup sg) {
+        // Accepting invitation was successful.
+      }
+    });
+  }
+}, new Database.AddSyncgroupInviteHandlerOptions());
+EOF
 </code></pre><div class="note info"><h3 id="tip">Tip</h3>
 <p><code>db.removeAllSyncgroupInviteHandlers()</code> can be used in activity&#39;s <code>onDestroy</code>
 to remove all registered invite handlers.</p>
@@ -173,21 +182,25 @@ to model your app&#39;s data flow.</p>
 the target user has not accepted the invitation yet, the invite will simply
 disappear. Otherwise, the shared collection on target user&#39;s database will
 become read-only and will no longer sync and receive updates.</p>
-<pre><code>Collection sharedCollection = db.collection(&quot;myCollection&quot;);
-
-User userToRemove = new User(&quot;&lt;email-address&gt;&quot;);
+<!-- @unshareCollection @test -->
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+Collection sharedCollection = db.collection(&quot;myCollection&quot;);
 
 sharedCollection.getSyncgroup().ejectUser(userToRemove);
+EOF
 </code></pre><h2 id="updating-access-level">Updating Access Level</h2>
 <p>Simply re-inviting an already invited user with a different access level will
 update their access without triggering a new invitation.</p>
 <h2 id="listing-all-syncgroups">Listing All Syncgroups</h2>
 <p><code>db.getSyncgroups()</code> can be used to list all syncgroups. This list includes
 pre-created syncgroups for collections and other syncgroups created or joined.</p>
-<pre><code class="lang-Java">Iterator&lt;Syncgroup&gt; allSyncgroups = db.getSyncgroups();
+<!-- @getAllSyncgroups @test -->
+<pre><code class="lang-Java">cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+Iterator&lt;Syncgroup&gt; allSyncgroups = db.getSyncgroups();
 while(allSyncgroups.hasNext()) {
     Syncgroup sg = allSyncgroups.next();
 }
+EOF
 </code></pre>
 <h1 id="summary">Summary</h1>
 <ul>
