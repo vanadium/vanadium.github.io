@@ -146,14 +146,14 @@ syncgroup, eject existing members of the syncgroup or change their access level.
 <p>On the inviter side, we just need to invite a user to join the collection&#39;s
 syncgroup:
 <!-- @inviteUser @test --></p>
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 Collection collectionToShare = db.collection(&quot;myCollection&quot;);
 
 collectionToShare.getSyncgroup().inviteUser(userToInvite, AccessList.AccessLevel.READ);
 EOF
 </code></pre><p>On the invitee side, we need to handle invite requests by registering a handler:
 <!-- @addInviteHandler @test --></p>
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 db.addSyncgroupInviteHandler(new Database.SyncgroupInviteHandler() {
   @Override
   public void onInvite(SyncgroupInvite invite) {
@@ -183,7 +183,7 @@ the target user has not accepted the invitation yet, the invite will simply
 disappear. Otherwise, the shared collection on target user&#39;s database will
 become read-only and will no longer sync and receive updates.</p>
 <!-- @unshareCollection @test -->
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 Collection sharedCollection = db.collection(&quot;myCollection&quot;);
 
 sharedCollection.getSyncgroup().ejectUser(userToRemove);
@@ -195,7 +195,7 @@ update their access without triggering a new invitation.</p>
 <p><code>db.getSyncgroups()</code> can be used to list all syncgroups. This list includes
 pre-created syncgroups for collections and other syncgroups created or joined.</p>
 <!-- @getAllSyncgroups @test -->
-<pre><code class="lang-Java">cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataSync.java
+<pre><code class="lang-Java">cat - &lt;&lt;EOF &gt;&gt; $FILE
 Iterator&lt;Syncgroup&gt; allSyncgroups = db.getSyncgroups();
 while(allSyncgroups.hasNext()) {
     Syncgroup sg = allSyncgroups.next();

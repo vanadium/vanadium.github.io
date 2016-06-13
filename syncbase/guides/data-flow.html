@@ -122,7 +122,7 @@ to maintain an in-memory representation of our data model the UI renders
 from. UI actions such as adding new task or deleting one simply do a <code>put</code> or
 <code>delete</code> on the corresponding collection.</p>
 <!-- @addWatchHandler @test -->
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataFlow.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 db.addWatchChangeHandler(new Database.WatchChangeHandler() {
 
   @Override
@@ -154,7 +154,7 @@ db.addWatchChangeHandler(new Database.WatchChangeHandler() {
 EOF
 </code></pre><p>Modeling our in-memory state as a map of Todolist-Id to a map of (Task-Id, Task)
 <!-- @updateState @test --></p>
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataFlow.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 HashMap&lt;String, Map&lt;String, Task&gt;&gt; state = new HashMap&lt;String, Map&lt;String, Task&gt;&gt;();
 
 // Update the state based on the changes.

@@ -118,7 +118,7 @@ create, watch and share collections, and to perform batch operations.</p>
 <p>There is a pre-configured database for each app. <code>Syncbase.getDatabase()</code> is
 used to initialize Syncbase and get a reference to the app&#39;s database.</p>
 <!-- @createDatabase @test -->
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
 // dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
 // dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
@@ -155,7 +155,7 @@ they should use a predictable name (example: &quot;preferences&quot;). Collectio
 restricted to alphanumeric characters plus underscore and can have a maximum
 length of 64 bytes.</p>
 <!-- @createCollection @test -->
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 String collectionName = UUID.randomUUID().toString();
 Collection collection = db.collection(collectionName);
 
@@ -190,7 +190,7 @@ folder1/folder2/doc2</code></pre>
 as values and takes case of serialization. POJO classes must have an empty
 constructor.</p>
 <!-- @addPojoToCollection @test -->
-<pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/DataModel.java
+<pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
 class MyPojo {
   String foo;
   Integer bar;

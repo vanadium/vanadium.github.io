@@ -149,7 +149,9 @@ part of the batch.</p>
 <p><code>RunInBatch</code> is the recommended way of doing batch operations.
 It detects <em>concurrent batch</em> errors and handles retries and commit/aborts
 automatically.</p>
-<pre><code class="lang-Java">db.runInBatch(new Database.BatchOperation() {
+<!-- @runInBatch @test -->
+<pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
+db.runInBatch(new Database.BatchOperation() {
   @Override
   public void run(BatchDatabase batchDb) {
     Collection c1 = batchDb.collection(&quot;collection1&quot;);
@@ -161,6 +163,7 @@ automatically.</p>
     // No need to commit. RunInBatch will commit and retry if necessary.
   }
 }, new Database.BatchOptions());
+EOF
 </code></pre>
 <div class="note warning"><h2 id="warning">Warning</h2>
 <p>Using collection references previously obtained from <code>Database</code> will have no
@@ -169,7 +172,9 @@ obtained from <code>BatchDatabase</code>.</p>
 <p><strong>The following code snippet demonstrates the <em>WRONG</em> way of using batches.</strong></p>
 </div>
 
-<pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
+<!-- @runInBatchWrong @test -->
+<pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
+// WRONG: c1 is NOT part of the batch.
 final Collection c1 = db.collection(&quot;collection1&quot;);
 {#dim}{#dim-children}db.runInBatch(new Database.BatchOperation() {
     @Override
@@ -183,12 +188,15 @@ final Collection c1 = db.collection(&quot;collection1&quot;);
 {#dim}{#dim-children}        // No need to commit. RunInBatch will commit and retry if necessary.
     }
 }, new Database.BatchOptions());{/dim-children}{/dim}
+EOF
 </code></pre>
 <h3 id="beginbatch">BeginBatch</h3>
 <p><code>BeginBatch</code> is an alternative approach to starting a batch operation. Unlike
 <code>RunInBatch</code>, it does not manage retries and commit/aborts. They are left
 to the developers to manage themselves.</p>
-<pre><code class="lang-Java">BatchDatabase batchDb = db.beginBatch(new Database.BatchOptions());
+<!-- @beginBatch @test -->
+<pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
+BatchDatabase batchDb = db.beginBatch(new Database.BatchOptions());
 
 Collection c1 = batchDb.collection(&quot;collection1&quot;);
 Collection c2 = batchDb.collection(&quot;collection2&quot;);
@@ -197,6 +205,7 @@ c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
 c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
 
 batchDb.commit();
+EOF
 </code></pre>
 <div class="note warning"><h2 id="warning">Warning</h2>
 <p>Using collection references obtained from a <code>BatchDatabase</code> after the batch is
@@ -204,7 +213,9 @@ committed or aborted will throw exceptions.</p>
 <p><strong>The following code snippet demonstrates the <em>WRONG</em> way of using batches.</strong></p>
 </div>
 
-<pre><code class="lang-Java">// WRONG: c1 is NOT part of the batch.
+<!-- @beginBatch @test -->
+<pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
+// WRONG: c1 is NOT part of the batch.
 Collection c1 = db.collection(&quot;collection1&quot;);
 {#dim}{#dim-children}BatchDatabase batchDb = db.beginBatch(new Database.BatchOptions());
 
@@ -220,6 +231,7 @@ batchDb.commit();
 
 // WRONG: Throws exception since c2 is from an already committed batch.
 c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
+EOF
 </code></pre>
 <h1 id="summary">Summary</h1>
 <ul>
