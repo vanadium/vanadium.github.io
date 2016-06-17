@@ -108,10 +108,11 @@ which may contain any number of collections.</li>
 <li><a href="#collections">Collection</a>: A collection is a set of key-value pairs
 (rows). Collections are the unit of access control and sharing.</li>
 <li><a href="#rows">Row</a>: Each row contains a single key-value pair. Keys are strings and
-the values can be both <a href="#structured-data">structured data</a> and <a href="#blobs">blobs</a>.
-Values in the rows of a collection can be heterogeneous or based on a
-pre-defined <a href="#schema">schema</a>.</li>
+the values are designed for both <a href="#structured-data">structured data</a> and
+blobs<sup>*</sup>. Values in the rows of a collection can be heterogeneous
+or based on a pre-defined <a href="#schema">schema</a>.</li>
 </ul>
+<p><sup>*</sup>blobs are on our <a href="/community/roadmap.html">roadmap</a>.</p>
 <h1 id="database">Database</h1>
 <p>Database is the entry point to the Syncbase API and provides functionality to
 create, watch and share collections, and to perform batch operations.</p>
@@ -143,7 +144,8 @@ can also be shared with other users.</p>
 Syncgroup that is used to sync data to the user&#39;s other devices. By inviting
 other users to join this pre-defined Syncgroup, one can share the collection
 with others. When inviting others to join a collection&#39;s Syncgroup, one can
-specify different levels of access such as <code>Read</code>, <code>ReadWrite</code> or <code>ReadWriteAdmin</code>.</p>
+specify different levels of access such as <code>Read</code>, <code>ReadWrite</code> or
+<code>ReadWriteAdmin</code>.</p>
 <p>Collections created by all users live in the same namespace. To avoid collisions,
 the system automatically prepends the user&#39;s identity (blessing) to the
 Collection ID. The developer still needs to think about collisions, however.
@@ -151,8 +153,8 @@ The user might use one device while offline and then switch to another device
 while still offline. When those two devices sync with each other, should the
 Collections merge or stay separate? If the developer wants them to stay separate,
 the collection IDs should include a UUID. If the developer wants them to merge,
-they should use a predictable name (example: &quot;preferences&quot;). Collection names are
-restricted to alphanumeric characters plus underscore and can have a maximum
+they should use a predictable name (example: &quot;preferences&quot;). Collection names
+are restricted to alphanumeric characters plus underscore and can have a maximum
 length of 64 bytes.</p>
 <!-- @createCollection @test -->
 <pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
@@ -207,38 +209,7 @@ MyPojo pojoIn = new MyPojo();
 collection.put(&quot;myKey&quot;, pojoIn);
 MyPojo pojoOut = collection.get(&quot;myKey&quot;, MyPojo.class);
 EOF
-</code></pre><div class="note info"><h3 id="query-support-is-an-upcoming-feature">Query support is an upcoming feature</h3>
-<p>Syncbase has support for querying values in structured data. For
-example, one could find all the <code>MyPojo</code> objects that have the value <code>bar &gt; 10</code>.
-This feature is currently not exposed in the API, but might be in the
-future.</p>
-</div>
-
-<h2 id="blobs">Blobs</h2>
-<div class="note info"><h3 id="blob-support-is-an-upcoming-feature">Blob support is an upcoming feature</h3>
-<p>This feature is currently not exposed in the API, but will be in the
-future.</p>
-</div>
-
-<p>Syncbase has strong support for blobs. Blobs support a streaming upload/download
-API rather than the all-at-once operations of the structured data. Syncbase
-understands references to blobs in the structured data, making it possible to
-implement automatic caching and garbage collection of the blobs. Blob references
-implicitly grant access to blobs in a manner similar to a
-<a href="https://en.wikipedia.org/wiki/Capability-based_security">capability</a>.</p>
-<p>Blob references can be stored as values in the key-value store. There is an API
-for apps to specify per-device caching policies so that not all blobs need to be
-in all devices. It is the responsibility of Syncbase to watch for BlobRefs in
-the structured storage and cache the right blobs on each device.</p>
-<h1 id="schema">Schema</h1>
-<div class="note info"><h3 id="schema-support-is-an-upcoming-feature">Schema support is an upcoming feature</h3>
-<p>This feature is currently not exposed in the API, but will be in the
-future.</p>
-</div>
-
-<p>To support stronger data integrity, collections can be tied to a data schema, and
-Syncbase will ensure all written values match that schema or write will fail.</p>
-<h1 id="example-models">Example Models</h1>
+</code></pre><h1 id="example-models">Example Models</h1>
 <p>To validate the Syncbase data model, we wrote design docs for a wide variety of
 apps. These docs focused on the interactions with Syncbase and the schema they
 would use for storage and synchronization. There are many variations on the
@@ -256,7 +227,8 @@ application to support games (e.g., Hearts, Solitaire, etc.).</p>
 <p><a href="/syncbase/designdocs/croupier.html">Design Doc</a></p>
 <h2 id="syncslides">SyncSlides</h2>
 <p>Peer-to-peer slide presentation.  Allows audience to ask questions.
-Presenter can delegate control of the presentation to an audience member temporarily.</p>
+Presenter can delegate control of the presentation to an audience member
+temporarily.</p>
 <p><a href="/syncbase/designdocs/syncslides.html">Design Doc</a></p>
 <h2 id="brokerage">Brokerage</h2>
 <p>The Brokerage app allows a user to invest in the stock market and monitor the

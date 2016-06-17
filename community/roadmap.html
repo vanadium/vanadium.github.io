@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Internal Tutorial Cleanup - Vanadium</title>
+    <title>Roadmap - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -151,37 +151,59 @@
     <main>
       <h1 class="title">
         
-        Internal Tutorial Cleanup
+        Roadmap
       </h1>
 
+      <div class="toc"></div>
 
+      <ol>
+<li><p><strong>Syncbase API usability</strong></p>
+<p>We have recently conducted API usability tests
+and are working on a new high-level API to help developers get
+started quickly with Syncbase.</p>
+</li>
+<li><p><strong>Website, docs &amp; sample app improvements</strong></p>
+<ul>
+<li>My First App: Android &amp; iOS</li>
+<li>todo tutorial (and sample app with new APIs)</li>
+<li>update syncslides to new API</li>
+<li>tutorial that doesn&#39;t require syncbase cloud</li>
+</ul>
+</li>
+<li><p><strong>Blobs</strong></p>
+<p>Blobs are already implemented in Go and sync across Syncbase instances,
+and there exists low-level RPC support, also in Go; however, there is not yet
+a high level API in Swift or Java to access this functionality on an iOS
+or Android device.</p>
+<p>Syncbase was designed with strong support for blobs. Blobs will support a
+streaming upload/download API rather than the all-at-once operations of the
+structured data. Syncbase understands references to blobs in the
+structured data, making it possible to implement automatic caching and garbage
+collection of the blobs.</p>
+<p>Blob references implicitly grant access to blobs in a manner similar to a
+<a href="https://en.wikipedia.org/wiki/Capability-based_security">capability</a>. Blob
+references can be stored as values in the key-value store. There
+is a planned API for apps to specify per-device caching policies so that not
+all blobs need to be in all devices. Syncbase will watch for blob references
+in the structured storage and cache the right blobs on each device.</p>
+</li>
+<li><p><strong>Syncbase query support</strong></p>
+<p>We are considering support for querying values in structured data. For
+example, one could find all the <code>MyPojo</code> objects that have the value <code>bar &gt; 10</code>.</p>
+</li>
+<li><p><strong>Syncbase collection schema</strong></p>
+<p>We are considering support for Syncbase schema. To support stronger data
+integrity, collections could be tied to a data schema, and Syncbase would
+ensure all written values match that schema or write will fail.</p>
+</li>
+<li><p><strong>and more...</strong></p>
+<p>We have lots of ideas, but we&#39;re excited to discover what applications find
+Vanadium and Syncbase most useful.  Please join our
+<a href="/community/mailing-lists.html">mailing list</a> and let us know what you are
+building (or thinking about building).</p>
+</li>
+</ol>
 
-      
-      <p>Delete the tutorial workspace directory.</p>
-<p>Might be used in tests, tutorial preparation, etc.</p>
-<!-- @deleteTutdirContent @test @completer -->
-<pre><code>if [ -z &quot;${V_TUT}&quot; ]; then
-  echo &quot;V_TUT not defined, nothing to do.&quot;
-else
-  if [ -d &quot;${V_TUT}&quot; ]; then
-    /bin/rm -rf $V_TUT
-    echo &quot;Removed $V_TUT&quot;
-  else
-    echo &quot;Not a directory: V_TUT=\&quot;$V_TUT\&quot;&quot;
-  fi
-fi
-</code></pre>
     </main>
-    <nav class="previous-next">
-      <a href="/tutorials/hello-world.html" class="next">
-        <div class="text-wrapper">
-          <small>Next</small>
-          <div class="text">
-            <span>Hello World</span>
-          </div>
-        </div>
-        <div class="icon"><i class="material-icons">arrow_forward</i></div>
-      </a>
-</nav>
   </body>
 </html>
