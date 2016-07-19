@@ -91,7 +91,7 @@ jiri profile os-packages v23:base
 # Run the package installation command as root.
 if [ -z "$(jiri profile os-packages v23:base)" ]; then
   sudo $(jiri profile os-packages v23:base)
-end
+fi
 #----------------------------------------------------------------------#  End 7
 
 #----------------------------------------------------------------------#  Start 8
