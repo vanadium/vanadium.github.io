@@ -246,7 +246,9 @@ Note that the printed command may need to be run as root.</p>
 jiri profile os-packages v23:base
 
 # Run the package installation command as root.
-sudo $(jiri profile os-packages v23:base)
+if [ -z &quot;$(jiri profile os-packages v23:base)&quot; ]; then
+  sudo $(jiri profile os-packages v23:base)
+end
 </code></pre><p>Then install the prerequisites themselves.
 <!-- @installBaseProfile @test --></p>
 <pre><code>jiri profile install v23:base
