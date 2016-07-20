@@ -89,7 +89,7 @@ echo "Block 'packagesBaseProfile' (7/9 in test) of content/installation/step-by-
 jiri profile os-packages v23:base
 
 # Run the package installation command as root.
-if [ -z "$(jiri profile os-packages v23:base)" ]; then
+if [ -n "$(jiri profile os-packages v23:base)" ]; then
   sudo $(jiri profile os-packages v23:base)
 fi
 #----------------------------------------------------------------------#  End 7
