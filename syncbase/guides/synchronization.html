@@ -147,7 +147,7 @@ syncgroup, eject existing members of the syncgroup or change their access level.
 syncgroup:
 <!-- @inviteUser @test --></p>
 <pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
-Collection collectionToShare = db.collection(&quot;myCollection&quot;);
+Collection collectionToShare = db.createCollection();
 
 collectionToShare.getSyncgroup().inviteUser(userToInvite, AccessList.AccessLevel.READ);
 EOF
@@ -163,9 +163,19 @@ db.addSyncgroupInviteHandler(new Database.SyncgroupInviteHandler() {
       public void onSuccess(Syncgroup sg) {
         // Accepting invitation was successful.
       }
+
+      @Override
+      public void onFailure(Throwable t) {
+        // Accepting invitation was unsuccessful.
+      }
     });
   }
-}, new Database.AddSyncgroupInviteHandlerOptions());
+
+  @Override
+  public void onError(Throwable t) {
+    // Invite handler error.
+  }
+});
 EOF
 </code></pre><div class="note info"><h3 id="tip">Tip</h3>
 <p><code>db.removeAllSyncgroupInviteHandlers()</code> can be used in activity&#39;s <code>onDestroy</code>
@@ -184,7 +194,7 @@ disappear. Otherwise, the shared collection on target user&#39;s database will
 become read-only and will no longer sync and receive updates.</p>
 <!-- @unshareCollection @test -->
 <pre><code>cat - &lt;&lt;EOF &gt;&gt; $FILE
-Collection sharedCollection = db.collection(&quot;myCollection&quot;);
+Collection sharedCollection = db.createCollection();
 
 sharedCollection.getSyncgroup().ejectUser(userToRemove);
 EOF

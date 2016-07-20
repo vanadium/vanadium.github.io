@@ -153,9 +153,9 @@ automatically.</p>
 <pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
 db.runInBatch(new Database.BatchOperation() {
   @Override
-  public void run(BatchDatabase batchDb) {
-    Collection c1 = batchDb.collection(&quot;collection1&quot;);
-    Collection c2 = batchDb.collection(&quot;collection2&quot;);
+  public void run(BatchDatabase batchDb) throws SyncbaseException {
+    Collection c1 = batchDb.createCollection();
+    Collection c2 = batchDb.createCollection();
 
     c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
     c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
@@ -175,12 +175,11 @@ obtained from <code>BatchDatabase</code>.</p>
 <!-- @runInBatchWrong @test -->
 <pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
 // WRONG: c1 is NOT part of the batch.
-final Collection c1 = db.collection(&quot;collection1&quot;);
+final Collection c1 = db.createCollection();
 {#dim}{#dim-children}db.runInBatch(new Database.BatchOperation() {
     @Override
-    public void run(BatchDatabase batchDb) {
-
-        Collection c2 = batchDb.collection(&quot;collection2&quot;);{/dim-children}{/dim}
+    public void run(BatchDatabase batchDb) throws SyncbaseException {
+        Collection c2 = batchDb.createCollection();{/dim-children}{/dim}
         // WRONG: Only mutations on c2 are atomic since c1 reference
         // was obtained from Database and not BatchDatabase.
         c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
@@ -198,8 +197,8 @@ to the developers to manage themselves.</p>
 <pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
 BatchDatabase batchDb = db.beginBatch(new Database.BatchOptions());
 
-Collection c1 = batchDb.collection(&quot;collection1&quot;);
-Collection c2 = batchDb.collection(&quot;collection2&quot;);
+Collection c1 = batchDb.createCollection();
+Collection c2 = batchDb.createCollection();
 
 c1.put(&quot;myKey&quot;, &quot;myValue&quot;);
 c2.put(&quot;myKey&quot;, &quot;myValue&quot;);
@@ -216,11 +215,11 @@ committed or aborted will throw exceptions.</p>
 <!-- @beginBatch @test -->
 <pre><code class="lang-Java">cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt;&gt; $FILE
 // WRONG: c1 is NOT part of the batch.
-Collection c1 = db.collection(&quot;collection1&quot;);
+Collection c1 = db.createCollection();
 {#dim}{#dim-children}BatchDatabase batchDb = db.beginBatch(new Database.BatchOptions());
 
 // c2 is part of the batch.
-Collection c2 = batchDb.collection(&quot;collection2&quot;);{/dim-children}{/dim}
+Collection c2 = batchDb.createCollection();{/dim-children}{/dim}
 
 // WRONG: Only mutations on c2 are atomic since c1 reference was obtained
 // from Database and not BatchDatabase.

@@ -123,7 +123,7 @@ template.</p>
 <!-- @addSyncbaseDependency @test -->
 <pre><code>cat - &lt;&lt;EOF &gt;&gt; $PROJECT_DIR/app/build.gradle
 dependencies {
-  compile &#39;io.v:syncbase:0.1.4&#39;
+  compile &#39;io.v:syncbase:0.1.7&#39;
 }
 EOF
 </code></pre><h2 id="setup-cloud-syncbase">Setup Cloud Syncbase</h2>
@@ -142,36 +142,58 @@ used without a cloud Syncbase very soon.</p>
 <pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/MainActivity.java
 {#dim}{#dim-children}package io.v.syncbase.example;
 
-import android.support.v7.app.AppCompatActivity;
-
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;{/dim-children}{/dim}
-import io.v.syncbase.*;
+import io.v.syncbase.Syncbase;
+import io.v.syncbase.exception.SyncbaseException;
 
 {#dim}{#dim-children}public class MainActivity extends AppCompatActivity {
+  private static final String TAG = &quot;DiceRoller&quot;;
+
+  // Note: You can replace CLOUD_NAME and CLOUD_ADMIN with your cloud syncbase
+  // name and blessing from https://sb-allocator.v.io
+  private static final String CLOUD_NAME =
+      &quot;/(dev.v.io:r:vprod:service:mounttabled)@ns.dev.v.io:8101/sb/syncbased-24204641&quot;;
+  private static final String CLOUD_ADMIN = &quot;dev.v.io:r:allocator:us:x:syncbased-24204641&quot;;
+  private static final String MOUNT_POINT = &quot;/ns.dev.v.io:8101/tmp/diceroller/users&quot;;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);{/dim-children}{/dim}
+    try {
+        String rootDir = getDir(&quot;syncbase&quot;, Context.MODE_PRIVATE).getAbsolutePath();
+        Syncbase.Options options =
+                Syncbase.Options.cloudBuilder(rootDir, CLOUD_NAME, CLOUD_ADMIN)
+                        .setMountPoint(MOUNT_POINT).build();
+        Syncbase.init(options);
+    } catch (SyncbaseException e) {
+        Log.e(TAG, &quot;Syncbase failed to initialize&quot;, e);
+    }
 
-    super.onCreate(savedInstanceState);{/dim-children}{/dim}
-
-    Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
-    // dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
-    // dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
-
-    Syncbase.database(new Syncbase.DatabaseCallback() {
-        @Override
-        public void onSuccess(final Database db) {
-
-           // Use database to interact with Syncbase.
-
-           Log.i(&quot;info&quot;, &quot;Syncbase is ready&quot;);
-        }
-    }, options);
-
-{#dim}{#dim-children}    setContentView(R.layout.activity_main);
+    Syncbase.loginAndroid(this, new LoginCallback());
   }
-}{/dim-children}{/dim}
+
+  @Override
+  protected void onDestroy() {
+      Syncbase.shutdown();
+      super.onDestroy();
+  }
+
+  private class LoginCallback implements Syncbase.LoginCallback {
+    @Override
+    public void onSuccess() {
+        Log.i(TAG, &quot;Syncbase is ready&quot;);
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        Log.e(TAG, &quot;Syncbased failed to login&quot;, e);
+    }
+  }
+{#dim}{#dim-children}}{/dim-children}{/dim}
 EOF
 </code></pre><p>Now, let&#39;s run the app to make sure login and Syncbase initialization are working.
 After running, you should see <code>Syncbase is ready</code> in logcat under Android Monitor
@@ -216,7 +238,7 @@ EOF
 </code></pre><p>Running the project at this point should result in the following UI:</p>
 <p><img style="width:250px" src="/images/syncbase-dice-1.png" alt="Screenshot of the Dice Roll app"></p>
 <h1 id="data-binding">Data Binding</h1>
-<p>The data model for this app is simple. We just need a single collection (<code>dice</code>)
+<p>The data model for this app is simple. We just need a single collection
 and a single key/value pair (<code>&#39;result&#39;</code>, <code>int</code>) to store the result of the dice
 roll.</p>
 <p>To bind Syncbase data with the UI, we will create a unidirectional data flow
@@ -232,8 +254,9 @@ from a remote device.</p>
 <pre><code>cat - &lt;&lt;EOF | sed &#39;s///&#39; &gt; $PROJECT_DIR/app/src/main/java/io/v/syncbase/example/MainActivity.java
 {#dim}{#dim-children}package io.v.syncbase.example;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -242,73 +265,119 @@ import android.widget.TextView;
 import java.util.Iterator;
 import java.util.Random;
 
-import io.v.syncbase.*;
+import io.v.syncbase.Collection;
+import io.v.syncbase.Database;
+import io.v.syncbase.Syncbase;
+import io.v.syncbase.WatchChange;
+import io.v.syncbase.exception.SyncbaseException;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = &quot;DiceRoller&quot;;{/dim-children}{/dim}
+    private static final String RESULT_KEY = &quot;result&quot;;
+{#dim}{#dim-children}    // Note: Replace CLOUD_NAME and CLOUD_ADMIN with your cloud syncbase name
+    // and blessing from https://sb-allocator.v.io
+    private static final String CLOUD_NAME = &quot;&lt;cloud name&gt;&quot;;
+    private static final String CLOUD_ADMIN = &quot;&lt;cloud admin&gt;&quot;;
+    private static final String MOUNT_POINT = &quot;/ns.dev.v.io:8101/tmp/diceroller/users&quot;;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
-    Syncbase.DatabaseOptions options = new Syncbase.DatabaseOptions();
-    // dbOpt.cloudSyncbaseAddress = &quot;&lt;Your Cloud Syncbase Address&gt;&quot;;
-    // dbOpt.cloudSyncbaseBlessing = &quot;&lt;Your Cloud Syncbase Blessing&gt;&quot;;
+    try {
+      String rootDir = getDir(&quot;syncbase&quot;, Context.MODE_PRIVATE).getAbsolutePath();
+      Syncbase.Options options =
+          Syncbase.Options.cloudBuilder(rootDir, CLOUD_NAME, CLOUD_ADMIN)
+              .setMountPoint(MOUNT_POINT).build();
+      Syncbase.init(options);
+    } catch (SyncbaseException e) {
+      Log.e(TAG, &quot;Syncbase failed to initialize&quot;, e);
+    }
 
-    Syncbase.database(new Syncbase.DatabaseCallback() {
-      @Override
-      public void onSuccess(final Database db) {
+    Syncbase.loginAndroid(this, new LoginCallback());
+  }
 
-        // Use database to interact with Syncbase.
+  @Override
+  protected void onDestroy() {
+    Syncbase.shutdown();
+    super.onDestroy();
+  }{/dim-children}{/dim}
 
-        Log.i(&quot;info&quot;, &quot;Syncbase is ready&quot;);{/dim-children}{/dim}
+  private class LoginCallback implements Syncbase.LoginCallback {
+    @Override
+    public void onSuccess() {
+      Log.i(TAG, &quot;Syncbase is ready&quot;);
 
-        // On dice roll, put a new random number under key &quot;result&quot;
-        // in the &quot;dice&quot; collection.
-        final Button button = (Button) findViewById(R.id.buttonRoll);
+      try {
+        final Collection userdata = Syncbase.database().getUserdataCollection();
+
+        // On dice roll, put a random number into the userdata collection under RESULT_KEY.
+        final View button = findViewById(R.id.buttonRoll);
+        if (button == null) {
+          Log.e(TAG, &quot;Resource not found: &quot; + R.id.buttonRoll);
+          return;
+        }
+        button.setEnabled(true);
         button.setOnClickListener(new View.OnClickListener() {
-          public void onClick(View v) {
-            int randomNumber =  new Random().nextInt(6) + 1;
+          private Random random = new Random();
 
-            Collection diceCollection = db.collection(&quot;dice&quot;);
-            diceCollection.put(&quot;result&quot;, randomNumber);
+          @Override
+          public void onClick(View v) {
+            int randomNumber = random.nextInt(6) + 1;
+            try {
+              userdata.put(RESULT_KEY, randomNumber);
+            } catch (SyncbaseException e) {
+              Log.e(TAG, &quot;put error&quot;, e);
+            }
           }
         });
 
-        // Watch the database and update the UI whenever a new value
-        // is encountered.
-        db.addWatchChangeHandler(new Database.WatchChangeHandler() {
+        Syncbase.database().addWatchChangeHandler(new Database.WatchChangeHandler() {
           @Override
           public void onInitialState(Iterator&lt;WatchChange&gt; values) {
-            // onInitialState is called with any existing data in Syncbase.
-            // Since we only have a single collection, single key/value,
-            // there can only be 0 or 1 values.
-            if (values.hasNext()) {
-              int result = (int) values.next().getValue();
-              updateResult(result);
-            }
+            onChange(values);
           }
 
           @Override
           public void onChangeBatch(Iterator&lt;WatchChange&gt; changes) {
-            // onChangeBatch is called with any updates to the data.
-            // Since we only have a single collection, single key/value.
-            // there can only be 1 WatchChange whenever the value is mutated
-            // and the type of change would always be `put` in our case.
-            int result = (int) changes.next().getValue();
-            updateResult(result);
+            onChange(changes);
           }
 
           @Override
           public void onError(Throwable e) {
-            // Something went wrong. Watch is no longer active.
+            Log.e(TAG, &quot;watch error&quot;, e);
           }
-        }, new Database.AddWatchChangeHandlerOptions());
-{#dim}{#dim-children}      }
-    }, new Syncbase.DatabaseOptions());
 
-    setContentView(R.layout.activity_main);
-  }{/dim-children}{/dim}
+          private void onChange(Iterator&lt;WatchChange&gt; changes) {
+            while (changes.hasNext()) {
+              WatchChange watchChange = changes.next();
+              Log.i(TAG, &quot;Received watch change: &quot; + watchChange.toString());
+              if (watchChange.getCollectionId().getName().equals(
+                  Syncbase.USERDATA_NAME) &amp;&amp;
+                  watchChange.getEntityType() == WatchChange.EntityType.ROW &amp;&amp;
+                  watchChange.getChangeType() == WatchChange.ChangeType.PUT &amp;&amp;
+                  watchChange.getRowKey().equals(RESULT_KEY)) {
+                try {
+                  updateResult(watchChange.getValue(Integer.class));
+                } catch (SyncbaseException e) {
+                  Log.e(TAG, &quot;watch change error&quot;, e);
+                }
+              }
+            }
+          }
+        });
+      } catch (SyncbaseException e) {
+        Log.e(TAG, &quot;Syncbased failed to login&quot;, e);
+      }
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        Log.e(TAG, &quot;LoginCallback: onError&quot;, e);
+    }
+  }
+
   private void updateResult(int newValue) {
     final TextView result = (TextView) findViewById(R.id.textViewResult);
     result.setText(String.valueOf(newValue));

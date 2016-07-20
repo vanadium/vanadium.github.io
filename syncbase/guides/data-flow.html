@@ -127,7 +127,6 @@ db.addWatchChangeHandler(new Database.WatchChangeHandler() {
 
   @Override
   public void onInitialState(Iterator&lt;WatchChange&gt; values) {
-
     // onInitialState is called with all of existing data in Syncbase.
     // Although the value type is WatchChange, since this is existing
     // data, there will not be any values with ChangeType == DELETE_CHANGE
@@ -140,7 +139,6 @@ db.addWatchChangeHandler(new Database.WatchChangeHandler() {
 
   @Override
   public void onChangeBatch(Iterator&lt;WatchChange&gt; changes) {
-
     // onChangeBatch is called whenever changes are made to the data.
     // Changes that are part of the same batch are presented together,
     // otherwise changes iterator may only contain a single change.
@@ -150,7 +148,12 @@ db.addWatchChangeHandler(new Database.WatchChangeHandler() {
 
     // Trigger UI update
   }
-}, new Database.AddWatchChangeHandlerOptions());
+
+  @Override
+  public void onError(Throwable t) {
+    // Handle error
+  }
+});
 EOF
 </code></pre><p>Modeling our in-memory state as a map of Todolist-Id to a map of (Task-Id, Task)
 <!-- @updateState @test --></p>
@@ -159,23 +162,23 @@ HashMap&lt;String, Map&lt;String, Task&gt;&gt; state = new HashMap&lt;String, Ma
 
 // Update the state based on the changes.
 void updateState(WatchChange change) {
-
+  try {
     String collectionId = change.getCollectionId().encode();
     String rowKey = change.getRowKey();
 
     if(change.getChangeType() == WatchChange.ChangeType.PUT) {
-
       if(!state.containsKey(collectionId)) {
         state.put(collectionId, new HashMap&lt;String, Task&gt;());
       }
-      Task rowValue = (Task)change.getValue();
+      Task rowValue = change.getValue(Task.class);
       state.get(collectionId).put(rowKey, rowValue);
 
     } else if(change.getChangeType() == WatchChange.ChangeType.DELETE) {
-
       state.get(collectionId).remove(rowKey);
-
     }
+  } catch (SyncbaseException e) {
+    Log.e(&quot;DataFlowExample&quot;, &quot;update state error&quot;, e);
+  }
 }
 EOF
 </code></pre><div class="note info"><h3 id="tip">Tip</h3>
