@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1,
+                                   minimum-scale=1,
+                                   maximum-scale=1,
+                                   user-scalable=no,
+                                   minimal-ui">
+  
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+  
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+    <title>Local Persistence - Vanadium</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
+  
+    <link rel="stylesheet" href="/css/github.css">
+    <link rel="stylesheet" href="/css/material.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  
+    <script src="/js/react-0.14.3.min.js"></script>
+    <script src="/js/react-dom-0.14.3.min.js"></script>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/favicons/favicon-160x160.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicons/favicon-192x192.png">
+    <meta name="msapplication-TileColor" content="#00acc1">
+    <meta name="msapplication-TileImage" content="/favicons/mstile-144x144.png">
+  
+    <link rel="stylesheet" href="/css/bundle.cyan.css">
+    <script src="/js/bundle.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+      ga('create', 'UA-59720824-6', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <header class="mdl-shadow--2dp">
+      <div class="row">
+        <div class="icon menu"><i class="material-icons">menu</i></div>
+        <div class="icon v-icon"><a href="/"><img src="/images/v-icon-white.svg"></a></div>
+        <div class="logo"><a href="/core.html">Vanadium Core</a></div>
+        <div class="spacer"></div>
+        <nav>
+          <a href="/core.html">Overview</a>
+          <a href="/installation/">Installation</a>
+          <a href="/tutorials/hello-world.html">Tutorials</a>
+        </nav>
+      </div>
+    </header>
+    <div data-subsite="core" class="sidebar"></div>
+    <div class="sidebar-data">
+      <a href="/core.html">Overview</a>
+      <a href="/installation/">Installation</a>
+    
+      <a href="#" class="nav">Tutorials</a>
+      <nav>
+        <a href="/tutorials/hello-world.html">Hello World</a>
+        <a href="/tutorials/basics.html">Client/Server Basics</a>
+    
+        <a href="#" class="nav">Security</a>
+        <nav>
+          <a href="/tutorials/security/">Overview</a>
+          <a href="/tutorials/security/principals-and-blessings.html">Principals and Blessings</a>
+      <a href="/tutorials/security/permissions-authorizer.html">Permissions Authorizer</a>
+      <a href="/tutorials/security/first-party-caveats.html">Caveats</a>
+      <a href="/tutorials/security/third-party-caveats.html">Third-party Caveats</a>
+      <a href="/tutorials/security/agent.html">The Agent</a>
+      <a href="/tutorials/security/custom-authorizer.html">Custom Authorizer</a>
+    </nav>
+    
+        <a href="#" class="nav">Naming</a>
+        <nav>
+          <a href="/tutorials/naming/">Overview</a>
+          <a href="/tutorials/naming/mount-table.html">The Mount Table</a>
+      <a href="/tutorials/naming/namespace.html">Namespaces</a>
+      <a href="/tutorials/naming/suffix-part1.html">The Suffix - Part I</a>
+      <a href="/tutorials/naming/suffix-part2.html">The Suffix - Part II</a>
+      <a href="/tutorials/naming/globber.html">Globber</a>
+    </nav>
+    
+        <a href="#" class="nav">Syncbase</a>
+        <nav>
+          <a href="/tutorials/syncbase/">Overview</a>
+          <a href="/tutorials/syncbase/localPersist.html">Local Persistence</a>
+      <a href="/tutorials/syncbase/sync.html">Syncing</a>
+    </nav>
+    
+        <a href="#" class="nav">Java</a>
+        <nav>
+          <a href="/tutorials/java/">Overview</a>
+          <a href="/tutorials/java/fortune.html">Fortune in Java</a>
+      <a href="/tutorials/java/android.html">Location Service in Android</a>
+    </nav>
+    
+        <a href="/tutorials/faq.html">Tutorial FAQ</a>
+      </nav>
+    
+      <a href="#" class="nav">Concepts</a>
+      <nav>
+        <a href="/concepts/rpc.html">RPC System</a>
+    <a href="/concepts/naming.html">Naming</a>
+    <a href="/concepts/security.html">Security</a>
+    <a href="/concepts/device-management.html">Device Management</a>
+  </nav>
+    
+      <a href="/example-apps.html">Example Apps</a>
+      <a href="/api-reference.html">API Reference</a>
+    
+      <a href="#" class="nav">Community</a>
+      <nav>
+        <a href="/community/coding-guidelines.html">Coding Guidelines</a>
+    <a href="/community/contributing.html">Contributing</a>
+    <a href="/community/mailing-lists.html">Mailing List</a>
+    <a href="/community/roadmap.html">Roadmap</a>
+  </nav>
+    
+      <a href="#" class="nav">Tools</a>
+      <nav>
+        <a href="/tools/identity-service-faq.html">Vanadium Identity Service</a>
+    <a href="/tools/jiri.html">Jiri</a>
+    <a href="/tools/namespace-browser.html">Namespace Browser</a>
+    <a href="/tools/services.html">Vanadium Cloud Services</a>
+  </nav>
+    
+      <a href="#" class="nav">Design Docs</a>
+      <nav>
+        <a href="/designdocs/authentication.html">Authentication Protocol</a>
+    <a href="/designdocs/identity-service.html">Identity Service</a>
+    <a href="/designdocs/vdl-spec.html">VDL Specification</a>
+    <a href="/designdocs/vom-spec.html">VOM Specification</a>
+  </nav>
+    
+      <a href="/glossary.html">Glossary</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/tos.html">Terms of Service</a>
+    </div>
+    <main>
+      <h1 class="title">
+        
+        Local Persistence
+      </h1>
+
+      <p class="wherein"><strong>Wherein</strong> we persist the fortune teller service state in Syncbase.</p>
+
+      <div class="toc"></div>
+
+      <div class="prerequisites">
+      <div class="note info"><p><strong>Prerequisites</strong>:<br>
+All tutorials require Vanadium <a href="/installation/">installation</a>, and must run in a <a href="/tutorials/faq.html#why-bash-">bash shell</a>.
+<br>Further, please <a href="/sh/scenario-b-setup.sh" download="scenario-b-setup.sh"> download this script</a> then <a href="/tutorials/faq.html#why-source-">source</a> it:</p>
+<pre><code>source ~/Downloads/scenario-b-setup.sh
+</code></pre><p>This command wipes tutorial files and defines shell environment variables. If you start a new terminal, and just want to re-establish the environment, see instructions <a href="/tutorials/setup.html">here</a>.
+</p>
+<p>
+If you would like to generate files from this tutorial without the copy/paste steps, download and source <a href="/sh/tut-completer-syncbase-local-persist.sh" download="tut-completer-syncbase-local-persist.sh">this script</a>. Files will be created in the <code>$V_TUT</code> <a href="/tutorials/setup.html">directory</a>.
+</p>
+</div>
+</div>
+
+      <h1 id="introduction">Introduction</h1>
+<p>This tutorial focuses on modifying the fortune application from the <a href="/tutorials/basics.html">basics
+tutorial</a> to persist data in Syncbase.</p>
+<p>Our Syncbase program will use the same architecture as our basic fortune
+program. A <strong>client</strong> will communicate with a <strong>server</strong> using RPC, which will
+call into a <strong>service</strong>.</p>
+<p>Now however, instead of the service keeping a local database of fortunes in
+memory, it will store the fortunes in Syncbase. Syncbase provides a <strong>key-value
+store</strong> API; our service can <code>Put</code> a <strong>key</strong> associated with some <strong>value</strong>, and
+<code>Get</code> the value back using the key.</p>
+<p>Syncbase stores data in <strong>databases</strong>, which themselves hold <strong>collections</strong>. In
+this tutorial we will create a new database and a new collection, and modify the
+<code>Add</code> and <code>Get</code> RPC calls to use Syncbase instead of an in-memory
+array.</p>
+<h1 id="modifying-the-service">Modifying the Service</h1>
+<p>We will first modify the service to make calls into Syncbase instead of keeping
+a local array of fortunes in memory. The implementation below connects to a
+Syncbase instance, and modifies the <code>Add</code> and <code>Get</code> RPC calls to interact with
+Syncbase.</p>
+<!-- @defineService @test @completer -->
+<pre><code>mkdir -p $V_TUT/src/fortune/service
+ cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/service/service.go
+{#dim}{#dim-children}package service
+
+import (
+  &quot;fortune/ifc&quot;
+  &quot;math/rand&quot;
+  &quot;strconv&quot;
+  &quot;sync&quot;
+
+  &quot;v.io/v23/context&quot;
+  &quot;v.io/v23/rpc&quot;{/dim-children}{/dim}
+  &quot;v.io/v23/syncbase&quot;
+{#dim}{#dim-children}){/dim-children}{/dim}
+
+// Constant names of different Syncbase entities.
+const (
+  fortuneDatabaseName   = &quot;fortuneDb&quot;
+  fortuneCollectionName = &quot;fortuneCollection&quot;
+
+  // A special key that specifies the number of fortunes.
+  numFortunesKey = &quot;numFortunes&quot;
+)
+
+type impl struct {
+  random        *rand.Rand   // To pick a random fortune
+  mu            sync.RWMutex // To safely enable concurrent use.
+
+  syncbaseName       string  // The Syncbase endpoint
+
+  sbs syncbase.Service    // Handle to the Syncbase service
+  d   syncbase.Database   // Handle to the fortunes database
+  c   syncbase.Collection // Handle to the fortunes collection
+}
+
+// Makes an implementation.
+func Make(ctx *context.T, syncbaseName string) ifc.FortuneServerMethods {
+{#dim}{#dim-children}  impl := &amp;impl{
+    random:             rand.New(rand.NewSource(99)),{/dim-children}{/dim}
+    syncbaseName:       syncbaseName,
+  }
+  if err := impl.initSyncbase(ctx); err != nil {
+    panic(err)
+  }
+{#dim}{#dim-children}  return impl
+}{/dim-children}{/dim}
+
+// Initialize Syncbase by creating a new service, database and collection.
+func (f *impl) initSyncbase(ctx *context.T) error {
+  // Create a new service handle and a database to store the fortunes.
+  sbs := syncbase.NewService(f.syncbaseName)
+  d := sbs.Database(ctx, fortuneDatabaseName, nil)
+  if err := d.Create(ctx, nil); err != nil {
+      return err
+  }
+
+  // Create the collection where we store fortunes.
+  c := d.Collection(ctx, fortuneCollectionName)
+  if err := c.Create(ctx, nil); err != nil {
+      return err
+  }
+
+{#dim}{#dim-children}  f.sbs = sbs
+  f.d = d
+  f.c = c
+  return nil{/dim-children}{/dim}
+}
+
+// Get RPC implementation. Returns a fortune retrieved from Syncbase.
+func (f *impl) Get(ctx *context.T, _ rpc.ServerCall) (string, error) {
+  f.mu.RLock()
+  defer f.mu.RUnlock()
+
+  var numKeys int
+  if err := f.c.Get(ctx, numFortunesKey, &amp;numKeys); err != nil || numKeys == 0 {
+    return &quot;[empty]&quot;, nil
+  }
+
+  // Get a random number in the range [0, numKeys) and convert it to a string;
+  // this acts as the key in the sycnbase collection.
+  key := strconv.Itoa(f.random.Intn(numKeys))
+  var value string
+
+  if err := f.c.Get(ctx, key, &amp;value); err == nil {
+    return value, nil
+  } else {
+    return &quot;[error]&quot;, err
+  }
+}
+
+// Add RPC implementation. Adds a new fortune by persisting it to Syncbase.
+func (f *impl) Add(ctx *context.T, _ rpc.ServerCall, fortune string) error {
+  f.mu.Lock()
+  defer f.mu.Unlock()
+
+  var numKeys int
+  if err := f.c.Get(ctx, numFortunesKey, &amp;numKeys); err != nil {
+    numKeys = 0
+  }
+
+  // Put the fortune into Syncbase.
+  key := strconv.Itoa(numKeys)
+  if err := f.c.Put(ctx, key, &amp;fortune); err != nil {
+    return err
+  }
+
+  // Update the number of keys.
+  return f.c.Put(ctx, numFortunesKey, numKeys+1)
+}
+
+EOF
+</code></pre><p>That&#39;s a lot of code! We will go through it function by function below.</p>
+<h2 id="make">Make</h2>
+<p>Our <code>Make</code> function looks the same as it did before, but with an additional
+field <code>syncbaseName</code>. Each Syncbase instance has a <em>name</em>; think of this as an
+address for finding where the Syncbase is.</p>
+<h2 id="initializing-syncbase">Initializing Syncbase</h2>
+<p>Syncbase provides a storage service that can be shared between different apps.
+Apps thus use RPC calls to the Syncbase service to create and access their own
+databases.</p>
+<p>Syncbase initialization occurs in <code>initSyncbase</code>. The high level steps are as
+follows:</p>
+<ol>
+<li><p>Create a new database.</p>
+</li>
+<li><p>Create a new collection. The collection
+stores the keys and values (in this case, our fortunes).</p>
+</li>
+</ol>
+<h2 id="get-and-add">Get and Add</h2>
+<p>Finally, we have our <code>Get</code> and <code>Add</code> functions. Let&#39;s break these down.</p>
+<p>The first notable change is that we store the number of fortunes we have put
+into Syncbase using a special key <code>numFortunesKey</code>. After getting the number of
+fortunes we have in Syncbase, we must decide which fortune to return. We want a
+random fortune based on the random number generator, but our keys have to be
+strings; The <code>strconv.Itoa</code> function converts a random number to a string, which
+we can use a key in Syncbase.</p>
+<p>Next, we call <code>Get</code> on our collection; this call fetches the value into the
+variable <code>value</code>. We check for errors and return the fortune if
+everything looks alright.</p>
+<p>The <code>Add</code> function works similarly, except we also increment the counter which
+holds how many fortunes we have in our Syncbase.</p>
+<h1 id="server">Server</h1>
+<p>We need to make a small change to our server. Namely, we need to pass in the
+name of our Syncbase instance, so we can pass this to our service, which in turn
+will use the name to connect to Syncbase. The core server logic remains
+unchanged.</p>
+<!-- @defineServer @test @completer -->
+<pre><code>mkdir -p $V_TUT/src/fortune/server
+ cat - &lt;&lt;EOF &gt;$V_TUT/src/fortune/server/main.go
+package main
+
+{#dim}{#dim-children}import (
+  &quot;fmt&quot;
+  &quot;flag&quot;
+  &quot;fortune/ifc&quot;
+  &quot;fortune/server/util&quot;
+  &quot;fortune/service&quot;
+  &quot;log&quot;
+
+  &quot;v.io/v23&quot;
+  &quot;v.io/v23/rpc&quot;
+  &quot;v.io/x/ref/lib/signals&quot;
+  _ &quot;v.io/x/ref/runtime/factories/generic&quot;
+)
+
+var (
+  serviceName = flag.String(
+    &quot;service-name&quot;, &quot;&quot;,
+    &quot;Name for service in default mount table.&quot;){/dim-children}{/dim}
+  syncbaseName = flag.String(
+    &quot;sb-name&quot;, &quot;&quot;,
+    &quot;Name of Syncbase service&quot;)
+{#dim}{#dim-children})
+
+func main() {
+  ctx, shutdown := v23.Init()
+  defer shutdown(){/dim-children}{/dim}
+  fortune := ifc.FortuneServer(service.Make(ctx, *syncbaseName))
+{#dim}{#dim-children}  // If the dispatcher isn&#39;t nil, it&#39;s presumed to have
+  // obtained its authorizer from util.MakeAuthorizer().
+  dispatcher := util.MakeDispatcher()
+
+  // Start serving.
+  var err error
+  var server rpc.Server
+  if dispatcher == nil {
+    // Use the default dispatcher.
+    _, server, err = v23.WithNewServer(
+      ctx, *serviceName, fortune, util.MakeAuthorizer())
+  } else {
+    _, server, err = v23.WithNewDispatchingServer(
+      ctx, *serviceName, dispatcher)
+  }
+  if err != nil {
+    log.Panic(&quot;Error serving service: &quot;, err)
+  }
+  endpoint := server.Status().Endpoints[0]
+  util.SaveEndpointToFile(endpoint)
+  fmt.Printf(&quot;Listening at: %v\n&quot;, endpoint)
+
+  // Wait forever.
+  &lt;-signals.ShutdownOnSignals(ctx)
+}{/dim-children}{/dim}
+
+EOF
+</code></pre><p>Finally, install the client and server:</p>
+<!-- @installClientServer @test @completer -->
+<pre><code>go install fortune/server
+go install fortune/client
+</code></pre><h1 id="credentials">Credentials</h1>
+<p>We will create a Syncbase instance tied to the fortune application and Alice&#39;s
+devices. To authorize this, we make a new blessing <code>idp:o:fortune:alice</code>.</p>
+<p>Syncbase requires this naming scheme for its blessings.</p>
+<!-- @makeCreds @test @completer -->
+<pre><code>$V_BIN/principal create \
+  --with-passphrase=false \
+  --overwrite $V_TUT/cred/alice idp:o:fortune:alice
+</code></pre><h1 id="run-your-code">Run Your Code</h1>
+<p>First, start a Syncbase instance. Like our server, Syncbase spits out an endpoint
+which we write to a file. We then sleep until this endpoint appears, since we
+need it to start our server.</p>
+<!-- @startSb1 @test @completer -->
+<pre><code>$V_BIN/syncbased \
+  --v23.tcp.address=127.0.0.1:0 \
+  --v23.credentials=$V_TUT/cred/alice &gt; $V_TUT/endpoint 2&gt; /dev/null &amp;
+TUT_PID_SB1=$!
+while [ ! -s $V_TUT/endpoint ]; do sleep 1; done
+</code></pre><p>Then, start the server:</p>
+<!-- @startServer1 @test @completer @sleep -->
+<pre><code>rm -f $V_TUT/server.txt
+$V_TUT/bin/server \
+  --v23.credentials=$V_TUT/cred/alice \
+  --v23.tcp.address=127.0.0.1:0 \
+  --endpoint-file-name=$V_TUT/server.txt \
+  --sb-name=`cat $V_TUT/endpoint | grep &#39;ENDPOINT=&#39; | cut -d&#39;=&#39; -f2` &amp;&gt; /dev/null &amp;
+TUT_PID_SERVER1=$!
+</code></pre><p>We can now make RPC calls:</p>
+<!-- @initialClientCall @test @completer -->
+<pre><code>$V_TUT/bin/client \
+  --v23.credentials=$V_TUT/cred/alice \
+  --server=`cat $V_TUT/server.txt` \
+  --add=&#39;The greatest risk is not taking one.&#39;
+</code></pre><!-- @secondClientCall @completer @test -->
+<pre><code>$V_TUT/bin/client \
+  --v23.credentials=$V_TUT/cred/alice \
+  --server=`cat $V_TUT/server.txt`
+</code></pre><p>The second call should return the fortune we just added. The fortune is
+persisted in Syncbase.</p>
+<h1 id="cleanup">Cleanup</h1>
+<p>To clean up, kill the servers, Syncbase instances, and remove any temporary
+files.</p>
+<!-- @cleanup @test @completer -->
+<pre><code>kill_tut_process TUT_PID_SERVER1
+kill_tut_process TUT_PID_SB1
+</code></pre><h1 id="summary">Summary</h1>
+<ul>
+<li>You wrote a service which connects with Syncbase, creates a fortunes
+collection, and persists data in that collection.</li>
+</ul>
+<p>There is a lot more you can do with Syncbase. To dive deeper, see the <a href="/syncbase/tutorial/introduction.html">Syncbase
+tutorial</a>.</p>
+
+    </main>
+    <nav class="previous-next">
+      <a href="/tutorials/syncbase/sync.html" class="next">
+        <div class="text-wrapper">
+          <small>Next</small>
+          <div class="text">
+            <span>Syncing</span>
+          </div>
+        </div>
+        <div class="icon"><i class="material-icons">arrow_forward</i></div>
+      </a>
+</nav>
+  </body>
+</html>

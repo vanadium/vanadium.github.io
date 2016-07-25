@@ -14,7 +14,7 @@
   
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
-    <title>Mailing List - Vanadium</title>
+    <title>Overview - Vanadium</title>
   
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic,700,700italic|Source+Code+Pro">
   
@@ -158,15 +158,40 @@
     <main>
       <h1 class="title">
         
-        Mailing List
+        Overview
       </h1>
 
-      <div class="toc"></div>
 
-      <ul>
-<li><a href="https://groups.google.com/a/v.io/forum/#!forum/vanadium-discuss">Vanadium Discuss mailing list</a> - Mailing list for discussion of Vanadium-related topics (e.g. questions, changes, feature requests).<br>We will also send announcements of new versions and sample apps.</li>
+
+      
+      <p>Syncbase provides a database that supports peer-to-peer synchronization built on
+top of Vanadium. It works even when devices are not connected to the Internet.</p>
+<p>In the following tutorials, we will modify the code from the <a href="/tutorials/basics.html">basics tutorial</a>
+so it runs over Syncbase. This will allow us to synchronize our set of fortunes
+across multiple devices.</p>
+<ul>
+<li><p><a href="/tutorials/syncbase/localPersist.html">Persisting to Local Storage</a><br> <em>Wherein</em> fortunes are stored in a local
+Syncbase.</p>
+</li>
+<li><p><a href="/tutorials/syncbase/sync.html">Exchanging Data</a><br> <em>Wherein</em> devices exchange their local data with each
+other.</p>
+</li>
 </ul>
+<p>These tutorials use a low level Syncbase API. The <a href="/syncbase/tutorial/introduction.html">Syncbase tutorial</a>
+complements this tutorial and uses a higher level API for mobile development
+which facilitates many of the patterns illustrated here.</p>
 
     </main>
+    <nav class="previous-next">
+      <a href="/tutorials/syncbase/localPersist.html" class="next">
+        <div class="text-wrapper">
+          <small>Next</small>
+          <div class="text">
+            <span>Local Persistence</span>
+          </div>
+        </div>
+        <div class="icon"><i class="material-icons">arrow_forward</i></div>
+      </a>
+</nav>
   </body>
 </html>
