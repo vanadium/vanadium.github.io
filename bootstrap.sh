@@ -65,17 +65,6 @@ check_environment() {
       exit 1
   esac
 
-  # Check that Go compiler version 1.5 or newer exists on the host.
-  local -r GO_VERSION=$(go version 2> /dev/null)
-  local -r RESULT="$?"
-  local -a TOKENS=(${GO_VERSION})
-  TOKENS=($(echo "${TOKENS[2]}" | tr '.' ' '))
-  if [[ "${RESULT}" -ne 0 ]] || [[ "${TOKENS[0]}" -eq "go1" && "${TOKENS[1]}" -lt 5 ]]; then
-    echo "Go compiler version 1.5 or newer is required for installation."
-    echo "Install it and re-run."
-    exit 1
-  fi
-
   # Check that GOPATH does not contain v.io packages.
   local -r VANADIUM_PACKAGES=$(go list v.io/... 2> /dev/null)
   if [[ -n "${VANADIUM_PACKAGES}" ]]; then
