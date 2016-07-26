@@ -625,8 +625,10 @@ EOF
 #----------------------------------------------------------------------#  Start 3
 echo "Block 'removeCodeDimMarkup' (3/10 in completer) of content/tutorials/syncbase/localPersist.md"
 ####
-sed -i 's/{{.*}}//' $V_TUT/src/fortune/server/main.go
-sed -i 's/{{.*}}//' $V_TUT/src/fortune/service/service.go
+sed 's/{{.*}}//' $V_TUT/src/fortune/server/main.go > $V_TUT/src/fortune/server/main.go.new
+mv $V_TUT/src/fortune/server/main.go.new $V_TUT/src/fortune/server/main.go
+sed 's/{{.*}}//' $V_TUT/src/fortune/service/service.go > $V_TUT/src/fortune/service/service.go.new
+mv $V_TUT/src/fortune/service/service.go.new $V_TUT/src/fortune/service/service.go
 #----------------------------------------------------------------------#  End 3
 
 #----------------------------------------------------------------------#  Start 4
