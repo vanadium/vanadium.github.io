@@ -104,7 +104,7 @@ jiri profile install v23:base
 echo "Block 'installVanadiumBinaries' (9/9 in test) of content/installation/step-by-step.md"
 ####
 # Install specific tools needed for the tutorials.
-jiri go install v.io/x/ref/cmd/... v.io/x/ref/services/agent/... v.io/x/ref/services/mounttable/...
+jiri go install v.io/x/ref/cmd/... v.io/x/ref/services/agent/... v.io/x/ref/services/mounttable/... v.io/x/ref/services/syncbase/...
 #----------------------------------------------------------------------#  End 9
 
 echo " "
