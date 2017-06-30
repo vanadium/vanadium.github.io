@@ -92,7 +92,7 @@ main() {
 
   # Import the Vanadium public manifest.
   pushd $JIRI_ROOT
-  $JIRI_ROOT/.jiri_root/bin/jiri import -name=manifest public https://vanadium.googlesource.com/manifest
+  $JIRI_ROOT/.jiri_root/bin/jiri import -name=manifest public git@github.com:vanadium-archive/manifest.git
 
   # Sync the Vanadium projects locally.
   retry $JIRI_ROOT/.jiri_root/bin/jiri update
